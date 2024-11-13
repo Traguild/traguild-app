@@ -1,15 +1,29 @@
 import React from 'react'
 import { createStackNavigator } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 
 // Import Views
 import SignIn from "../../views/auth/SignIn";
+import Home from "../../views/01-home/Home";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
+  const navigation = useNavigation();
+
+  global.navGo = {
+    to: (screen) => {
+      navigation.navigate(screen, screen);
+    },
+    back: () => {
+      navigation.goBack();
+    }
+  };
+
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="signIn">
-      <Stack.Screen name="signIn" component={ SignIn } />
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
+      <Stack.Screen name="SignIn" component={ SignIn } />
+      <Stack.Screen name="Home" component={ Home } />
     </Stack.Navigator>
   );
 } 

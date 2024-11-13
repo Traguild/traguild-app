@@ -1,17 +1,22 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
+
+// IMPORT RESOURCES
+import { theme } from "../resources/theme/common";
+
+const HEIGHT = Dimensions.get("window").height;
 
 const Layout = ({ children }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-
+        <Text>Header</Text>
       </View> 
       <View style={styles.body}>
         { children }
       </View> 
       <View style={styles.footer}>
-
+        <Text>Footer</Text>
       </View> 
     </View>
   )
@@ -20,23 +25,22 @@ const Layout = ({ children }) => {
 const styles = StyleSheet.create({
     container: {
       flex: 1, 
-      backgroundColor: "#fff",
+      backgroundColor: theme["home-bg"],
     },
     header: {
-      flex: 2,
+      height: HEIGHT * 0.15,
       justifyContent: "center",
       alignItems: "center",
-      backgroundcolor: "#fff",
+      backgroundColor: theme["home-bg"],
     },
     body: {
-      flex: 6,
-      padding: 16,
+      height: HEIGHT * 0.75,
     },
     footer: {
-      flex: 2,
+      height: HEIGHT * 0.1,
       justifyContent: "center",
       alignItems: "center",
-      backgroundcolor: "#fff",
+      backgroundcolor: theme["home-bg"],
     },
 });
 
