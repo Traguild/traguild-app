@@ -1,6 +1,6 @@
 import React from 'react'
 import { createStackNavigator } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
 import SignIn from "../../views/auth/SignIn";
@@ -17,6 +17,12 @@ const AppNavigator = () => {
     },
     back: () => {
       navigation.goBack();
+    },
+    re: (screen) => {
+      navigation.dispatch(CommonActions.reset({
+        index: 0,
+        routes: [{ name: screen }],
+      }));
     }
   };
 

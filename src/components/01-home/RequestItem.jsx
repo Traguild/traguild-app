@@ -9,7 +9,7 @@ const RequestItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={ styles.listItem }>
+      <TouchableOpacity style={ styles.listItem } activeOpacity={0.8}>
         <Image 
           source={item.thumb_img ? item.thumb_img : Logo}
           style={ styles.itemImg } />
