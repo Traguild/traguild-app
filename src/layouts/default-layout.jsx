@@ -15,9 +15,6 @@ const Layout = ({ children }) => {
       <View style={styles.body}>
         { children }
       </View> 
-      <View style={styles.footer}>
-        <Text>Footer</Text>
-      </View> 
     </View>
   )
 }
@@ -36,13 +33,7 @@ const styles = StyleSheet.create({
     body: {
       height: HEIGHT * 0.75,
     },
-    footer: {
-      height: HEIGHT * 0.1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundcolor: theme["home-bg"],
-    },
 });
 
 
-export default Layout
+export default Layout;

@@ -23,7 +23,7 @@ const SignIn = () => {
         <TouchableOpacity
           style={{ ...styles.btn, backgroundColor: theme["default-btn"] }}
           onPress={() => {
-            navGo.re("Home");
+            navGo.to("AppTabNavigator");
           }}
         >
           <Text style={{ ...styles.btnText, color: "white" }}>로그인</Text>

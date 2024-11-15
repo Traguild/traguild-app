@@ -6,6 +6,8 @@ import { useNavigation, CommonActions } from "@react-navigation/native";
 import SignIn from "../../views/auth/SignIn";
 import Home from "../../views/01-home/Home";
 
+import AppTabNavigator from "./AppTabNavigator";
+
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
@@ -29,7 +31,7 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
       <Stack.Screen name="SignIn" component={ SignIn } />
-      <Stack.Screen name="Home" component={ Home } />
+      <Stack.Screen name="AppTabNavigator" component={ AppTabNavigator } />
     </Stack.Navigator>
   );
 } 
