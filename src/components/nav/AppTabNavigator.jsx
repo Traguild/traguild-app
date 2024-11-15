@@ -11,6 +11,8 @@ import { theme } from "../../resources/theme/common";
 // IMPORT VIEWS
 import Home from "../../views/01-home/Home";
 import Community from "../../views/02-community/Community";
+import Chat from "../../views/03-chat/Chat";
+import MyPage from "../../views/04-myPage/MyPage";
 
 const HEIGHT = Dimensions.get("window").height;
 const iconSize = 24;
@@ -29,7 +31,25 @@ const AppTabNavigator = () => {
     Community: (focused, props) => {
       return (
         <Ionicons
-          name={focused ? "people" : "people-outline"}
+          name={focused ? "newspaper" : "newspaper-outline"}
+          size={iconSize}
+          style={[props.style]}
+        />
+      );
+    },
+    Chat: (focused, props) => {
+      return (
+        <Ionicons
+          name={focused ? "chatbubbles" : "chatbubbles-outline"}
+          size={iconSize}
+          style={[props.style]}
+        />
+      );
+    },
+    MyPage: (focused, props) => {
+      return (
+        <Ionicons
+          name={focused ? "person" : "person-outline"}
           size={iconSize}
           style={[props.style]}
         />
@@ -61,6 +81,16 @@ const AppTabNavigator = () => {
       <Tab.Screen
         name="Community"
         component={Community}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="Chat"
+        component={Chat}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen
+        name="MyPage"
+        component={MyPage}
         options={{ headerShown: false }}
       />
     </Tab.Navigator>
