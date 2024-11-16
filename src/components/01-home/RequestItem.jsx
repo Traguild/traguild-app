@@ -6,10 +6,11 @@ import { theme } from "resources/theme/common";
 
 const RequestItem = ({ item }) => {
   const Logo = require("resources/img/icon.png");
+  const movDetail = () => navGo.to("RequestDetail", { item });
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.listItem} activeOpacity={0.8}>
+      <TouchableOpacity style={styles.listItem} activeOpacity={0.5} onPress={movDetail}>
         <Image
           source={item.thumb_img ? item.thumb_img : Logo}
           style={styles.itemImg}

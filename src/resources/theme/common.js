@@ -6,6 +6,7 @@ export const theme = {
   "home-bg": "white",
   "home-border": "#D6C0B3",
 
+  "request-detail": "#ffe6a7",
   "request-proceed": "#dda15e",
   "request-done": "#a7c957",
 
