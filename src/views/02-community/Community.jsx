@@ -9,7 +9,7 @@ import PostItem from "components/02-community/PostItem";
 
 const dummyData = [];
 const Logo = require("resources/img/icon.png");
-for(let i = 1; i <= 50; i++){
+for(let i = 1; i <= 20; i++){
   if (i % 2 == 0) {
     dummyData.push({"post_idx": i, "user_idx": 1, "post_name": `테스트 ${i}`,  "post_detail": `내용 확인 ${i} Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt `, "created_time": Date.now(), thumb_img: Logo, "updated_time": Date.now(), "is_deleted": 0});
   } else {

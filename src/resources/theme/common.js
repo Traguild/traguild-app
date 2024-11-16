@@ -6,6 +6,9 @@ export const theme = {
   "home-bg": "white",
   "home-border": "#D6C0B3",
 
+  "request-proceed": "#dda15e",
+  "request-done": "#a7c957",
+
   "tab-active": "#AB886D",
   "tab-inactive": "#CFD7C7",
 }
