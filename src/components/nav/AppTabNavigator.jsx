@@ -15,47 +15,23 @@ import Chat from "views/03-chat/Chat";
 import MyPage from "views/04-myPage/MyPage";
 
 const HEIGHT = Dimensions.get("window").height;
-const iconSize = 24;
+const ICON_SIZE = 24;
 
 const AppTabNavigator = () => {
+  const getIcon = (tabName, focused, props) => (
+    <Ionicons
+      name={focused ? tabName : `${tabName}-outline`}
+      size={ICON_SIZE}
+      style={[props.style]}
+    />
+  );
   const icons = {
-    Home: (focused, props) => {
-      return (
-        <Ionicons
-          name={focused ? "home" : "home-outline"}
-          size={iconSize}
-          style={[props.style]}
-        />
-      );
-    },
-    Community: (focused, props) => {
-      return (
-        <Ionicons
-          name={focused ? "newspaper" : "newspaper-outline"}
-          size={iconSize}
-          style={[props.style]}
-        />
-      );
-    },
-    Chat: (focused, props) => {
-      return (
-        <Ionicons
-          name={focused ? "chatbubbles" : "chatbubbles-outline"}
-          size={iconSize}
-          style={[props.style]}
-        />
-      );
-    },
-    MyPage: (focused, props) => {
-      return (
-        <Ionicons
-          name={focused ? "person" : "person-outline"}
-          size={iconSize}
-          style={[props.style]}
-        />
-      );
-    },
+    Home: (focused, props) => getIcon("home", focused, props),
+    Community: (focused, props) => getIcon("people", focused, props),
+    Chat: (focused, props) => getIcon("chatbubbles", focused, props),
+    MyPage: (focused, props) => getIcon("person", focused, props),
   };
+  
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
       height: HEIGHT * 0.1,
