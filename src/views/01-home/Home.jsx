@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, FlatList } from 'react-native'
 import React from 'react'
 
 // IMPORT LAYOUTS
-import defaultLayout from "../../layouts/hoc/defaultLayout";
+import defaultLayout from "layouts/hoc/defaultLayout";
 
 // IMPORT COMPONENTS
-import RequestItem from "../../components/01-home/RequestItem";
+import RequestItem from "components/01-home/RequestItem";
 
 const dummyData = [];
 for(let i = 1; i <= 50; i++){

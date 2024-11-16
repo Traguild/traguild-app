@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm instal && expo start -c",
-    "tunnel": "npm instal && expo start -c --tunnel"
+    "start": "yarn install && npx expo start -c",
+    "tunnel": "yarn install && npx expo start -c --tunnel"
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.0",
@@ -12,11 +12,12 @@
     "@react-navigation/material-top-tabs": "^7.0.1",
     "@react-navigation/native": "^7.0.0",
     "@react-navigation/stack": "^7.0.0",
-    "expo": "~52.0.4",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "expo": "~52.0.7",
     "expo-status-bar": "~2.0.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-native": "0.76.1",
+    "react-native": "0.76.2",
     "react-native-gesture-handler": "~2.20.2",
     "react-native-pager-view": "6.4.1",
     "react-native-safe-area-context": "4.12.0",

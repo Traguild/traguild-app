@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
 // IMPORT LAYOUTS
-import defaultLayout from "../../layouts/hoc/defaultLayout";
+import defaultLayout from "layouts/hoc/defaultLayout";
 
 const Chat = () => {
   return (

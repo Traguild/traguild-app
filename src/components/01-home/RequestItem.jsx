@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
 // IMPORT RESOURCES
-import { theme } from "../../resources/theme/common";
+import { theme } from "resources/theme/common";
 
 const RequestItem = ({ item }) => {
-  const Logo = require("../../../assets/icon.png");
+  const Logo = require("resources/img/icon.png");
 
   return (
     <View style={styles.container}>

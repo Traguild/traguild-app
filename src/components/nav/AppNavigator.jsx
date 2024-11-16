@@ -3,9 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
-import SignIn from "../../views/auth/SignIn";
-import Home from "../../views/01-home/Home";
+import SignIn from "views/auth/SignIn";
 
+// IMPORT COMPONENTS
 import AppTabNavigator from "./AppTabNavigator";
 
 const Stack = createStackNavigator();

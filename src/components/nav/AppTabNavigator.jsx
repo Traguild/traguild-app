@@ -6,13 +6,13 @@ const Tab = createBottomTabNavigator();
 
 // IMPORT RESOURCES
 import { Ionicons } from "@expo/vector-icons";
-import { theme } from "../../resources/theme/common";
+import { theme } from "resources/theme/common";
 
 // IMPORT VIEWS
-import Home from "../../views/01-home/Home";
-import Community from "../../views/02-community/Community";
-import Chat from "../../views/03-chat/Chat";
-import MyPage from "../../views/04-myPage/MyPage";
+import Home from "views/01-home/Home";
+import Community from "views/02-community/Community";
+import Chat from "views/03-chat/Chat";
+import MyPage from "views/04-myPage/MyPage";
 
 const HEIGHT = Dimensions.get("window").height;
 const iconSize = 24;

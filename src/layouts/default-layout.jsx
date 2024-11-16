@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
 
 // IMPORT RESOURCES
-import { theme } from "../resources/theme/common";
+import { theme } from "resources/theme/common";
 
 const HEIGHT = Dimensions.get("window").height;
 

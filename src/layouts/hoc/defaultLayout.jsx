@@ -1,5 +1,5 @@
 import React from 'react'
-import Layout from "../default-layout";
+import Layout from "layouts/default-layout";
 
 const defaultLayout = (Component) => {
   return (props) => (
