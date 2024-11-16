@@ -9,6 +9,8 @@ export const theme = {
   "request-proceed": "#dda15e",
   "request-done": "#a7c957",
 
+  "btn-floating": "#AB886D",
+
   "tab-active": "#AB886D",
   "tab-inactive": "#CFD7C7",
 }

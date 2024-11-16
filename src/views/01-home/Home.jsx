@@ -1,5 +1,9 @@
-import { View, Text, StyleSheet, FlatList } from 'react-native'
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
 import React from 'react'
+
+// IMPORT RESOURCES
+import { theme } from "resources/theme/common";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 // IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
@@ -22,6 +26,11 @@ const Home = () => {
         keyExtractor={item => item.request_idx.toString()}
         showsVerticalScrollIndicator={false}
       />
+
+      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.85}>
+        <FontAwesome5 name="feather-alt" size={20} color="white" />
+        <Text style={styles.btnText}>글 쓰기</Text>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -31,6 +40,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: "center",
+  },
+
+  floatingButton: {
+    backgroundColor: theme['btn-floating'],
+
+    position: "absolute",
+    bottom: 25,
+    right: 25,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  btnText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+    marginLeft: 10,
   },
 });
 
