@@ -27,7 +27,7 @@ const AppTabNavigator = () => {
   );
   const icons = {
     Home: (focused, props) => getIcon("home", focused, props),
-    Community: (focused, props) => getIcon("people", focused, props),
+    Community: (focused, props) => getIcon("newspaper", focused, props),
     Chat: (focused, props) => getIcon("chatbubbles", focused, props),
     MyPage: (focused, props) => getIcon("person", focused, props),
   };
@@ -65,7 +65,7 @@ const AppTabNavigator = () => {
         component={Chat}
         options={{ headerShown: false }}
       /> */}
-      
+
       <Tab.Screen
         name="MyPage"
         component={MyPage}
