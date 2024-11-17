@@ -1,6 +1,9 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 
+// IMPORT RESOURCES
+import { defaultImg } from 'resources/img/defaultImg';
+
 // IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
 
@@ -9,12 +12,10 @@ import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 
 const MyPage = () => {
-  const Logo = require("resources/img/icon.png");
-
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
-        <Image source={Logo} style={styles.profilePic} />
+        <Image source={defaultImg.logo} style={styles.profilePic} />
         <View style={styles.profileTop}>
           <Text style={styles.profileName}>이름</Text>
           <MyManner />

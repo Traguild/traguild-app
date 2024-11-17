@@ -2,17 +2,17 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
 // IMPORT RESOURCES
+import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 
 const RequestItem = ({ item }) => {
-  const Logo = require("resources/img/icon.png");
   const movDetail = () => navGo.to("RequestDetail", { item });
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.listItem} activeOpacity={0.5} onPress={movDetail}>
         <Image
-          source={item.thumb_img ? item.thumb_img : Logo}
+          source={item.request_img ? item.request_img : defaultImg.logo}
           style={styles.itemImg}
         />
         <View style={styles.itemText}>

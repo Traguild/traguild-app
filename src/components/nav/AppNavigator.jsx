@@ -15,11 +15,7 @@ const AppNavigator = () => {
   const navigation = useNavigation();
 
   global.navGo = {
-    to: (screen, params) => {
-      console.log(screen, params);
-      
-      navigation.navigate(screen, params);
-    },
+    to: (screen, params) => navigation.navigate(screen, params),
     back: () => navigation.goBack(),
     re: (screen) => {
       navigation.dispatch(CommonActions.reset({

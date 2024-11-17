@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native'
 import React, { useLayoutEffect } from 'react'
 
 // IMPORT RESOURCES
+import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 
 const RequestDetail = ({ navigation, route }) => {
@@ -10,17 +11,20 @@ const RequestDetail = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
-      headerBackTitle: "",
-      title: item.request_title,
-      headerStyle: { backgroundColor: theme["tab-active"] },
-      headerTintColor: "white",
+      headerBackTitle: null,
+      title: null,
+      headerStyle: { backgroundColor: "transparent" },
+      headerTransparent: true,
+      // headerStyle: { backgroundColor: theme["tab-active"] },
+      headerTintColor: theme["default-btn"],
     });
   });
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Image srouce={item.request_img ? null : defaultImg.logo } />
       <Text>{ item.request_content }</Text>
-    </View>
+    </ScrollView>
   )
 }
 
