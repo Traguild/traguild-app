@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -21,25 +21,27 @@ const PostItem = ({ item }) => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     alignItems: "center",
     width: "100%",
+
+    paddingHorizontal: 10,
   },
 
   listItem: {
-    backgroundColor: theme['home-bg'],
-    borderColor: theme['home-border'],
+    backgroundColor: theme["home-bg"],
+    borderColor: theme["home-border"],
     borderTopWidth: 1,
 
     width: "100%",
     height: 80,
 
-    padding: 10,
+    paddingVertical: 13,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -47,7 +49,7 @@ const styles = StyleSheet.create({
   itemImg: {
     width: 60,
     height: 60,
-    
+
     borderRadius: 15,
   },
   itemText: {
@@ -59,8 +61,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
   },
-  itemPreContent: { 
-    fontSize: 14, 
+  itemPreContent: {
+    fontSize: 14,
     marginTop: 5,
   },
 });

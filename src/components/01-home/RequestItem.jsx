@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
@@ -10,7 +10,11 @@ const RequestItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.listItem} activeOpacity={0.5} onPress={movDetail}>
+      <TouchableOpacity
+        style={styles.listItem}
+        activeOpacity={0.5}
+        onPress={movDetail}
+      >
         <Image
           source={item.request_img ? item.request_img : defaultImg.logo}
           style={styles.itemImg}
@@ -39,7 +43,7 @@ const RequestItem = ({ item }) => {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -47,6 +51,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+
+    paddingHorizontal: 10,
   },
 
   listItem: {
@@ -55,8 +61,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
 
     width: "100%",
-    padding: 10,
     flexDirection: "row",
+    paddingVertical: 13,
   },
   itemImg: {
     width: 100,
@@ -96,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestItem
+export default RequestItem;

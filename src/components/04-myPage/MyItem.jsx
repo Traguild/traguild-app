@@ -1,5 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import React from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -13,15 +13,18 @@ const MyItem = ({ text }) => {
   };
 
   return (
-    <TouchableOpacity style={{ alignItems: "center" }} activeOpacity={0.3} >
-      <Ionicons name={icons[text]} size={34} color={theme["default-btn"]} style={{ marginBottom: 3 }} />
-      <Text>{ text }</Text>
+    <TouchableOpacity style={{ alignItems: "center" }} activeOpacity={0.3}>
+      <Ionicons
+        name={icons[text]}
+        size={34}
+        color={theme["default-btn"]}
+        style={{ marginBottom: 3 }}
+      />
+      <Text>{text}</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({});
 
-});
-
-export default MyItem
+export default MyItem;

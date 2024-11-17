@@ -3,28 +3,23 @@ import React, { useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { icons } from "resources/theme/icons";
 import { Entypo } from "react-native-vector-icons";
 
 const MyManner = () => {
-  const [manner, setManner] = useState("default");
+  const [manner, setManner] = useState("manner-default");
   const mannerText = {
-    "best": "당신이 최고에요!",
-    "default": "잘 하고 있어요!",
-    "normal": "조금만 더 노력해요!",
-    "bad": "더 노력해야겠어요!",
-  }
-  const emoji = {
-    "best": "emoji-flirt",
-    "default": "emoji-happy",
-    "normal": "emoji-neutral",
-    "bad": "emoji-sad",
-  }
+    "manner-best": "당신이 최고에요!",
+    "manner-default": "잘 하고 있어요!",
+    "manner-normal": "조금만 더 노력해요!",
+    "manner-bad": "더 노력해야겠어요!",
+  };
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <Entypo name={ emoji[manner] } size={20} color={theme[emoji[manner]]} />
-      <Text style={{ ...styles.profileManner, color: theme[emoji[manner]]}}>
-        { mannerText[manner] }
+      <Entypo name={icons[manner]} size={20} color={theme[icons[manner]]} />
+      <Text style={{ ...styles.profileManner, color: theme[icons[manner]] }}>
+        {mannerText[manner]}
       </Text>
     </View>
   );
