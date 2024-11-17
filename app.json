@@ -3,28 +3,38 @@
     "name": "capstone-app",
     "slug": "capstone-app",
     "version": "1.0.0",
-    "sdkVersion": "52.0.0",
-    "platforms": ["ios", "android", "web"],
-    "newArchEnabled": true, 
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "updates": {
-      "fallbackToCacheTimeout": 0
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#d2c1a0"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#d2c1a0"
+      },
+      "package": "com.arc.capstone"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "562d4eb9-62b1-4ac9-b158-8e9e1bbe6bc1"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/562d4eb9-62b1-4ac9-b158-8e9e1bbe6bc1"
     }
   }
 }
