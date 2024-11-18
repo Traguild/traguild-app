@@ -7,7 +7,7 @@ const getLayout = () => {
 
   return ({ insets }) => {
     const fullHeight =
-      HEIGHT + (Platform.OS === "android" ? insets.top + 3 : 0);
+      HEIGHT + (Platform.OS === "android" ? insets.top + insets.bottom : 0);
     const fullWidth = WIDTH;
 
     return {
