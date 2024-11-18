@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -7,6 +7,7 @@ const Tab = createBottomTabNavigator();
 // IMPORT RESOURCES
 import { Ionicons } from "@expo/vector-icons";
 import { theme } from "resources/theme/common";
+import { layout } from "resources/theme/layout";
 
 // IMPORT VIEWS
 import Home from "views/01-home/Home";
@@ -14,10 +15,11 @@ import Community from "views/02-community/Community";
 import Chat from "views/03-chat/Chat";
 import MyPage from "views/04-myPage/MyPage";
 
-const HEIGHT = Dimensions.get("window").height;
 const ICON_SIZE = 24;
 
 const AppTabNavigator = () => {
+  const HEIGHT = layout().height;
+
   const getIcon = (tabName, focused, props) => (
     <Ionicons
       name={focused ? tabName : `${tabName}-outline`}
@@ -34,7 +36,7 @@ const AppTabNavigator = () => {
 
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
-      height: HEIGHT * 0.08,
+      height: HEIGHT * 0.085,
       backgroundColor: theme["home-bg"],
     },
     tabBarActiveTintColor: theme["tab-active"],

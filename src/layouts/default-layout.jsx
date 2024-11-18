@@ -1,39 +1,34 @@
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, Dimensions, Platform } from "react-native";
+import React from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
-
-const HEIGHT = Dimensions.get("window").height;
+import { layout } from "resources/theme/layout";
 
 const Layout = ({ children }) => {
+  const HEIGHT = layout().height;
+
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={{ ...styles.header, height: HEIGHT * 0.1 }}>
         <Text>Header</Text>
-      </View> 
-      <View style={styles.body}>
-        { children }
-      </View> 
+      </View>
+      <View style={{ ...styles.body, height: HEIGHT * 0.815 }}>{children}</View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1, 
-      backgroundColor: theme["home-bg"],
-    },
-    header: {
-      height: HEIGHT * 0.15,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: theme["home-bg"],
-    },
-    body: {
-      height: HEIGHT * 0.75,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: theme["home-bg"],
+  },
+  header: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme["home-bg"],
+  },
+  body: {},
 });
-
 
 export default Layout;
