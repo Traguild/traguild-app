@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -18,6 +19,9 @@ const HEIGHT = Dimensions.get("window").height;
 const ICON_SIZE = 24;
 
 const AppTabNavigator = () => {
+  const insets = useSafeAreaInsets();
+  const fullHeight = HEIGHT + (Platform.OS === "android" ? insets.top + 3 : 0);
+
   const getIcon = (tabName, focused, props) => (
     <Ionicons
       name={focused ? tabName : `${tabName}-outline`}
@@ -31,10 +35,10 @@ const AppTabNavigator = () => {
     Chat: (focused, props) => getIcon("chatbubbles", focused, props),
     MyPage: (focused, props) => getIcon("person", focused, props),
   };
-  
+
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
-      height: HEIGHT * 0.1,
+      height: fullHeight * 0.085,
       backgroundColor: theme["home-bg"],
     },
     tabBarActiveTintColor: theme["tab-active"],
