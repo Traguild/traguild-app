@@ -5,7 +5,7 @@ import React from "react";
 import { theme } from "resources/theme/common";
 import { Ionicons } from "react-native-vector-icons";
 
-const MyItem = ({ text }) => {
+const MyItem = ({ text, onPress }) => {
   const icons = {
     "찜한 의뢰": "heart",
     "의뢰 내역": "receipt-outline",
@@ -13,7 +13,7 @@ const MyItem = ({ text }) => {
   };
 
   return (
-    <TouchableOpacity style={{ alignItems: "center" }} activeOpacity={0.3}>
+    <TouchableOpacity style={{ alignItems: "center" }} activeOpacity={0.3} onPress={onPress}>
       <Ionicons
         name={icons[text]}
         size={34}

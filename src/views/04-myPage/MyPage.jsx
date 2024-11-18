@@ -11,9 +11,18 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 
+const dummyCredit = 9999;
+
 const MyPage = () => {
   return (
     <View style={styles.container}>
+      <View style={styles.myCreditBox}>
+        <Text style={styles.myCredit}>My Credit : {dummyCredit} Credit</Text>
+        <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
+          <Text style={styles.chargeButtonText}>충전하기</Text>
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.profileBox}>
         <Image source={defaultImg.logo} style={styles.profilePic} />
         <View style={styles.profileTop}>
@@ -23,8 +32,19 @@ const MyPage = () => {
       </View>
 
       <View style={styles.requestBox}>
-        {["찜한 의뢰", "의뢰 내역", "프로필 수정"].map((text, idx) => (
-          <MyItem key={idx} text={text} />
+        {/* 각 버튼에 따라 다른 페이지로 이동 */}
+        {[
+          { text: "찜한 의뢰", screen: "Favorite" },  // 찜한 의뢰 화면으로 이동
+          { text: "의뢰 내역", screen: "QuestList" },   // 의뢰 내역 화면으로 이동
+          { text: "프로필 수정", screen: "ProfileEdit" } // 프로필 수정 화면으로 이동
+        ].map((item, idx) => (
+          <MyItem
+            key={idx}
+            text={item.text}
+            onPress={() => {
+              navGo.to(item.screen);
+            }}
+          />
         ))}
       </View>
     </View>
@@ -49,7 +69,7 @@ const styles = StyleSheet.create({
   },
   profilePic: {
     width: 100,
-    height: 100, 
+    height: 100,
     borderRadius: 46,
   },
   profileTop: {
@@ -61,6 +81,39 @@ const styles = StyleSheet.create({
 
     fontSize: 24,
     fontWeight: "700",
+  },
+
+  myCreditBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 15,
+    width: "100%",
+
+    borderColor: "lightgray",
+    borderTopWidth: 0.45,
+    borderBottomWidth: 0.45,
+  },
+
+  myCredit: {
+    marginLeft: 'auto',
+    marginBottom: 10,
+
+    fontSize: 24,
+    fontWeight: "700",
+  },
+
+  chargeButton: {
+    marginLeft: 'auto', // 버튼을 오른쪽으로 밀어냄
+    backgroundColor: '#4CAF50', // 버튼 배경색 (예시)
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+
+  chargeButtonText: {
+    color: 'white', // 텍스트 색상
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 
   requestBox: {

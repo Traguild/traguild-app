@@ -31,10 +31,10 @@ const AppTabNavigator = () => {
     Chat: (focused, props) => getIcon("chatbubbles", focused, props),
     MyPage: (focused, props) => getIcon("person", focused, props),
   };
-  
+
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
-      height: HEIGHT * 0.1,
+      height: HEIGHT * 0.08,
       backgroundColor: theme["home-bg"],
     },
     tabBarActiveTintColor: theme["tab-active"],
