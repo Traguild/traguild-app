@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -33,6 +33,12 @@ const AppTabNavigator = () => {
     Chat: (focused, props) => getIcon("chatbubbles", focused, props),
     MyPage: (focused, props) => getIcon("person", focused, props),
   };
+  const titles = {
+    Home: "홈",
+    Community: "커뮤니티",
+    Chat: "채팅",
+    MyPage: "내 정보",
+  };
 
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
@@ -47,6 +53,19 @@ const AppTabNavigator = () => {
         style: { ...(focused ? styles.focusedIcon : styles.defaultIcon) },
       });
     },
+    tabBarLabel: ({ focused, color }) => {
+      return (
+        <Text
+          style={{
+            color,
+            fontSize: 12,
+            fontWeight: focused ? "bold" : "normal",
+          }}
+        >
+          {titles[route.name]}
+        </Text>
+      );
+    },
   });
 
   return (
@@ -54,24 +73,26 @@ const AppTabNavigator = () => {
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{ headerShown: false }}
+        title="홈"
+        options={{ headerShown: false, title: "홈" }}
       />
       <Tab.Screen
         name="Community"
         component={Community}
-        options={{ headerShown: false }}
+        title="홈"
+        options={{ headerShown: false, title: "커뮤니티" }}
       />
 
       {/* <Tab.Screen
         name="Chat"
         component={Chat}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: "채팅" }}
       /> */}
 
       <Tab.Screen
         name="MyPage"
         component={MyPage}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, title: "내 정보" }}
       />
     </Tab.Navigator>
   );
