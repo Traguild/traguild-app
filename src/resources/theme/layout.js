@@ -6,8 +6,12 @@ const getLayout = () => {
   const WIDTH = Dimensions.get("window").width;
 
   return ({ insets }) => {
-    const fullHeight =
-      HEIGHT + (Platform.OS === "android" ? insets.top + insets.bottom : 0);
+    const errVal =
+      Dimensions.get("screen").height - HEIGHT < 45
+        ? insets.top + insets.bottom
+        : insets.bottom;
+
+    const fullHeight = HEIGHT + (Platform.OS === "android" ? errVal : 0);
     const fullWidth = WIDTH;
 
     return {
