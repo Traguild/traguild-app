@@ -29,7 +29,7 @@ for (let i = 1; i <= 20; i++) {
   });
 }
 
-const ProfileEdit = () => {
+const Favorite = () => {
 
   return (
     <View style={styles.container}>
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default defaultLayout(ProfileEdit);
+export default defaultLayout(Favorite);
