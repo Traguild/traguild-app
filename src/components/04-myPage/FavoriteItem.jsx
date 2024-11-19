@@ -1,11 +1,21 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
+import Ionicons from "react-native-vector-icons/Ionicons"; // Ionicons import 방식 수정
 
-const RequestItem = ({ item }) => {
+const FavoriteItem = ({ item }) => {
+  // 하트 상태 관리 (기본값은 true로 설정하여 채워진 하트 표시)
+  const [isFavorite, setIsFavorite] = useState(true);
+
+  // 하트 버튼 클릭 시 상태 변경 함수
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite); // 현재 상태 반전
+    //현재 상태에 따라 db 업데이트 해야되나?
+  };
+
   const movDetail = () => navGo.to("RequestDetail", { item });
 
   return (
@@ -20,7 +30,7 @@ const RequestItem = ({ item }) => {
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
             <Text style={styles.itemTitle}>{item.request_title}</Text>
 
             <View
@@ -34,6 +44,23 @@ const RequestItem = ({ item }) => {
             >
               <Text style={styles.itemState}>{item.request_state}</Text>
             </View>
+
+            <TouchableOpacity onPress={toggleFavorite}>
+              <Ionicons
+                name={isFavorite ? "heart" : "heart-outline"}
+                size={24} // 아이콘 크기
+                color={"red"} // 채워진 하트 색상
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.regionBox}>
+            <Text style={styles.region}>
+              {item.request_state_region}&nbsp;
+            </Text>
+            <Text style={styles.region}>
+              {item.request_city_region}&nbsp;
+            </Text>
           </View>
 
           <View style={styles.itemCostBox}>
@@ -51,15 +78,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-
     paddingHorizontal: 10,
   },
-
   listItem: {
     backgroundColor: theme["home-bg"],
     borderColor: theme["home-border"],
     borderTopWidth: 1,
-
     width: "100%",
     flexDirection: "row",
     paddingVertical: 13,
@@ -68,11 +92,11 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginRight: 10,
-
     borderRadius: 15,
   },
   itemText: {
     flexDirection: "column",
+    flex: 1, // 텍스트 영역이 충분히 늘어나도록 설정
   },
   itemTitle: {
     fontSize: 24,
@@ -82,7 +106,6 @@ const styles = StyleSheet.create({
     width: 60,
     borderRadius: 15,
     padding: 3,
-
     alignItems: "center",
     justifyContent: "center",
     marginLeft: 15,
@@ -92,8 +115,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
   },
+  regionBox: {
+    height: 30,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  region: {
+    height: 30,
+    fontSize: 13,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
   itemCostBox: {
-    height: 60,
+    height: 30,
     flexDirection: "row",
     alignItems: "flex-end",
   },
@@ -102,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestItem;
+export default FavoriteItem;

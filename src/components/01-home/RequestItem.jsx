@@ -38,7 +38,10 @@ const RequestItem = ({ item }) => {
           {/*지역 text*/}
           <View style={styles.regionBox}>
             <Text style={styles.region}>
-              {item.request_region}
+              {item.request_state_region}&nbsp;
+            </Text>
+            <Text style={styles.region}>
+              {item.request_city_region}&nbsp;
             </Text>
           </View>
 
