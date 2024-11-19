@@ -17,6 +17,7 @@ const SignIn = () => {
       <View style={styles.buttons}>
         <TouchableOpacity
           style={{ ...styles.btn, backgroundColor: "white", marginBottom: 10 }}
+          onPress={() => navGo.to("SignUp")}
         >
           <Text style={styles.btnText}>가입하기</Text>
         </TouchableOpacity>

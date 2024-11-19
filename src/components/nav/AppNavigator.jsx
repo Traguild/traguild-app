@@ -4,6 +4,7 @@ import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
 import SignIn from "views/auth/SignIn";
+import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
 import Favorite from "views/04-myPage/Favorite"; // 찜한 의뢰 화면
 import QuestList from "views/04-myPage/QuestList"; // 찜한 의뢰 화면
@@ -31,6 +32,7 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
       <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen name="AppTabNavigator" component={AppTabNavigator} />
 
       <Stack.Screen name="RequestDetail" component={RequestDetail} options={{ headerShown: true }} />
