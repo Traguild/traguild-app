@@ -15,6 +15,8 @@ import { theme } from "resources/theme/common";
 import { icons } from "resources/theme/icons";
 import { Entypo } from "react-native-vector-icons";
 import { layout } from "resources/theme/layout";
+
+// IMPORT COMPONENTS
 import ApplyRequest from "./ApplyRequest";
 
 const RequestDetail = ({ navigation, route }) => {
