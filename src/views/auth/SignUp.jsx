@@ -6,13 +6,13 @@ import { theme } from "../../resources/theme/common";
 
 const SignUp = () => {
     const [nickname, setNickname] = useState("");
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [user_name, setName] = useState("");
+    const [user_email, setEmail] = useState("");
+    const [user_pw, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const handleSignUp = () => {
-        if (password !== confirmPassword) {
+        if (user_pw !== confirmPassword) {
             alert("비밀번호가 일치하지 않습니다.");
             return;
         }
@@ -36,7 +36,7 @@ const SignUp = () => {
                 <Text style={styles.label}>이름 :</Text>
                 <TextInput
                     style={styles.input}
-                    value={name}
+                    value={user_name}
                     onChangeText={(text) => setName(text)}
                 />
             </View>
@@ -44,7 +44,7 @@ const SignUp = () => {
                 <Text style={styles.label}>이메일 :</Text>
                 <TextInput
                     style={styles.input}
-                    value={email}
+                    value={user_email}
                     onChangeText={(text) => setEmail(text)}
                     keyboardType="email-address"
                 />
@@ -53,7 +53,7 @@ const SignUp = () => {
                 <Text style={styles.label}>비밀번호 :</Text>
                 <TextInput
                     style={styles.input}
-                    value={password}
+                    value={user_pw}
                     onChangeText={(text) => setPassword(text)}
                     secureTextEntry
                 />

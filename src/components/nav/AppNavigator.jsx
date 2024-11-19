@@ -6,6 +6,7 @@ import { useNavigation, CommonActions } from "@react-navigation/native";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
+import WriteRequest from "views/01-home/WriteRequest";
 import Favorite from "views/04-myPage/Favorite"; // 찜한 의뢰 화면
 import QuestList from "views/04-myPage/QuestList"; // 찜한 의뢰 화면
 import ProfileEdit from "views/04-myPage/ProfileEdit"; // 찜한 의뢰 화면
@@ -36,6 +37,7 @@ const AppNavigator = () => {
       <Stack.Screen name="AppTabNavigator" component={AppTabNavigator} />
 
       <Stack.Screen name="RequestDetail" component={RequestDetail} options={{ headerShown: true }} />
+      <Stack.Screen name="WriteRequest" component={WriteRequest} />
 
       <Stack.Screen name="Favorite" component={Favorite} options={{ headerShown: true }} />
       <Stack.Screen name="QuestList" component={QuestList} options={{ headerShown: true }} />

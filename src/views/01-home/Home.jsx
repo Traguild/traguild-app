@@ -46,7 +46,11 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
       />
 
-      <TouchableOpacity style={styles.floatingButton} activeOpacity={0.85}>
+      <TouchableOpacity
+        style={styles.floatingButton}
+        activeOpacity={0.85}
+        onPress={() => navGo.to("WriteRequest")}
+      >
         <FontAwesome5 name="feather-alt" size={20} color="white" />
         <Text style={styles.btnText}>글 쓰기</Text>
       </TouchableOpacity>
