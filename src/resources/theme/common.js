@@ -10,6 +10,8 @@ export const theme = {
   "request-proceed": "#dda15e",
   "request-done": "#a7c957",
 
+  "apply-title": "#6C4E31",
+
   "btn-floating": "#AB886D",
 
   "emoji-flirt": "#f28482",
@@ -18,5 +20,5 @@ export const theme = {
   "emoji-sad": "#6c757d",
 
   "tab-active": "#AB886D",
-  "tab-inactive": "#CFD7C7",
-}
+  "tab-inactive": "#d2c1a0",
+};

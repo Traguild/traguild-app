@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
@@ -33,62 +34,62 @@ const RequestDetail = ({ navigation, route }) => {
   });
 
   return (
-    <View style={styles.container}>
-      <ApplyRequest
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />
-      <View style={{ height: layout().height * 0.9 }}>
-        <ScrollView>
-          <Image
-            source={defaultImg.logo}
-            style={{
-              ...styles.itemImg,
-              height: layout().width,
-              width: layout().width,
-            }}
-          />
+    <BottomSheetModalProvider>
+      <View style={styles.container}>
+        <ApplyRequest
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
+        <View style={{ height: layout().height * 0.9 }}>
+          <ScrollView>
+            <Image
+              source={defaultImg.logo}
+              style={{
+                ...styles.itemImg,
+                height: layout().width,
+                width: layout().width,
+              }}
+            />
 
-          <View style={styles.itemContents}>
-            <Text style={styles.itemTitle}>{item.request_content}</Text>
-            <Text style={styles.itemCost}>{item.request_cost} 원</Text>
-            <Text style={styles.itemDescription}>{item.request_content}</Text>
-          </View>
-        </ScrollView>
-      </View>
-
-      <View
-        style={{ ...styles.footerContainer, height: layout().height * 0.1 }}
-      >
-        <View style={styles.footerProfiles}>
-          <Image source={defaultImg.logo} style={styles.profileImg} />
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "600",
-            }}
-          >
-            홍길동
-          </Text>
-          <Entypo
-            name={icons["manner-default"]}
-            size={16}
-            color={theme[icons["manner-default"]]}
-            style={{ marginBottom: 25 }}
-          />
+            <View style={styles.itemContents}>
+              <Text style={styles.itemTitle}>{item.request_content}</Text>
+              <Text style={styles.itemCost}>{item.request_cost} 원</Text>
+              <Text style={styles.itemDescription}>{item.request_content}</Text>
+            </View>
+          </ScrollView>
         </View>
-        <TouchableOpacity
-          style={styles.applyBtn}
-          onPress={() => {
-            setModalVisible(true);
-          }}
+
+        <View
+          style={{ ...styles.footerContainer, height: layout().height * 0.1 }}
         >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
-            지원하기
-          </Text>
-        </TouchableOpacity>
+          <View style={styles.footerProfiles}>
+            <Image source={defaultImg.logo} style={styles.profileImg} />
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "600",
+              }}
+            >
+              홍길동
+            </Text>
+            <Entypo
+              name={icons["manner-default"]}
+              size={16}
+              color={theme[icons["manner-default"]]}
+              style={{ marginBottom: 25 }}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.applyBtn}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
+              지원하기
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </BottomSheetModalProvider>
   );
 };
 
