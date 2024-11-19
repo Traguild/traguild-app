@@ -18,7 +18,17 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import RequestItem from "components/01-home/RequestItem";
 
 const dummyData = [];
+
 for (let i = 1; i <= 20; i++) {
+  const formattedDate = new Date(Date.now()).toLocaleDateString(
+    'ko-KR',
+    {
+      year: '2-digit',
+      month: '2-digit',
+      day: '2-digit'
+    }
+  ).slice(0, -1).replace(/\./g, '-').trim();
+
   dummyData.push({
     request_idx: i,
     user_idx: 1,
@@ -29,8 +39,8 @@ for (let i = 1; i <= 20; i++) {
     request_cost: "200,000",
     request_state: i % 2 == 0 ? "완료" : "모집 중",
     transaction_state: "대기중",
-    created_time: Date.now(),
-    updated_time: Date.now(),
+    created_time: formattedDate,
+    updated_time: formattedDate,
     is_deleted: 0,
     applicant_idx: i + 1,
   });

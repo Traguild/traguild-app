@@ -4,7 +4,7 @@ import React, { useState } from "react";
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
-import Ionicons from "react-native-vector-icons/Ionicons"; // Ionicons import 방식 수정
+import { FontAwesome5, Ionicons } from "react-native-vector-icons";
 
 const FavoriteItem = ({ item }) => {
   // 하트 상태 관리 (기본값은 true로 설정하여 채워진 하트 표시)
@@ -46,20 +46,21 @@ const FavoriteItem = ({ item }) => {
             </View>
 
             <TouchableOpacity onPress={toggleFavorite}>
-              <Ionicons
-                name={isFavorite ? "heart" : "heart-outline"}
-                size={24} // 아이콘 크기
-                color={"red"} // 채워진 하트 색상
+              <Ionicons name={isFavorite ? "heart" : "heart-outline"} size={24} color={"red"}
               />
             </TouchableOpacity>
           </View>
 
           <View style={styles.regionBox}>
+            <FontAwesome5 style={styles.region} name="map-marker-alt" size={24} color="black" />
             <Text style={styles.region}>
-              {item.request_state_region}&nbsp;
+              &nbsp;{item.request_state_region}&nbsp;
             </Text>
             <Text style={styles.region}>
               {item.request_city_region}&nbsp;
+            </Text>
+            <Text style={styles.region}>
+              {item.created_time}
             </Text>
           </View>
 

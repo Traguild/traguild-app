@@ -11,12 +11,15 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 
-const dummyLogin = [
-  {
-    user_name: "이름",
-    request_region: "경상남도 창원",
-  }
-];
+const dummyLogin = {
+  "user_id": "gdhong",
+  "user_pw": "mypassword",
+  "user_name": "홍길동",
+  "user_nick": "RBRoad",
+  "user_email": "gdhong@gmail.com",
+  "user_birth": "1900-01-01",
+  "user_region": "김해시"
+};
 
 const dummyCredit = 9999;
 
@@ -33,7 +36,7 @@ const MyPage = () => {
       <View style={styles.profileBox}>
         <Image source={defaultImg.logo} style={styles.profilePic} />
         <View style={styles.profileTop}>
-          <Text style={styles.profileName}>이름</Text>
+          <Text style={styles.profileName}>{dummyLogin.user_nick}</Text>
           <MyManner />
         </View>
       </View>

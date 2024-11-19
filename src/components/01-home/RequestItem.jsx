@@ -4,6 +4,7 @@ import React from "react";
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
+import { FontAwesome5 } from "react-native-vector-icons";
 
 const RequestItem = ({ item }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
@@ -37,11 +38,15 @@ const RequestItem = ({ item }) => {
           </View>
           {/*지역 text*/}
           <View style={styles.regionBox}>
+            <FontAwesome5 style={styles.region} name="map-marker-alt" size={24} color="black" />
             <Text style={styles.region}>
-              {item.request_state_region}&nbsp;
+              &nbsp;{item.request_state_region}&nbsp;
             </Text>
             <Text style={styles.region}>
               {item.request_city_region}&nbsp;
+            </Text>
+            <Text style={styles.region}>
+              {item.created_time}
             </Text>
           </View>
 

@@ -1,69 +1,136 @@
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState } from 'react';
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
-import { FontAwesome5 } from "@expo/vector-icons";
 
-// IMPORT LAYOUTS
-import defaultLayout from "layouts/hoc/defaultLayout";
-
-// IMPORT COMPONENTS
-import RequestItem from "components/01-home/RequestItem";
-
-const dummyData = [];
-for (let i = 1; i <= 20; i++) {
-  dummyData.push({ "request_idx": i, "user_idx": 1, "request_region": "창원", "request_title": `테스트 ${i}`, "request_content": `테스트 ${i} 내용`, "request_cost": "200,000", "request_state": (i % 2 == 0 ? "완료" : "모집 중"), "transaction_state": "대기중", "created_time": Date.now(), "updated_time": Date.now(), "is_deleted": 0, "applicant_idx": (i + 1) });
-}
+const dummyLogin = {
+  "user_id": "gdhong",
+  "user_pw": "mypassword",
+  "user_name": "홍길동",
+  "user_nick": "RBRoad",
+  "user_email": "gdhong@gmail.com",
+  "user_birth": "1900-01-01",
+  "user_region": "김해시"
+};
 
 const ProfileEdit = () => {
+  // 각 필드에 대한 상태 관리
+  const [region, setRegion] = useState(dummyLogin.user_region);
+  const [nick, setNick] = useState(dummyLogin.user_nick);
+  const [email, setEmail] = useState(dummyLogin.user_email);
+  const [password, setPassword] = useState(dummyLogin.user_pw);
+
+  const handlePostRequest = () => {
+    //업데이트 로직 필요
+    Alert.alert(
+      "프로필 업데이트",
+      "프로필 정보가 업데이트되었습니다!",
+      [{ text: "확인", onPress: () => navGo.back() }], { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
-      <FlatList
-        style={{ width: "100%" }}
-        data={dummyData}
-        renderItem={({ item }) => <RequestItem item={item} />}
-        keyExtractor={item => item.request_idx.toString()}
-        showsVerticalScrollIndicator={false}
-      />
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>이름</Text>
+        <TextInput style={styles.readOnlyText} editable={false}>{dummyLogin.user_name}</TextInput>
+
+        <Text style={styles.label}>지역</Text>
+        {/* 드롭다운으로 변경해야되는데 직접 만들던지 라이브러리 추가하던지 해야됨 */}
+        <TextInput
+          style={styles.input}
+          value={region}
+          onChangeText={setRegion}
+          placeholder="지역을 입력하세요"
+        />
+
+        <Text style={styles.label}>닉네임</Text>
+        <TextInput
+          style={styles.input}
+          value={nick}
+          onChangeText={setNick}
+          placeholder="닉네임을 입력하세요"
+        />
+
+        <Text style={styles.label}>이메일</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="이메일을 입력하세요"
+          keyboardType="email-address"
+        />
+
+        <Text style={styles.label}>비밀번호 수정</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setPassword}
+          placeholder="비밀번호를 입력하세요"
+          secureTextEntry
+        />
+      </View>
+
+      {/* 하단 버튼 */}
+      <TouchableOpacity style={styles.postButton} onPress={handlePostRequest}>
+        <Text style={styles.postButtonText}>프로필 업데이트</Text>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: "center",
+    backgroundColor: theme["default-bg"],
+    padding: 20,
+    justifyContent: 'space-between', // 상단과 하단에 공간 분배
   },
-
-  floatingButton: {
-    backgroundColor: theme['btn-floating'],
-
-    position: "absolute",
-    bottom: 25,
-    right: 25,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 3,
-      height: 5,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
+  formContainer: {
+    flex: 1,
+    justifyContent: 'center', // 폼이 화면 중앙에 위치하도록 설정
   },
-  btnText: {
-    color: "white",
+  label: {
     fontSize: 16,
-    fontWeight: "500",
-    marginLeft: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: "#333",
+  },
+  readOnlyText: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 15,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: "#f0f0f0", // 읽기 전용 텍스트 배경색
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff", // 입력 필드 배경색
+  },
+
+  postButton: {
+    // backgroundColor: theme['btn-primary'], // 테마에서 기본 버튼 색상
+    backgroundColor: 'green',
+    paddingVertical: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+
+  postButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
-export default defaultLayout(ProfileEdit);
+export default ProfileEdit;
