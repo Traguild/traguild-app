@@ -5,7 +5,10 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -47,6 +50,12 @@ for (let i = 1; i <= 20; i++) {
 }
 
 const Home = () => {
+  useEffect(() => {
+    API.POST({ url: "/requestInfo/all" }).then((res) => {
+      console.log(res);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <FlatList
