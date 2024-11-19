@@ -4,11 +4,11 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 const getLayout = () => {
   const HEIGHT = Dimensions.get("window").height;
   const WIDTH = Dimensions.get("window").width;
-  console.log(Dimensions.get("screen").height - HEIGHT);
+
   return ({ insets }) => {
     const errVal =
       Dimensions.get("screen").height - HEIGHT < 45 ||
-        Dimensions.get("screen").height - HEIGHT > 70
+      Dimensions.get("screen").height - HEIGHT > 70
         ? insets.top + insets.bottom
         : insets.bottom;
 
