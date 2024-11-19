@@ -7,9 +7,9 @@ import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
-import Favorite from "views/04-myPage/Favorite"; // 찜한 의뢰 화면
-import QuestList from "views/04-myPage/QuestList"; // 찜한 의뢰 화면
-import ProfileEdit from "views/04-myPage/ProfileEdit"; // 찜한 의뢰 화면
+import Favorite from "views/04-myPage/Favorite";
+import QuestList from "views/04-myPage/QuestList";
+import ProfileEdit from "views/04-myPage/ProfileEdit";
 
 // IMPORT COMPONENTS
 import AppTabNavigator from "./AppTabNavigator";

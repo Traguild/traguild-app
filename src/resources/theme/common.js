@@ -23,4 +23,6 @@ export const theme = {
 
   "tab-active": "#AB886D",
   "tab-inactive": "#d2c1a0",
+
+  "request-reject": "#f05650",
 };
