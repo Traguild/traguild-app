@@ -78,8 +78,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme["apply-input"],
     marginTop: 15,
     padding: 10,
-    borderWidth: 2,
-    borderRadius: 10,
+    // borderWidth: 2,
+    borderRadius: 15,
     borderColor: theme["default-btn"],
   },
   inputText: {
