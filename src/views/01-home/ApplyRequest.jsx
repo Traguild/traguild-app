@@ -1,16 +1,26 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, {
   useCallback,
-  useEffect,
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 
-// IMPORT RESOURCES;
+// IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 import { Feather } from "@expo/vector-icons";
+
+// IMPORT COMPONENTS
+import ApplyForm from "components/01-home/ApplyForm";
 
 const ApplyRequest = ({ modalVisible, setModalVisible }) => {
   const bottomSheetRef = useRef(null);
@@ -22,6 +32,10 @@ const ApplyRequest = ({ modalVisible, setModalVisible }) => {
 
   const handleClose = useCallback(() => {
     bottomSheetRef.current?.dismiss();
+  }, []);
+
+  const handleInputFocus = useCallback(() => {
+    bottomSheetRef.current?.snapToIndex(2);
   }, []);
 
   useLayoutEffect(() => {
@@ -51,16 +65,27 @@ const ApplyRequest = ({ modalVisible, setModalVisible }) => {
         borderWidth: 5,
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.modalContainer}>
-          <View style={styles.modalTop}>
-            <TouchableOpacity onPress={() => handleClose()}>
-              <Feather name="x" size={24} color={theme["default-btn"]} />
-            </TouchableOpacity>
-            <Text style={styles.applyTitle}>지원하기</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalTop}>
+              <TouchableOpacity onPress={() => handleClose()}>
+                <Feather name="x" size={24} color={theme["default-btn"]} />
+              </TouchableOpacity>
+              <Text style={styles.applyTitle}>지원하기</Text>
+            </View>
+            <ApplyForm onFocus={handleInputFocus} />
+            <View style={styles.modalBottom}>
+              <TouchableOpacity
+                style={{ ...styles.btn, backgroundColor: theme["default-btn"] }}
+                onPress={null}
+              >
+                <Text style={{ ...styles.btnText, color: "white" }}>제출</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </BottomSheetModal>
   );
 };
@@ -77,6 +102,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: theme["default-bg"],
+    paddingHorizontal: 15,
   },
   modalTop: {
     height: 40,
@@ -84,7 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
 
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     borderBottomWidth: 1,
     borderColor: theme["default-border"],
   },
@@ -92,5 +118,22 @@ const styles = StyleSheet.create({
     color: theme["apply-title"],
     fontSize: 24,
     fontWeight: "500",
+  },
+  modalBottom: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+  },
+  btn: {
+    marginTop: 30,
+    borderRadius: 25,
+    width: "100%",
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btnText: {
+    fontSize: 20,
+    fontWeight: "600",
   },
 });

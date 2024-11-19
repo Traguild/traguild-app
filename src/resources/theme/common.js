@@ -11,6 +11,8 @@ export const theme = {
   "request-done": "#a7c957",
 
   "apply-title": "#6C4E31",
+  "apply-text": "#6C4E31",
+  "apply-input": "#fefae0",
 
   "btn-floating": "#AB886D",
 
