@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
@@ -14,9 +14,11 @@ import { theme } from "resources/theme/common";
 import { icons } from "resources/theme/icons";
 import { Entypo } from "react-native-vector-icons";
 import { layout } from "resources/theme/layout";
+import ApplyRequest from "./ApplyRequest";
 
 const RequestDetail = ({ navigation, route }) => {
   const { item } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -32,6 +34,10 @@ const RequestDetail = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <ApplyRequest
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <View style={{ height: layout().height * 0.9 }}>
         <ScrollView>
           <Image
@@ -72,12 +78,9 @@ const RequestDetail = ({ navigation, route }) => {
           />
         </View>
         <TouchableOpacity
-          style={{
-            backgroundColor: theme["default-btn"],
-            paddingVertical: 15,
-            paddingHorizontal: 25,
-            borderRadius: 15,
-            marginBottom: 15,
+          style={styles.applyBtn}
+          onPress={() => {
+            setModalVisible(true);
           }}
         >
           <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
@@ -139,6 +142,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     marginRight: 12,
+  },
+  applyBtn: {
+    backgroundColor: theme["default-btn"],
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 25,
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
