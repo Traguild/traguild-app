@@ -3,7 +3,6 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  Dimensions,
   View,
   TouchableOpacity,
 } from "react-native";
@@ -14,9 +13,7 @@ import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { icons } from "resources/theme/icons";
 import { Entypo } from "react-native-vector-icons";
-
-const WIDTH = Dimensions.get("window").width;
-const HEIGHT = Dimensions.get("window").height;
+import { layout } from "resources/theme/layout";
 
 const RequestDetail = ({ navigation, route }) => {
   const { item } = route.params;
@@ -35,9 +32,16 @@ const RequestDetail = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.bodyContainer}>
+      <View style={{ height: layout().height * 0.9 }}>
         <ScrollView>
-          <Image source={defaultImg.logo} style={styles.itemImg} />
+          <Image
+            source={defaultImg.logo}
+            style={{
+              ...styles.itemImg,
+              height: layout().width,
+              width: layout().width,
+            }}
+          />
 
           <View style={styles.itemContents}>
             <Text style={styles.itemTitle}>{item.request_content}</Text>
@@ -47,7 +51,9 @@ const RequestDetail = ({ navigation, route }) => {
         </ScrollView>
       </View>
 
-      <View style={styles.footerContainer}>
+      <View
+        style={{ ...styles.footerContainer, height: layout().height * 0.1 }}
+      >
         <View style={styles.footerProfiles}>
           <Image source={defaultImg.logo} style={styles.profileImg} />
           <Text
@@ -89,13 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 
-  bodyContainer: {
-    height: HEIGHT * 0.9,
-  },
   itemImg: {
-    width: WIDTH,
-    height: WIDTH,
-
     marginBottom: 20,
   },
   itemContents: {
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   },
 
   footerContainer: {
-    height: HEIGHT * 0.1,
     borderTopWidth: 0.45,
     borderColor: theme["default-border"],
 

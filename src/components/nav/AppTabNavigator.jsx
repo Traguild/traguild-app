@@ -36,7 +36,7 @@ const AppTabNavigator = () => {
 
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
-      height: HEIGHT * 0.085,
+      height: HEIGHT * 0.08,
       backgroundColor: theme["home-bg"],
     },
     tabBarActiveTintColor: theme["tab-active"],

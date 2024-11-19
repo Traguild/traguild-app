@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
       <View style={{ ...styles.header, height: HEIGHT * 0.1 }}>
         <Text>Header</Text>
       </View>
-      <View style={{ ...styles.body, height: HEIGHT * 0.815 }}>{children}</View>
+      <View style={{ ...styles.body, height: HEIGHT * 0.82 }}>{children}</View>
     </View>
   );
 };
