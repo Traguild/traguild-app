@@ -16,7 +16,7 @@ for (let i = 1; i <= 20; i++) {
   dummyData.push({ "request_idx": i, "user_idx": 1, "request_region": "창원", "request_title": `테스트 ${i}`, "request_content": `테스트 ${i} 내용`, "request_cost": "200,000", "request_state": (i % 2 == 0 ? "완료" : "모집 중"), "transaction_state": "대기중", "created_time": Date.now(), "updated_time": Date.now(), "is_deleted": 0, "applicant_idx": (i + 1) });
 }
 
-const Favorite = () => {
+const ProfileEdit = () => {
   return (
     <View style={styles.container}>
       <FlatList
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default defaultLayout(Favorite);
+export default defaultLayout(ProfileEdit);

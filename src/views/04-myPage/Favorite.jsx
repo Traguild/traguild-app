@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -9,7 +9,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import defaultLayout from "layouts/hoc/defaultLayout";
 
 // IMPORT COMPONENTS
-import RequestItem from "components/01-home/RequestItem";
+import FavoriteItem from "components/04-myPage/FavoriteItem";
 
 const dummyData = [];
 for (let i = 1; i <= 20; i++) {
@@ -29,13 +29,14 @@ for (let i = 1; i <= 20; i++) {
   });
 }
 
-const ProfileEdit = () => {
+const Favorite = () => {
+
   return (
     <View style={styles.container}>
       <FlatList
-        style={{ width: "100%" }}
+        style={{ width: "100%", height: "100%" }}
         data={dummyData}
-        renderItem={({ item }) => <RequestItem item={item} />}
+        renderItem={({ item }) => <FavoriteItem item={item} />}
         keyExtractor={item => item.request_idx.toString()}
         showsVerticalScrollIndicator={false}
       />
@@ -79,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default defaultLayout(ProfileEdit);
+export default defaultLayout(Favorite);
