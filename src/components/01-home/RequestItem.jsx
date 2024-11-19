@@ -35,6 +35,12 @@ const RequestItem = ({ item }) => {
               <Text style={styles.itemState}>{item.request_state}</Text>
             </View>
           </View>
+          {/*지역 text*/}
+          <View style={styles.regionBox}>
+            <Text style={styles.region}>
+              {item.request_region}
+            </Text>
+          </View>
 
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>{item.request_cost} 원</Text>
@@ -92,8 +98,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "white",
   },
+  regionBox: {
+    height: 30,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
+  region: {
+    height: 30,
+    fontSize: 13,
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
   itemCostBox: {
-    height: 60,
+    height: 30,
     flexDirection: "row",
     alignItems: "flex-end",
   },

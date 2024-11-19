@@ -11,6 +11,13 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 
+const dummyLogin = [
+  {
+    user_name: "이름",
+    request_region: "경상남도 창원",
+  }
+];
+
 const dummyCredit = 9999;
 
 const MyPage = () => {
