@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -16,11 +16,23 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 
-const WriteRequest = () => {
+const WriteRequest = ({ navigation }) => {
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
   const [request_cost, setCost] = useState("");
   const [image, setImage] = useState(null);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: null,
+      headerStyle: { backgroundColor: "transparent" },
+      headerTransparent: true,
+      // headerStyle: { backgroundColor: theme["tab-active"] },
+      headerTintColor: theme["default-btn"],
+    });
+  });
 
   const handleImagePicker = () => {
     // 이미지 선택 로직 추가 예정
