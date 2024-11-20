@@ -6,6 +6,7 @@ import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getTitle, getCost } from "resources/js/common";
+import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
@@ -22,17 +23,7 @@ const RequestItem = ({ item }) => {
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
-          <View
-            style={{
-              ...styles.itemStateBox,
-              backgroundColor:
-                item.request_state === "완료"
-                  ? theme["request-done"]
-                  : theme["request-proceed"],
-            }}
-          >
-            <Text style={styles.itemState}>{item.request_state}</Text>
-          </View>
+          <RequestState text={item.request_state} />
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.itemTitle}>
               {getTitle(item.request_title, 18)}
@@ -95,19 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
   },
-  itemStateBox: {
-    width: 60,
-    borderRadius: 15,
-    padding: 3,
 
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  itemState: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "white",
-  },
   regionBox: {
     height: 30,
     flexDirection: "row",

@@ -18,7 +18,8 @@ import { layout } from "resources/theme/layout";
 import { getCost } from "resources/js/common";
 
 // IMPORT COMPONENTS
-import ApplyRequest from "./ApplyRequest";
+import ApplyRequest from "views/01-home/ApplyRequest";
+import RequestState from "components/01-home/RequestState";
 
 const RequestDetail = ({ navigation, route }) => {
   const { item } = route.params;
@@ -55,6 +56,7 @@ const RequestDetail = ({ navigation, route }) => {
             />
 
             <View style={styles.itemContents}>
+              <RequestState text={item.request_state} />
               <Text style={styles.itemTitle}>{item.request_title}</Text>
               <Text style={styles.itemCost}>
                 {getCost(item.request_cost)} 원
