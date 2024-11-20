@@ -4,6 +4,11 @@ import React, { useMemo, useState } from "react";
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 
+// IMPORT COMPONENTS
+import Label from "components/common/Label";
+import Input from "components/common/Input";
+import TextField from "components/common/TextField";
+
 const ApplyForm = ({ onFocus }) => {
   const applyTitle = useMemo(() => ["이름", "지역", "이메일", "소개"], []);
   const applyContent = {
@@ -12,36 +17,46 @@ const ApplyForm = ({ onFocus }) => {
     user_email: "gdhong1119@gmail.com",
   };
   const [applyIntro, setApplyIntro] = useState("");
-  const onChangeText = (text) => setApplyIntro(text);
 
   return (
     <View style={styles.modalContent}>
-      <View style={styles.menuColumn}>
+      {/* <View style={styles.menuColumn}>
         {applyTitle.map((title, idx) => (
-          <View style={styles.menuName} key={idx}>
-            <Text style={styles.applyMenu}>{title}</Text>
-          </View>
+          <Label text={title} key={idx} />
         ))}
-      </View>
+      </View> */}
 
       <View style={styles.inputColumn}>
-        <View style={styles.applyInput}>
-          <Text style={styles.inputText}>{applyContent.user_name}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Label style={{ width: "20%" }} text={"이름"} />
+          <Input
+            style={{ marginTop: 10, width: "80%" }}
+            text={applyContent.user_name}
+            readonly={true}
+          />
         </View>
-        <View style={styles.applyInput}>
-          <Text style={styles.inputText}>{applyContent.user_location}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Label style={{ width: "20%" }} text={"지역"} />
+          <Input
+            style={{ marginTop: 10, width: "80%" }}
+            text={applyContent.user_location}
+            readonly={true}
+          />
         </View>
-        <View style={styles.applyInput}>
-          <Text style={styles.inputText}>{applyContent.user_email}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Label style={{ width: "20%" }} text={"이메일"} />
+          <Input
+            style={{ marginTop: 10, width: "80%" }}
+            text={applyContent.user_email}
+            readonly={true}
+          />
         </View>
-        <View style={styles.applyInput}>
-          <TextInput
-            style={{ height: 150 }}
-            textAlignVertical="top"
-            multiline
-            maxLength={200}
-            onChangeText={onChangeText}
+        <View style={{ flexDirection: "row" }}>
+          <Label style={{ width: "20%" }} text={"소개"} />
+          <TextField
+            style={{ marginTop: 10, width: "80%" }}
             value={applyIntro}
+            onChangeText={setApplyIntro}
             onFocus={onFocus}
           />
         </View>
@@ -54,37 +69,16 @@ export default ApplyForm;
 
 const styles = StyleSheet.create({
   modalContent: {
-    flex: 1,
+    height: 380,
     flexDirection: "row",
     paddingHorizontal: 10,
   },
-  menuName: {
-    marginTop: 15,
-    padding: 10,
-  },
+
   menuColumn: {
     flexDirection: "column",
     flex: 1,
     alignItems: "center",
   },
-  applyMenu: {
-    color: theme["apply-text"],
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  inputColumn: { flexDirection: "column", flex: 3, marginLeft: 30 },
-  applyInput: {
-    width: "100%",
-    backgroundColor: theme["apply-input"],
-    marginTop: 15,
-    padding: 10,
-    // borderWidth: 2,
-    borderRadius: 15,
-    borderColor: theme["default-btn"],
-  },
-  inputText: {
-    color: theme["apply-text"],
-    marginHorizontal: 5,
-    fontSize: 14,
-  },
+
+  inputColumn: { flexDirection: "column", flex: 1, marginLeft: 10 },
 });

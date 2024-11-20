@@ -1,8 +1,11 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 
 /* IMPORT RESOURCES */
 import { theme } from "../../resources/theme/common";
+
+// IMPORT COMPONENTS
+import Button from "components/common/Button";
 
 const SignIn = () => {
   const Logo = require("../../../assets/splash-icon.png");
@@ -15,20 +18,14 @@ const SignIn = () => {
       </View>
 
       <View style={styles.buttons}>
-        <TouchableOpacity
-          style={{ ...styles.btn, backgroundColor: "white", marginBottom: 10 }}
-          onPress={() => navGo.to("SignUp")}
-        >
-          <Text style={styles.btnText}>가입하기</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ ...styles.btn, backgroundColor: theme["default-btn"] }}
-          onPress={() => {
-            navGo.re("AppTabNavigator");
-          }}
-        >
-          <Text style={{ ...styles.btnText, color: "white" }}>로그인</Text>
-        </TouchableOpacity>
+        <Button
+          text="가입하기"
+          bgColor="white"
+          fontColor="black"
+          style={{ marginBottom: 10 }}
+          onPress={() => navGo.re("SignUp")}
+        />
+        <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} />
       </View>
     </View>
   );
@@ -65,17 +62,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
     padding: 30,
-  },
-  btn: {
-    borderRadius: 25,
-    width: "100%",
-    padding: 15,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  btnText: {
-    fontSize: 20,
-    fontWeight: "600",
   },
 });
 
