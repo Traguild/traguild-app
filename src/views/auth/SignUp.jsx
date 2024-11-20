@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
@@ -6,6 +6,8 @@ import { theme } from "../../resources/theme/common";
 
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
+import Label from "components/common/Label";
+import Input from "components/common/Input";
 
 const SignUp = ({ navigation }) => {
   const [nickname, setNickname] = useState("");
@@ -36,27 +38,27 @@ const SignUp = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>회원가입</Text>
+      <Label style={styles.title}>회원가입</Label>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>닉네임 :</Text>
-        <TextInput
+        <Label style={styles.label}>닉네임 :</Label>
+        <Input
           style={styles.input}
           value={nickname}
           onChangeText={(text) => setNickname(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>이름 :</Text>
-        <TextInput
+        <Label style={styles.label}>이름 :</Label>
+        <Input
           style={styles.input}
           value={user_name}
           onChangeText={(text) => setName(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>이메일 :</Text>
-        <TextInput
+        <Label style={styles.label}>이메일 :</Label>
+        <Input
           style={styles.input}
           value={user_email}
           onChangeText={(text) => setEmail(text)}
@@ -64,8 +66,8 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>비밀번호 :</Text>
-        <TextInput
+        <Label style={styles.label}>비밀번호 :</Label>
+        <Input
           style={styles.input}
           value={user_pw}
           onChangeText={(text) => setPassword(text)}
@@ -73,8 +75,8 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>비밀번호 확인 :</Text>
-        <TextInput
+        <Label style={styles.label}>비밀번호 확인 :</Label>
+        <Input
           style={styles.input}
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
