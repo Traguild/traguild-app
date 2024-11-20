@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -20,17 +20,18 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 // IMPORT COMPONENTS
 import RequestItem from "components/01-home/RequestItem";
 
+// @Deprecated - Dummy Data
 const dummyData = [];
-
 for (let i = 1; i <= 20; i++) {
-  const formattedDate = new Date(Date.now()).toLocaleDateString(
-    'ko-KR',
-    {
-      year: '2-digit',
-      month: '2-digit',
-      day: '2-digit'
-    }
-  ).slice(0, -1).replace(/\./g, '-').trim();
+  const formattedDate = new Date(Date.now())
+    .toLocaleDateString("ko-KR", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    })
+    .slice(0, -1)
+    .replace(/\./g, "-")
+    .trim();
 
   dummyData.push({
     request_idx: i,
@@ -50,9 +51,10 @@ for (let i = 1; i <= 20; i++) {
 }
 
 const Home = () => {
+  const [requestData, setRequestData] = useState([]);
   useEffect(() => {
     API.POST({ url: "/requestInfo/all" }).then((res) => {
-      console.log(res);
+      setRequestData((prev) => [...prev, ...res]);
     });
   }, []);
 
@@ -60,7 +62,7 @@ const Home = () => {
     <View style={styles.container}>
       <FlatList
         style={{ width: "100%" }}
-        data={dummyData}
+        data={requestData}
         renderItem={({ item }) => <RequestItem item={item} />}
         keyExtractor={(item) => item.request_idx.toString()}
         showsVerticalScrollIndicator={false}

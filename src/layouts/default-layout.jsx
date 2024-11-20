@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
   return (
     <View style={styles.container}>
       <View style={{ ...styles.header, height: HEIGHT * 0.1 }}>
-        <Text>Header</Text>
+        <Text />
       </View>
       <View style={{ ...styles.body, height: HEIGHT * 0.82 }}>{children}</View>
     </View>

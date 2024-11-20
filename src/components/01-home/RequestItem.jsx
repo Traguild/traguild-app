@@ -5,6 +5,7 @@ import React from "react";
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "react-native-vector-icons";
+import { getTitle, getCost } from "resources/js/common";
 
 const RequestItem = ({ item }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
@@ -21,37 +22,39 @@ const RequestItem = ({ item }) => {
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
+          <View
+            style={{
+              ...styles.itemStateBox,
+              backgroundColor:
+                item.request_state === "완료"
+                  ? theme["request-done"]
+                  : theme["request-proceed"],
+            }}
+          >
+            <Text style={styles.itemState}>{item.request_state}</Text>
+          </View>
           <View style={{ flexDirection: "row" }}>
-            <Text style={styles.itemTitle}>{item.request_title}</Text>
-
-            <View
-              style={{
-                ...styles.itemStateBox,
-                backgroundColor:
-                  item.request_state === "완료"
-                    ? theme["request-done"]
-                    : theme["request-proceed"],
-              }}
-            >
-              <Text style={styles.itemState}>{item.request_state}</Text>
-            </View>
+            <Text style={styles.itemTitle}>
+              {getTitle(item.request_title, 18)}
+            </Text>
           </View>
           {/*지역 text*/}
           <View style={styles.regionBox}>
-            <FontAwesome5 style={styles.region} name="map-marker-alt" size={24} color="black" />
+            <FontAwesome5
+              style={styles.region}
+              name="map-marker-alt"
+              size={24}
+              color="black"
+            />
             <Text style={styles.region}>
               &nbsp;{item.request_state_region}&nbsp;
             </Text>
-            <Text style={styles.region}>
-              {item.request_city_region}&nbsp;
-            </Text>
-            <Text style={styles.region}>
-              {item.created_time}
-            </Text>
+            <Text style={styles.region}>{item.request_city_region}&nbsp;</Text>
+            <Text style={styles.region}>{item.created_time}</Text>
           </View>
 
           <View style={styles.itemCostBox}>
-            <Text style={styles.itemCost}>{item.request_cost} 원</Text>
+            <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -89,8 +92,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   itemTitle: {
-    fontSize: 24,
-    fontWeight: "800",
+    fontSize: 20,
+    fontWeight: "600",
   },
   itemStateBox: {
     width: 60,
@@ -99,7 +102,6 @@ const styles = StyleSheet.create({
 
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 15,
   },
   itemState: {
     fontSize: 14,
@@ -118,12 +120,10 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   itemCostBox: {
-    height: 30,
     flexDirection: "row",
-    alignItems: "flex-end",
   },
   itemCost: {
-    fontSize: 18,
+    fontSize: 16,
   },
 });
 

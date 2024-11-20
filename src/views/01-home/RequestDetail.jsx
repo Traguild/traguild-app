@@ -15,6 +15,7 @@ import { theme } from "resources/theme/common";
 import { icons } from "resources/theme/icons";
 import { Entypo } from "react-native-vector-icons";
 import { layout } from "resources/theme/layout";
+import { getCost } from "resources/js/common";
 
 // IMPORT COMPONENTS
 import ApplyRequest from "./ApplyRequest";
@@ -54,8 +55,10 @@ const RequestDetail = ({ navigation, route }) => {
             />
 
             <View style={styles.itemContents}>
-              <Text style={styles.itemTitle}>{item.request_content}</Text>
-              <Text style={styles.itemCost}>{item.request_cost} 원</Text>
+              <Text style={styles.itemTitle}>{item.request_title}</Text>
+              <Text style={styles.itemCost}>
+                {getCost(item.request_cost)} 원
+              </Text>
               <Text style={styles.itemDescription}>{item.request_content}</Text>
             </View>
           </ScrollView>
