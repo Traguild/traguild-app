@@ -37,14 +37,14 @@ const QuestListItem = ({ item }) => {
               style={{
                 ...styles.itemStateBox,
                 backgroundColor:
-                  item.request_state2 === "대기"
-                    ? theme["request-waiting"]
-                    : item.request_state2 === "반려"
+                  item.applicant_idx === "대기"
+                    ? theme["request-proceed"]
+                    : item.applicant_idx === "반려"
                       ? theme["request-reject"]
                       : theme["request-done"]
               }}
             >
-              <Text style={styles.itemState}>{item.request_state2}</Text>
+              <Text style={styles.itemState}>{item.applicant_idx}</Text>
             </View>
             {/* 
             <TouchableOpacity onPress={toggleFavorite}>
