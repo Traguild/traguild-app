@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "../../resources/theme/common";
@@ -7,12 +7,23 @@ import { theme } from "../../resources/theme/common";
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
 
-const SignUp = () => {
+const SignUp = ({ navigation }) => {
   const [nickname, setNickname] = useState("");
   const [user_name, setName] = useState("");
   const [user_email, setEmail] = useState("");
   const [user_pw, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: null,
+      headerStyle: { backgroundColor: "transparent" },
+      headerTransparent: true,
+      headerTintColor: theme["default-btn"],
+    });
+  });
 
   const handleSignUp = () => {
     if (user_pw !== confirmPassword) {

@@ -29,7 +29,6 @@ const WriteRequest = ({ navigation }) => {
       title: null,
       headerStyle: { backgroundColor: "transparent" },
       headerTransparent: true,
-      // headerStyle: { backgroundColor: theme["tab-active"] },
       headerTintColor: theme["default-btn"],
     });
   });

@@ -23,7 +23,7 @@ const SignIn = () => {
           bgColor="white"
           fontColor="black"
           style={{ marginBottom: 10 }}
-          onPress={() => navGo.re("SignUp")}
+          onPress={() => navGo.to("SignUp")}
         />
         <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} />
       </View>

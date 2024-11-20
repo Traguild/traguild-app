@@ -38,7 +38,11 @@ const AppNavigator = () => {
       initialRouteName="SignIn"
     >
       <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ headerShown: true }}
+      />
       <Stack.Screen name="AppTabNavigator" component={AppTabNavigator} />
 
       <Stack.Screen
