@@ -36,43 +36,43 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [requestData, setRequestData] = useState([]);
 
-  const getList = async () => {
+  const getList = async (reset = false) => {
     const res = await API.POST({
       url: "/requestInfo/fetch",
       data: { page: page, limit: LIMIT },
     });
 
     setRequestData((prev) => {
-      const newData = res.filter(
-        (item) =>
-          !prev.some((prevItem) => prevItem.request_idx === item.request_idx)
-      );
+      const newData = reset
+        ? res
+        : res.filter(
+            (item) =>
+              !prev.some(
+                (prevItem) => prevItem.request_idx === item.request_idx
+              )
+          );
 
       prevData = newData.length;
       if (prevData === LIMIT) page++;
-      return [...prev, ...newData];
+      return reset ? [...newData] : [...prev, ...newData];
     });
   };
 
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-    setRequestData([]);
     page = 1;
     prevData = 0;
 
-    getList().then(() =>
-      setTimeout(() => {
+    setTimeout(() => {
+      getList(true).then(() => {
         setIsRefreshing(false);
-      }, 500)
-    );
+      });
+    }, 500);
   }, []);
-  const onEndReached = useCallback(async () => {
+  const onEndReached = useCallback(() => {
     if (prevData === LIMIT) {
       setIsLoading(true);
-      await getList();
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
+      getList().then(() => setIsLoading(false));
     }
   }, []);
 
@@ -90,7 +90,6 @@ const Home = () => {
           data={requestData}
           renderItem={({ item }) => <RequestItem item={item} />}
           keyExtractor={(item) => item.request_idx.toString()}
-          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
