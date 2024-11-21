@@ -41,50 +41,53 @@ const SignUp = ({ navigation }) => {
       <Label style={styles.title}>회원가입</Label>
 
       <View style={styles.inputContainer}>
-        <Label>닉네임 :</Label>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 :" />
         <Input
-          style={{ width: "90%" }}
+          style={{ width: "65%" }}
           value={nickname}
           onChangeText={(text) => setNickname(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label>이름 :</Label>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 :" />
         <Input
-          style={{ width: "90%" }}
+          style={{ width: "65%" }}
           value={user_name}
           onChangeText={(text) => setName(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label>이메일 :</Label>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 :" />
         <Input
-          style={{ width: "90%" }}
+          style={{ width: "65%" }}
           value={user_email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label>비밀번호 :</Label>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 :" />
         <Input
-          style={{ width: "90%" }}
+          style={{ width: "65%" }}
           value={user_pw}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label>비밀번호 확인 :</Label>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 :" />
         <Input
-          style={{ width: "90%" }}
+          style={{ width: "65%" }}
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
           secureTextEntry
         />
       </View>
 
-      <Button text="가입하기" onPress={handleSignUp} />
+      <Button
+        style={{ marginTop: 15 }}
+        text="가입하기"
+        onPress={handleSignUp} />
     </View>
   );
 };
@@ -93,8 +96,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    // justifyContent: "center",
-    // alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   title: {
@@ -105,9 +108,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    // alignItems: "center",
-    // marginBottom: 20,
-    width: "100%",
+    alignItems: "center",
   },
 });
 
