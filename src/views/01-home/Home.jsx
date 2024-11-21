@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -52,7 +52,8 @@ for (let i = 1; i <= 20; i++) {
 
 const Home = () => {
   const [requestData, setRequestData] = useState([]);
-  useEffect(() => {
+
+  useLayoutEffect(() => {
     API.POST({ url: "/requestInfo/all" }).then((res) => {
       setRequestData((prev) => [...prev, ...res]);
     });
@@ -60,13 +61,17 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        style={{ width: "100%" }}
-        data={requestData}
-        renderItem={({ item }) => <RequestItem item={item} />}
-        keyExtractor={(item) => item.request_idx.toString()}
-        showsVerticalScrollIndicator={false}
-      />
+      {requestData.length === 0 ? (
+        <Text>데이터가 없습니다.</Text>
+      ) : (
+        <FlatList
+          style={{ width: "100%" }}
+          data={requestData}
+          renderItem={({ item }) => <RequestItem item={item} />}
+          keyExtractor={(item) => item.request_idx.toString()}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
 
       <TouchableOpacity
         style={styles.floatingButton}

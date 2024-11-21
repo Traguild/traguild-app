@@ -10,7 +10,15 @@ export const API = {
 
       const response = await fetch(fullURL);
 
-      return await response.json();
+      const result = await response.json();
+
+      if (result.message.includes("index_not_found_exception")) {
+        return [];
+      } else if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await result;
     } catch (error) {
       console.error(error);
     }
@@ -29,7 +37,15 @@ export const API = {
         body: JSON.stringify(data),
       });
 
-      return await response.json();
+      const result = await response.json();
+
+      if (result.message.includes("index_not_found_exception")) {
+        return [];
+      } else if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await result;
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +63,16 @@ export const API = {
         },
         body: JSON.stringify(data),
       });
-      return await response.json();
+
+      const result = await response.json();
+
+      if (result.message.includes("index_not_found_exception")) {
+        return [];
+      } else if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await result;
     } catch (error) {
       console.error(error);
     }
@@ -61,6 +86,11 @@ export const API = {
       const response = await fetch(url, {
         method: "DELETE",
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
       return response.status === 200 ? "Delete Successful" : "Delete failed";
     } catch (error) {
       console.error(error);
