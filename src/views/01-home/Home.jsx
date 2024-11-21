@@ -55,6 +55,8 @@ const Home = () => {
 
   useLayoutEffect(() => {
     API.POST({ url: "/requestInfo/all" }).then((res) => {
+      console.log(res);
+
       setRequestData((prev) => [...prev, ...res]);
     });
   }, []);

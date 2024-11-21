@@ -6,10 +6,12 @@ import { theme } from "resources/theme/common";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Input = ({
-  text = "",
   style = {},
-  readonly = false,
   keyboardType = "default",
+  readonly = false,
+  value = "",
+  onChange = () => {},
+  onChangeText = () => {},
   props,
 }) => {
   return (
@@ -18,9 +20,10 @@ const Input = ({
         style={styles.inputText}
         editable={!readonly}
         keyboardType={keyboardType}
-      >
-        {text}
-      </TextInput>
+        value={value}
+        onChange={onChange}
+        onChangeText={onChangeText}
+      />
       {readonly ? (
         <MaterialCommunityIcons
           name="pencil-off-outline"

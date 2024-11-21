@@ -1,13 +1,9 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { API } from "config/fetch.config";
 
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
@@ -18,7 +14,7 @@ import TextField from "components/common/TextField";
 const WriteRequest = ({ navigation }) => {
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
-  const [request_cost, setCost] = useState("");
+  const [request_cost, setCost] = useState(0);
   const [image, setImage] = useState(null);
 
   useLayoutEffect(() => {
@@ -37,7 +33,15 @@ const WriteRequest = ({ navigation }) => {
   };
 
   const handlePostRequest = () => {
-    // 글쓰기 로직 추가 예정
+    API.PUT({
+      url: "/requestInfo",
+      data: {
+        user_idx: 1,
+        request_title,
+        request_content,
+        request_cost,
+      },
+    });
     alert("글이 작성되었습니다.");
     navGo.back();
   };
