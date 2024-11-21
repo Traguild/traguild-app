@@ -12,7 +12,7 @@ export const API = {
 
       const result = await response.json();
 
-      if (result.message.includes("index_not_found_exception")) {
+      if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -39,7 +39,7 @@ export const API = {
 
       const result = await response.json();
 
-      if (result.message.includes("index_not_found_exception")) {
+      if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -66,7 +66,7 @@ export const API = {
 
       const result = await response.json();
 
-      if (result.message.includes("index_not_found_exception")) {
+      if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
