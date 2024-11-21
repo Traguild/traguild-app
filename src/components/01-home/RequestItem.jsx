@@ -30,7 +30,7 @@ const RequestItem = ({ item }) => {
             </Text>
           </View>
           {/*지역 text*/}
-          <View style={styles.regionBox}>
+          {/* <View style={styles.regionBox}>
             <FontAwesome5
               style={styles.region}
               name="map-marker-alt"
@@ -42,7 +42,7 @@ const RequestItem = ({ item }) => {
             </Text>
             <Text style={styles.region}>{item.request_city_region}&nbsp;</Text>
             <Text style={styles.region}>{item.created_time}</Text>
-          </View>
+          </View> */}
 
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
