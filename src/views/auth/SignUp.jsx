@@ -41,43 +41,43 @@ const SignUp = ({ navigation }) => {
       <Label style={styles.title}>회원가입</Label>
 
       <View style={styles.inputContainer}>
-        <Label style={styles.label}>닉네임 :</Label>
+        <Label>닉네임 :</Label>
         <Input
-          style={styles.input}
+          style={{ width: "90%" }}
           value={nickname}
           onChangeText={(text) => setNickname(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={styles.label}>이름 :</Label>
+        <Label>이름 :</Label>
         <Input
-          style={styles.input}
+          style={{ width: "90%" }}
           value={user_name}
           onChangeText={(text) => setName(text)}
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={styles.label}>이메일 :</Label>
+        <Label>이메일 :</Label>
         <Input
-          style={styles.input}
+          style={{ width: "90%" }}
           value={user_email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={styles.label}>비밀번호 :</Label>
+        <Label>비밀번호 :</Label>
         <Input
-          style={styles.input}
+          style={{ width: "90%" }}
           value={user_pw}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={styles.label}>비밀번호 확인 :</Label>
+        <Label>비밀번호 확인 :</Label>
         <Input
-          style={styles.input}
+          style={{ width: "90%" }}
           value={confirmPassword}
           onChangeText={(text) => setConfirmPassword(text)}
           secureTextEntry
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "center",
-    alignItems: "center",
+    // justifyContent: "center",
+    // alignItems: "center",
     padding: 20,
   },
   title: {
@@ -105,24 +105,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
+    // alignItems: "center",
+    // marginBottom: 20,
     width: "100%",
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "white",
-    marginRight: 10,
-    width: 100,
-    textAlign: "right",
-  },
-  input: {
-    backgroundColor: "white",
-    flex: 1,
-    padding: 15,
-    borderRadius: 10,
-    fontSize: 16,
   },
 });
 
