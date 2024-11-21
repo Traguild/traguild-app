@@ -5,8 +5,14 @@ import {
   FlatList,
   TouchableOpacity,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
-import React, { useCallback, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -21,25 +27,56 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 // IMPORT COMPONENTS
 import RequestItem from "components/01-home/RequestItem";
 
+const LIMIT = 10;
+
 const Home = () => {
+  let page = 1;
+  let prevData = 0;
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [requestData, setRequestData] = useState([]);
 
   const getList = async () => {
-    const res = await API.POST({ url: "/requestInfo/all" });
+    const res = await API.POST({
+      url: "/requestInfo/fetch",
+      data: { page: page, limit: LIMIT },
+    });
+
     setRequestData((prev) => {
       const newData = res.filter(
         (item) =>
           !prev.some((prevItem) => prevItem.request_idx === item.request_idx)
       );
+
+      prevData = newData.length;
+      if (prevData === LIMIT) page++;
       return [...prev, ...newData];
     });
   };
+
   const onRefresh = useCallback(() => {
     setIsRefreshing(true);
-    getList().then(() => setIsRefreshing(false));
+    setRequestData([]);
+    page = 1;
+    prevData = 0;
+
+    getList().then(() =>
+      setTimeout(() => {
+        setIsRefreshing(false);
+      }, 500)
+    );
   }, []);
-  useLayoutEffect(() => {
+  const onEndReached = useCallback(async () => {
+    if (prevData === LIMIT) {
+      setIsLoading(true);
+      await getList();
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  }, []);
+
+  useEffect(() => {
     getList();
   }, []);
 
@@ -57,6 +94,9 @@ const Home = () => {
           refreshControl={
             <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
           }
+          onEndReached={() => !isLoading && onEndReached()}
+          onEndReachedThreshold={0.3}
+          ListFooterComponent={isLoading && <ActivityIndicator />}
         />
       )}
 
