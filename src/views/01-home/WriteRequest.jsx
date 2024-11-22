@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -12,6 +13,7 @@ import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 
 const WriteRequest = ({ navigation }) => {
+  const toast = useToast();
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
   const [request_cost, setCost] = useState(0);
@@ -42,7 +44,7 @@ const WriteRequest = ({ navigation }) => {
         request_cost,
       },
     });
-    alert("글이 작성되었습니다.");
+    toast.show("글이 작성되었습니다.");
     navGo.back();
   };
 

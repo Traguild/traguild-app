@@ -26,4 +26,7 @@ export const theme = {
   "tab-inactive": "#d2c1a0",
 
   "request-reject": "#f05650",
+
+  "toast-success": "#a7c957",
+  "toast-fail": "#f05650",
 };
