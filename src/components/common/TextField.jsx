@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   inputStyle: {
     width: "100%",
     backgroundColor: theme["input-field"],
+    marginTop: 5,
     padding: 10,
     borderRadius: 15,
     borderColor: theme["default-btn"],

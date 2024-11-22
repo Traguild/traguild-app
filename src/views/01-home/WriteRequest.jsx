@@ -53,7 +53,7 @@ const WriteRequest = ({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%", marginBottom: 15 }} text="제목" />
+        <Label style={{ width: "20%" }} text="제목" />
         <Input
           style={{ width: "80%" }}
           placeholder="제목을 입력해주세요"
@@ -62,7 +62,7 @@ const WriteRequest = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%", marginBottom: 15 }} text="가격" />
+        <Label style={{ width: "20%", marginBottom: 25 }} text="가격" />
         <Input
           style={{ width: "80%" }}
           placeholder="가격을 제시해주세요"
@@ -72,7 +72,7 @@ const WriteRequest = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%", marginBottom: 15 }} text="내용" />
+        <Label style={{ width: "20%" }} text="내용" />
         <TextField
           style={{ width: "80%" }}
           placeholder="내용을 입력해주세요"

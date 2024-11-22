@@ -8,6 +8,7 @@ import { theme } from "../../resources/theme/common";
 import Button from "components/common/Button";
 import Label from "components/common/Label";
 import Input from "components/common/Input";
+import UseToast from "components/common/UseToast";
 
 const SignUp = ({ navigation }) => {
   const [nickname, setNickname] = useState("");
@@ -29,10 +30,10 @@ const SignUp = ({ navigation }) => {
 
   const handleSignUp = () => {
     if (user_pw !== confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
+      UseToast("비밀번호가 일치하지 않습니다.", "error");
       return;
     }
-    alert("회원가입이 완료되었습니다.");
+    UseToast("회원가입이 완료되었습니다.", "success");
     navGo.to("SignIn");
   };
 
