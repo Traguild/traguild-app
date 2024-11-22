@@ -3688,10 +3688,10 @@ expo-modules-autolinking@2.0.2:
     require-from-string "^2.0.2"
     resolve-from "^5.0.0"
 
-expo-modules-core@2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-2.0.4.tgz#a65700e2c8b9055c4420286acf2dff3d2076da99"
-  integrity sha512-nNS40KYh1d7tWXCcEKBrSigIKCVfJwkPLhR/mniAoPzqevUDLVJNJjIgKfQL6kPlsViC3hwwgrUpKSlmWv2DFg==
+expo-modules-core@2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/expo-modules-core/-/expo-modules-core-2.0.5.tgz#8a15342ba091329f2e247d7b2f1e9cd5a0459017"
+  integrity sha512-FSDsszVyNeyOUuEgfoM0Jcmmdpun+d0P0PvwDKadQ+KZaV5ziePWzMwN5bz3fLJ2i1yMP2hApQ5OkksblNDGGA==
   dependencies:
     invariant "^2.2.4"
 
@@ -3710,10 +3710,10 @@ expo-updates-interface@~1.0.0:
   resolved "https://registry.npmjs.org/expo-updates-interface/-/expo-updates-interface-1.0.0.tgz"
   integrity sha512-93oWtvULJOj+Pp+N/lpTcFfuREX1wNeHtp7Lwn8EbzYYmdn37MvZU3TPW2tYYCZuhzmKEXnUblYcruYoDu7IrQ==
 
-expo-updates@~0.26.8:
-  version "0.26.8"
-  resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.26.8.tgz#7f3aca9e125219e0e05ae1c2d3cf1b632cc73ac8"
-  integrity sha512-RsL3fREuK0oiAmLRm6ZpHlJaT4Vz7iu3MvpmfuWkLMYgIitHhIKJ+geKH/VRfLRzTuVqUV7w2t0R34hPFGzy3Q==
+expo-updates@~0.26.9:
+  version "0.26.9"
+  resolved "https://registry.yarnpkg.com/expo-updates/-/expo-updates-0.26.9.tgz#9be11c482c572f90d479aa1f7bd1ac509d7fa102"
+  integrity sha512-eHdvM4+xXaLV3uuTn3ooWsDC69IPV9ukpuPDglsBWJKagVi40u7DJQ375oGNgjqxd91irEBeBSCr9tCWm905QA==
   dependencies:
     "@expo/code-signing-certificates" "0.0.5"
     "@expo/config" "~10.0.4"
@@ -3730,10 +3730,10 @@ expo-updates@~0.26.8:
     ignore "^5.3.1"
     resolve-from "^5.0.0"
 
-expo@~52.0.9:
-  version "52.0.9"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.9.tgz#e33dd6fd2fc50325747cb1df5fddad1e61e04cb0"
-  integrity sha512-xbgsvshsJ99wEHp8IZLp4C4SIYVnafrlmQjTwyGjHKvZhBXLHRp7+fwx+Fa26iqQEbaPZ3XkSGxKR73cttR4ug==
+expo@~52.0.10:
+  version "52.0.10"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-52.0.10.tgz#bf73368e8b1277cf589ae9bbaf8939785d98311d"
+  integrity sha512-u5uN1RCqLu5sGw3uyzpO8ajifkaU73ZgEctnWE4E2AHRi36pt3pJxZheuG7ZNQB6JI6StukUqBXSFmm6F7ixBQ==
   dependencies:
     "@babel/runtime" "^7.20.0"
     "@expo/cli" "0.21.7"
@@ -3749,7 +3749,7 @@ expo@~52.0.9:
     expo-font "~13.0.1"
     expo-keep-awake "~14.0.1"
     expo-modules-autolinking "2.0.2"
-    expo-modules-core "2.0.4"
+    expo-modules-core "2.0.5"
     fbemitter "^3.0.0"
     web-streams-polyfill "^3.3.2"
     whatwg-url-without-unicode "8.0.0-3"
