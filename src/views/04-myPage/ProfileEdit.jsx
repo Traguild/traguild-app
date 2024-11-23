@@ -28,6 +28,8 @@ const ProfileEdit = ({ navigation }) => {
   const [user_nick, setNick] = useState(dummyLogin.user_nick);
   const [user_email, setEmail] = useState(dummyLogin.user_email);
   const [user_pw, setPassword] = useState(dummyLogin.user_pw);
+  const [new_user_pw, setNewPassword] = useState(""); // 변경할 비밀번호
+  const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -41,8 +43,29 @@ const ProfileEdit = ({ navigation }) => {
   });
 
   const handlePostRequest = () => {
+    // 비밀번호 확인 로직
+    if (user_pw !== dummyLogin.user_pw) {
+      toast.show("현재 비밀번호가 일치하지 않습니다.", { type: "error" });
+      return;
+    }
+
+    if (user_pw == new_user_pw) {
+      toast.show("현재 비밀번호와 새 비밀번호가 일치합니다.", { type: "error" });
+      return;
+    }
+
+    if (new_user_pw === "") {
+      toast.show("새 비밀번호를 입력해주세요.", { type: "error" });
+      return;
+    }
+
+    if (new_user_pw !== confirmPassword) {
+      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.", { type: "error" });
+      return;
+    }
+
     toast.show("프로필 정보가 업데이트가 되었습니다.", { type: "success" });
-    navGo.back();
+    navigation.goBack();
   };
 
   return (
@@ -83,13 +106,36 @@ const ProfileEdit = ({ navigation }) => {
           keyboardType="email-address"
         />
       </View>
+
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="현재 비밀번호 " />
         <Input
           style={{ width: "65%" }}
           value={user_pw}
           onChangeText={(text) => setPassword(text)}
-          placeholder="비밀번호를 입력하세요"
+          placeholder="현재 비밀번호를 입력하세요"
+          secureTextEntry
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="새 비밀번호 " />
+        <Input
+          style={{ width: "65%" }}
+          value={new_user_pw}
+          onChangeText={(text) => setNewPassword(text)}
+          placeholder="새 비밀번호를 입력하세요"
+          secureTextEntry
+        />
+      </View>
+
+      <View style={styles.inputContainer}>
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
+        <Input
+          style={{ width: "65%" }}
+          value={confirmPassword}
+          onChangeText={(text) => setConfirmPassword(text)}
+          placeholder="비밀번호를 다시 입력하세요"
           secureTextEntry
         />
       </View>
