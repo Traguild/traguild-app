@@ -3,11 +3,14 @@ export const theme = {
   "default-border": "#AB886D",
   "default-btn": "#6C4E31",
 
+  "filter-btn": "#AB886D",
+
   "home-bg": "white",
   "home-border": "#D6C0B3",
 
   "request-detail": "#ffe6a7",
   "request-proceed": "#dda15e",
+  "request-reject": "#f05650",
   "request-done": "#a7c957",
 
   "apply-title": "#6C4E31",
@@ -24,8 +27,6 @@ export const theme = {
 
   "tab-active": "#AB886D",
   "tab-inactive": "#d2c1a0",
-
-  "request-reject": "#f05650",
 
   "toast-success": "#a7c957",
   "toast-fail": "#f05650",

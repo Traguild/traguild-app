@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -64,7 +64,16 @@ for (let i = 1; i <= 20; i++) {
   }
 }
 
-const QuestList = () => {
+const QuestList = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: "의뢰 내역",
+      headerTintColor: theme["default-btn"],
+    });
+  });
+
   const [mainFilter, setMainFilter] = useState("전체");
   const [subFilter, setSubFilter] = useState("전체");
 
@@ -92,18 +101,24 @@ const QuestList = () => {
             ]}
             onPress={() => setMainFilter(filter)}
           >
-            <Text style={styles.mainFilterText}>{filter}</Text>
+            <Text
+              style={
+                mainFilter === filter
+                  ? styles.focusedMainFilterText
+                  : styles.mainFilterText
+              }
+            >
+              {filter}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
-
 
       <FlatList
         style={{ width: "100%" }}
         data={finalData}
         renderItem={({ item }) => <QuestListItem item={item} />}
         keyExtractor={(item) => item.request_idx.toString()}
-        showsVerticalScrollIndicator={false}
       />
     </View>
   );
@@ -132,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 10,
-    backgroundColor: "#e6e6e6",
+    backgroundColor: "white",
   },
   mainFilterButton: {
     paddingVertical: 10,
@@ -140,11 +155,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   activeMainFilterButton: {
-    backgroundColor: theme["default-btn"],
+    backgroundColor: theme["filter-btn"],
   },
   mainFilterText: {
     color: "black",
-    fontWeight: "bold",
+    fontWeight: "500",
+  },
+  focusedMainFilterText: {
+    color: "white",
+    fontWeight: "800",
   },
   subFilterContainer: {
     flexDirection: "row",
