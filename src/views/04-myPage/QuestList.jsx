@@ -96,7 +96,19 @@ const QuestList = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.subFilterContainer}>
+
+
+      <FlatList
+        style={{ width: "100%" }}
+        data={finalData}
+        renderItem={({ item }) => <QuestListItem item={item} />}
+        keyExtractor={(item) => item.request_idx.toString()}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
+  );
+};
+/**<View style={styles.subFilterContainer}>
         {["전체", "대기", "완료", "반려"].map((filter) => (
           <TouchableOpacity
             key={filter}
@@ -109,18 +121,7 @@ const QuestList = () => {
             <Text style={styles.subFilterText}>{filter}</Text>
           </TouchableOpacity>
         ))}
-      </View>
-
-      <FlatList
-        style={{ width: "100%" }}
-        data={finalData}
-        renderItem={({ item }) => <QuestListItem item={item} />}
-        keyExtractor={(item) => item.request_idx.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  );
-};
+      </View> */
 
 const styles = StyleSheet.create({
   container: {

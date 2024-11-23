@@ -48,7 +48,7 @@ const ProfileEdit = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
         <Input
           style={{ width: "65%" }}
           value={user_name}
@@ -56,7 +56,7 @@ const ProfileEdit = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="지역 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="지역 " />
         <Input
           style={{ width: "65%" }}
           value={user_region}
@@ -65,7 +65,7 @@ const ProfileEdit = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
         <Input
           style={{ width: "65%" }}
           value={user_nick}
@@ -74,7 +74,7 @@ const ProfileEdit = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
         <Input
           style={{ width: "65%" }}
           value={user_email}
@@ -84,7 +84,7 @@ const ProfileEdit = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
         <Input
           style={{ width: "65%" }}
           value={user_pw}

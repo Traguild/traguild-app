@@ -43,7 +43,7 @@ const SignUp = ({ navigation }) => {
       <Label style={styles.title}>회원가입</Label>
 
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
         <Input
           style={{ width: "65%" }}
           value={nickname}
@@ -51,7 +51,7 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
         <Input
           style={{ width: "65%" }}
           value={user_name}
@@ -59,7 +59,7 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
         <Input
           style={{ width: "65%" }}
           value={user_email}
@@ -68,7 +68,7 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
         <Input
           style={{ width: "65%" }}
           value={user_pw}
@@ -77,7 +77,7 @@ const SignUp = ({ navigation }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 :" />
+        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
         <Input
           style={{ width: "65%" }}
           value={confirmPassword}
