@@ -1,188 +1,3 @@
-// import {
-//   View,
-//   Text,
-//   StyleSheet,
-//   FlatList,
-//   TouchableOpacity,
-// } from "react-native";
-// import React, { useState } from "react";
-
-// // IMPORT RESOURCES
-// import { theme } from "resources/theme/common";
-// import { FontAwesome5 } from "@expo/vector-icons";
-
-// // IMPORT LAYOUTS
-
-// // IMPORT COMPONENTS
-// import QuestListItem from "src/components/04-myPage/QuestListItem";
-
-// const dummyData = []; //내가 지원한 더미
-// // const dummyData2 = []; //내가 모집중인 더미
-// for (let i = 1; i <= 20; i++) {
-//   const states = ['대기', '완료', '반려'];
-
-//   const formattedDate = new Date(Date.now())
-//     .toLocaleDateString("ko-KR", {
-//       year: "2-digit",
-//       month: "2-digit",
-//       day: "2-digit",
-//     })
-//     .slice(0, -1)
-//     .replace(/\./g, "-")
-//     .trim();
-
-//   dummyData.push({
-//     request_idx: i,
-//     user_idx: 1,
-//     request_state_region: "경상남도",
-//     request_city_region: "창원시",
-//     request_title: `테스트 ${i}`,
-//     request_content: `테스트 ${i} 내용`,
-//     request_cost: "200,000",
-//     request_state: i % 2 == 0 ? "완료" : "모집 중",
-//     applicant_idx: states[Math.floor(Math.random() * states.length)],
-//     transaction_state: "대기중",
-//     // "created_time": Date.now(),
-//     // "updated_time": Date.now(),
-//     created_time: formattedDate,
-//     updated_time: formattedDate,
-//     is_deleted: 0,
-//     // applicant_idx: i + 1,
-//     // view_option: i % 2 == 0 ? "mine" : "yours",
-//   });
-// }
-
-// // for (let i = 1; i <= 20; i++) {
-// //   const formattedDate = new Date(Date.now())
-// //     .toLocaleDateString("ko-KR", {
-// //       year: "2-digit",
-// //       month: "2-digit",
-// //       day: "2-digit",
-// //     })
-// //     .slice(0, -1)
-// //     .replace(/\./g, "-")
-// //     .trim();
-
-// //   dummyData2.push({
-// //     request_idx: i,
-// //     user_idx: 1,
-// //     request_state_region: "경상남도",
-// //     request_city_region: "창원시",
-// //     request_title: `테스트 ${i}`,
-// //     request_content: `테스트 ${i} 내용`,
-// //     request_cost: "200,000",
-// //     request_state: i % 2 == 0 ? "완료" : "모집 중",
-// //     applicant_idx: Math.floor(Math.random() * (3 - 1 + 1)) + 1,
-// //     transaction_state: "대기중",
-// //     created_time: formattedDate,
-// //     updated_time: formattedDate,
-// //     is_deleted: 0,
-// //     applicant_idx: i + 1,
-// //     view_option: i % 2 == 0 ? "mine" : "yours",
-// //   });
-// // }
-
-// const QuestList = () => {
-
-//   const [selectedState, setSelectedState] = useState('전체');
-
-//   const filteredData = selectedState === '전체'
-//     ? dummyData
-//     : dummyData.filter(item => item.request_state === selectedState);
-
-//   return (
-//     <View style={styles.container}>
-
-//       <View style={styles.filterContainer}>
-//         {['전체', '대기', '완료', '반려'].map((state) => (
-//           <TouchableOpacity
-//             key={state}
-//             style={[
-//               styles.filterButton,
-//               selectedState === state && styles.activeFilterButton,
-//             ]}
-//           // onPress={() => setSelectedState(state)}
-//           >
-//             <Text style={styles.filterButtonText}>{state}</Text>
-//           </TouchableOpacity>
-//         ))}
-//       </View>
-
-//       <FlatList
-//         style={{ width: "100%" }}
-//         data={dummyData}
-//         renderItem={({ item }) => <QuestListItem item={item} />}
-//         keyExtractor={(item) => item.request_idx.toString()}
-//         showsVerticalScrollIndicator={false}
-//       />
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-
-//   floatingButton: {
-//     backgroundColor: theme["btn-floating"],
-
-//     position: "absolute",
-//     bottom: 25,
-//     right: 25,
-//     paddingHorizontal: 20,
-//     paddingVertical: 12,
-//     borderRadius: 25,
-//     shadowColor: "#000",
-//     shadowOffset: {
-//       width: 3,
-//       height: 5,
-//     },
-//     shadowOpacity: 0.25,
-//     shadowRadius: 3.84,
-//     elevation: 5,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     flexDirection: "row",
-//   },
-//   btnText: {
-//     color: "white",
-//     fontSize: 16,
-//     fontWeight: "500",
-//     marginLeft: 10,
-//   },
-
-//   filterContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-around",
-//     width: "100%",
-//     paddingVertical: 10,
-//     backgroundColor: "#f0f0f0",
-//   },
-//   //필터 버튼
-//   filterButton: {
-//     paddingHorizontal: 15,
-//     paddingVertical: 10,
-//     borderRadius: 5,
-//     backgroundColor: "#e0e0e0",
-//   },
-
-//   activeFilterButton: {
-//     backgroundColor: "#4CAF50", // 선택된 버튼 색상
-//   },
-
-//   filterButtonText: {
-//     color: "#000",
-//     fontWeight: "bold",
-//   },
-
-// });
-
-// export default QuestList;
-
-
 import {
   View,
   Text,
@@ -198,8 +13,10 @@ import { theme } from "resources/theme/common";
 // IMPORT COMPONENTS
 import QuestListItem from "src/components/04-myPage/QuestListItem";
 
-const dummyData = []; // 내가 지원한 더미
-const states = ['대기', '완료', '반려'];
+const dummyAllData = []; // 전체 데이터
+const dummyMyRequests = []; // 내가 의뢰한 글 데이터
+const dummyMyApplications = []; // 내가 신청한 글 데이터
+const states = ["대기", "완료", "반려"];
 
 for (let i = 1; i <= 20; i++) {
   const formattedDate = new Date(Date.now())
@@ -212,56 +29,91 @@ for (let i = 1; i <= 20; i++) {
     .replace(/\./g, "-")
     .trim();
 
-  dummyData.push({
+  dummyAllData.push({
     request_idx: i,
-    user_idx: 1,
-    request_state_region: "경상남도",
-    request_city_region: "창원시",
-    request_title: `테스트 ${i}`,
-    request_content: `테스트 ${i} 내용`,
+    user_idx: i % 2 === 0 ? 1 : 2,
+    request_title: `전체 의뢰 ${i}`,
+    request_content: `내용 ${i}`,
     request_cost: "200,000",
-    request_state: states[Math.floor(Math.random() * states.length)],
-    applicant_idx: states[Math.floor(Math.random() * states.length)],
-    transaction_state: states[Math.floor(Math.random() * states.length)],
+    request_state: states[i % 3],
     created_time: formattedDate,
-    updated_time: formattedDate,
-    is_deleted: 0,
   });
+
+  if (i % 2 === 0) {
+    dummyMyRequests.push({
+      request_idx: i,
+      user_idx: 1,
+      request_title: `내가 의뢰한 글 ${i}`,
+      request_content: `내용 ${i}`,
+      request_cost: "200,000",
+      request_state: states[i % 3],
+      created_time: formattedDate,
+    });
+  }
+
+  if (i % 2 !== 0) {
+    dummyMyApplications.push({
+      request_idx: i,
+      user_idx: 2,
+      request_title: `내가 신청한 글 ${i}`,
+      request_content: `내용 ${i}`,
+      request_cost: "150,000", //구별 하기 위해 값 바꿈
+      request_state: states[i % 3],
+      created_time: formattedDate,
+    });
+  }
 }
 
 const QuestList = () => {
-  // 현재 선택된 applicant_idx를 관리하는 state
-  const [selectedApplicantIdx, setSelectedApplicantIdx] = useState(null);
+  const [mainFilter, setMainFilter] = useState("전체");
+  const [subFilter, setSubFilter] = useState("전체");
 
-  // 선택된 applicant_idx에 따라 데이터 필터링
-  const filteredData = selectedApplicantIdx === null
-    ? dummyData
-    : dummyData.filter(item => item.applicant_idx === selectedApplicantIdx);
+  const filteredMainData =
+    mainFilter === "전체"
+      ? dummyAllData
+      : mainFilter === "내가 의뢰한 글"
+        ? dummyMyRequests
+        : dummyMyApplications;
+
+  const finalData =
+    subFilter === "전체"
+      ? filteredMainData
+      : filteredMainData.filter((item) => item.request_state === subFilter);
 
   return (
     <View style={styles.container}>
-      {/* applicant_idx 필터 버튼들 */}
-      <View style={styles.filterContainer}>
-        {[null, '대기', '완료', '반려'].map((idx) => (
+      <View style={styles.mainFilterContainer}>
+        {["전체", "내가 의뢰한 글", "내가 신청한 글"].map((filter) => (
           <TouchableOpacity
-            key={idx}
+            key={filter}
             style={[
-              styles.filterButton,
-              selectedApplicantIdx === idx && styles.activeFilterButton,
+              styles.mainFilterButton,
+              mainFilter === filter && styles.activeMainFilterButton,
             ]}
-            onPress={() => setSelectedApplicantIdx(idx)}
+            onPress={() => setMainFilter(filter)}
           >
-            <Text style={styles.filterButtonText}>
-              {idx === null ? '전체' : `${idx}`}
-            </Text>
+            <Text style={styles.mainFilterText}>{filter}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+      <View style={styles.subFilterContainer}>
+        {["전체", "대기", "완료", "반려"].map((filter) => (
+          <TouchableOpacity
+            key={filter}
+            style={[
+              styles.subFilterButton,
+              subFilter === filter && styles.activeSubFilterButton,
+            ]}
+            onPress={() => setSubFilter(filter)}
+          >
+            <Text style={styles.subFilterText}>{filter}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* 필터링된 데이터를 FlatList로 표시 */}
       <FlatList
         style={{ width: "100%" }}
-        data={filteredData}
+        data={finalData}
         renderItem={({ item }) => <QuestListItem item={item} />}
         keyExtractor={(item) => item.request_idx.toString()}
         showsVerticalScrollIndicator={false}
@@ -273,32 +125,42 @@ const QuestList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "white",
   },
-
-  // 필터 버튼 스타일
-  filterContainer: {
+  mainFilterContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    width: "100%",
+    paddingVertical: 10,
+    backgroundColor: "#e6e6e6",
+  },
+  mainFilterButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+  },
+  activeMainFilterButton: {
+    backgroundColor: theme["default-btn"],
+  },
+  mainFilterText: {
+    color: "black",
+    fontWeight: "bold",
+  },
+  subFilterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     paddingVertical: 10,
     backgroundColor: "#f0f0f0",
   },
-
-  filterButton: {
-    paddingHorizontal: 15,
+  subFilterButton: {
     paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 5,
-    backgroundColor: "#e0e0e0",
   },
-
-  activeFilterButton: {
-    backgroundColor: "#4CAF50", // 선택된 버튼 색상
+  activeSubFilterButton: {
+    backgroundColor: theme["request-proceed"],
   },
-
-  filterButtonText: {
-    color: "#000",
+  subFilterText: {
+    color: "black",
     fontWeight: "bold",
   },
 });
