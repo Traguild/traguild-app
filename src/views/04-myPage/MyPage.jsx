@@ -3,6 +3,7 @@ import React from 'react'
 
 // IMPORT RESOURCES
 import { defaultImg } from 'resources/img/defaultImg';
+import { theme } from "../../resources/theme/common";
 
 // IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
@@ -10,6 +11,7 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 // IMPORT COMPONENTS
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
+import Button from "components/common/Button";
 
 const dummyLogin = {
   "user_id": "gdhong",
@@ -26,19 +28,19 @@ const dummyCredit = 9999;
 const MyPage = () => {
   return (
     <View style={styles.container}>
-      <View style={styles.myCreditBox}>
-        <Text style={styles.myCredit}>My Credit : {dummyCredit} Credit</Text>
-        <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
-          <Text style={styles.chargeButtonText}>충전하기</Text>
-        </TouchableOpacity>
-      </View>
-
       <View style={styles.profileBox}>
         <Image source={defaultImg.logo} style={styles.profilePic} />
         <View style={styles.profileTop}>
           <Text style={styles.profileName}>{dummyLogin.user_nick}</Text>
           <MyManner />
         </View>
+      </View>
+
+      <View style={styles.myCreditBox}>
+        <Text style={styles.myCredit}>My Credit : {dummyCredit} Credit</Text>
+        <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
+          <Text style={styles.chargeButtonText}>충전하기</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.requestBox}>
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
 
   chargeButton: {
     marginLeft: 'auto', // 버튼을 오른쪽으로 밀어냄
-    backgroundColor: '#4CAF50', // 버튼 배경색 (예시)
+    backgroundColor: theme["default-btn"], // 버튼 배경색 (예시)
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 5,
