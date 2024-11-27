@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 
@@ -31,66 +31,69 @@ const SignUp = ({ navigation }) => {
 
   const handleSignUp = () => {
     if (user_pw !== confirmPassword) {
-      toast.show("비밀번호가 일치하지 않습니다.", { type: "error" });
+      toast.show("비밀번호가 일치하지 않습니다.");
       return;
     }
-    toast.show("회원가입이 완료되었습니다.", { type: "success" });
+    toast.show("회원가입이 완료되었습니다.");
     navGo.to("SignIn");
   };
 
   return (
-    <View style={styles.container}>
-      <Label style={styles.title}>회원가입</Label>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Label style={styles.title} text="회원가입" />
 
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
-        <Input
-          style={{ width: "65%" }}
-          value={nickname}
-          onChangeText={(text) => setNickname(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_name}
-          onChangeText={(text) => setName(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_email}
-          onChangeText={(text) => setEmail(text)}
-          keyboardType="email-address"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_pw}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
-        <Input
-          style={{ width: "65%" }}
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          secureTextEntry
-        />
-      </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
+          <Input
+            style={{ width: "65%" }}
+            value={nickname}
+            onChangeText={(text) => setNickname(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_name}
+            onChangeText={(text) => setName(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_email}
+            onChangeText={(text) => setEmail(text)}
+            keyboardType="email-address"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_pw}
+            onChangeText={(text) => setPassword(text)}
+            secureTextEntry={true}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
+          <Input
+            style={{ width: "65%" }}
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
+            secureTextEntry={true}
+          />
+        </View>
 
-      <Button
-        style={{ marginTop: 15 }}
-        text="가입하기"
-        onPress={handleSignUp} />
-    </View>
+        <Button
+          style={{ marginTop: 15 }}
+          text="가입하기"
+          onPress={handleSignUp}
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -98,15 +101,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
   },
   title: {
     fontSize: 32,
     fontWeight: "800",
-    color: "white",
-    marginBottom: 40,
+    color: theme["apply-title"],
+    marginBottom: 10,
   },
   inputContainer: {
     flexDirection: "row",

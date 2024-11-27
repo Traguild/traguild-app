@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    paddingHorizontal: 10,
   },
   listItem: {
     backgroundColor: theme["home-bg"],

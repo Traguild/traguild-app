@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -40,7 +40,15 @@ for (let i = 1; i <= 20; i++) {
   });
 }
 
-const Favorite = () => {
+const Favorite = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: "찜한 의뢰",
+      headerTintColor: theme["default-btn"],
+    });
+  });
 
   return (
     <View style={styles.container}>
@@ -60,28 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: "center",
-  },
 
-  floatingButton: {
-    backgroundColor: theme['btn-floating'],
-
-    position: "absolute",
-    bottom: 25,
-    right: 25,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 3,
-      height: 5,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
   },
   btnText: {
     color: "white",

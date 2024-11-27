@@ -17,7 +17,7 @@ const dummyLogin = {
   "user_id": "gdhong",
   "user_pw": "mypassword",
   "user_name": "홍길동",
-  "user_nick": "RBRoad", //테이블에 없어서 임시로 넣어둠
+  "user_nick": "RBRoad",
   "user_email": "gdhong@gmail.com",
   "user_birth": "1900-01-01",
   "user_region": "김해시"

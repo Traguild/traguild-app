@@ -8,8 +8,6 @@ export default function App() {
     <ToastProvider
       offsetTop={50}
       duration={3000}
-      successColor="#a7c957"
-      dangerColor="#f05650"
     >
       <NavigationContainer>
         <AppNavigator />

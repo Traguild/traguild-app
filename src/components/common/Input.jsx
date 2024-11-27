@@ -10,8 +10,9 @@ const Input = ({
   keyboardType = "default",
   readonly = false,
   value = "",
-  onChange = () => {},
-  onChangeText = () => {},
+  onChange = () => { },
+  onChangeText = () => { },
+  secureTextEntry = false,
   props,
 }) => {
   return (
@@ -23,6 +24,7 @@ const Input = ({
         value={value}
         onChange={onChange}
         onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
       />
       {readonly ? (
         <MaterialCommunityIcons

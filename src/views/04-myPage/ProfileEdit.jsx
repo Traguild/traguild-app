@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import React, { useLayoutEffect, useState } from 'react';
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "react-native-toast-notifications";
@@ -69,83 +69,85 @@ const ProfileEdit = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_name}
-          onChangeText={(text) => setName(text)}
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="지역 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_region}
-          onChangeText={(text) => setRegion(text)}
-          placeholder="지역을 입력하세요"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_nick}
-          onChangeText={(text) => setNick(text)}
-          placeholder="닉네임을 입력하세요"
-        />
-      </View>
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_email}
-          onChangeText={(text) => setEmail(text)}
-          placeholder="이메일을 입력하세요"
-          keyboardType="email-address"
-        />
-      </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_name}
+            onChangeText={(text) => setName(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="지역 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_region}
+            onChangeText={(text) => setRegion(text)}
+            placeholder="지역을 입력하세요"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_nick}
+            onChangeText={(text) => setNick(text)}
+            placeholder="닉네임을 입력하세요"
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_email}
+            onChangeText={(text) => setEmail(text)}
+            placeholder="이메일을 입력하세요"
+            keyboardType="email-address"
+          />
+        </View>
 
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="현재 비밀번호 " />
-        <Input
-          style={{ width: "65%" }}
-          value={user_pw}
-          onChangeText={(text) => setPassword(text)}
-          placeholder="현재 비밀번호를 입력하세요"
-          secureTextEntry
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="현재 비밀번호 " />
+          <Input
+            style={{ width: "65%" }}
+            value={user_pw}
+            onChangeText={(text) => setPassword(text)}
+            placeholder="현재 비밀번호를 입력하세요"
+            secureTextEntry={true}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="새 비밀번호 " />
+          <Input
+            style={{ width: "65%" }}
+            value={new_user_pw}
+            onChangeText={(text) => setNewPassword(text)}
+            placeholder="새 비밀번호를 입력하세요"
+            secureTextEntry={true}
+          />
+        </View>
+
+        <View style={styles.inputContainer}>
+          <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
+          <Input
+            style={{ width: "65%" }}
+            value={confirmPassword}
+            onChangeText={(text) => setConfirmPassword(text)}
+            placeholder="비밀번호를 다시 입력하세요"
+            secureTextEntry={true}
+          />
+        </View>
+
+        <Button
+          style={{ marginTop: 15 }}
+          text="프로필 업데이트"
+          onPress={handlePostRequest}
         />
       </View>
-
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="새 비밀번호 " />
-        <Input
-          style={{ width: "65%" }}
-          value={new_user_pw}
-          onChangeText={(text) => setNewPassword(text)}
-          placeholder="새 비밀번호를 입력하세요"
-          secureTextEntry
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
-        <Input
-          style={{ width: "65%" }}
-          value={confirmPassword}
-          onChangeText={(text) => setConfirmPassword(text)}
-          placeholder="비밀번호를 다시 입력하세요"
-          secureTextEntry
-        />
-      </View>
-
-      <Button
-        style={{ marginTop: 15 }}
-        text="프로필 업데이트"
-        onPress={handlePostRequest}
-      />
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -153,9 +155,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     padding: 20,
+    paddingTop: 60,
   },
   inputContainer: {
     flexDirection: "row",
