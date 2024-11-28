@@ -3,7 +3,9 @@ import React from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
+import { getCost } from "resources/js/common";
 import { theme } from "../../resources/theme/common";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 // IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
@@ -11,7 +13,6 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 // IMPORT COMPONENTS
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
-import Button from "components/common/Button";
 import ApplyList from "components/04-myPage/ApplyList";
 
 const dummyLogin = {
@@ -38,7 +39,8 @@ const MyPage = () => {
       </View>
 
       <View style={styles.myCreditBox}>
-        <Text style={styles.myCredit}>My Credit : {dummyCredit} Credit</Text>
+        <FontAwesome5 name="coins" size={24} color="#f7b801" />
+        <Text style={styles.myCredit}>{getCost(dummyCredit)} 코인</Text>
         <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
           <Text style={styles.chargeButtonText}>충전하기</Text>
         </TouchableOpacity>
@@ -97,13 +99,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
 
     fontSize: 24,
-    fontWeight: "700",
+    fontWeight: "600",
   },
 
   myCreditBox: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     padding: 15,
+    paddingLeft: 25,
     width: "100%",
 
     borderColor: "lightgray",
@@ -112,25 +116,24 @@ const styles = StyleSheet.create({
   },
 
   myCredit: {
-    marginLeft: "auto",
-    marginBottom: 10,
+    marginLeft: 20,
 
-    fontSize: 24,
-    fontWeight: "700",
+    fontSize: 18,
+    fontWeight: "500",
   },
 
   chargeButton: {
-    marginLeft: "auto", // 버튼을 오른쪽으로 밀어냄
-    backgroundColor: theme["default-btn"], // 버튼 배경색 (예시)
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    borderRadius: 5,
+    marginLeft: "auto",
+    backgroundColor: theme["default-btn"],
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    borderRadius: 10,
   },
 
   chargeButtonText: {
     color: "white", // 텍스트 색상
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
   },
 
   requestBox: {

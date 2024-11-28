@@ -21,6 +21,8 @@ export const theme = {
 
   "btn-floating": "#AB886D",
 
+  "light-btn": "#AB886D",
+
   "emoji-flirt": "#f28482",
   "emoji-happy": "#6a994e",
   "emoji-neutral": "#a98467",
