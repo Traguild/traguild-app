@@ -12,46 +12,46 @@ import { theme } from "../../resources/theme/common";
 
 // DUMMY DATA FOR DEMO
 const dummyData = [
-  {
-    request_idx: 1,
-    request_title: "청소 도와주세요",
-    user_nick: "홍길동",
-    request_cost: "20,000",
-    applyIntro: "청소 잘 합니다!",
-    status: "pending",
-  },
-  {
-    request_idx: 2,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applyIntro: "조립 경험이 많습니다.",
-    status: "pending",
-  },
-  {
-    request_idx: 3,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applyIntro: "조립 경험이 많습니다.",
-    status: "pending",
-  },
-  {
-    request_idx: 4,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applyIntro: "조립 경험이 많습니다.",
-    status: "pending",
-  },
-  {
-    request_idx: 5,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applyIntro: "조립 경험이 많습니다.",
-    status: "pending",
-  },
+  // {
+  //   request_idx: 1,
+  //   request_title: "청소 도와주세요",
+  //   user_nick: "홍길동",
+  //   request_cost: "20,000",
+  //   applyIntro: "청소 잘 합니다!",
+  //   status: "pending",
+  // },
+  // {
+  //   request_idx: 2,
+  //   request_title: "가구 조립 도와주세요",
+  //   user_nick: "김철수",
+  //   request_cost: "30,000",
+  //   applyIntro: "조립 경험이 많습니다.",
+  //   status: "pending",
+  // },
+  // {
+  //   request_idx: 3,
+  //   request_title: "가구 조립 도와주세요",
+  //   user_nick: "김철수",
+  //   request_cost: "30,000",
+  //   applyIntro: "조립 경험이 많습니다.",
+  //   status: "pending",
+  // },
+  // {
+  //   request_idx: 4,
+  //   request_title: "가구 조립 도와주세요",
+  //   user_nick: "김철수",
+  //   request_cost: "30,000",
+  //   applyIntro: "조립 경험이 많습니다.",
+  //   status: "pending",
+  // },
+  // {
+  //   request_idx: 5,
+  //   request_title: "가구 조립 도와주세요",
+  //   user_nick: "김철수",
+  //   request_cost: "30,000",
+  //   applyIntro: "조립 경험이 많습니다.",
+  //   status: "pending",
+  // },
 ];
 
 const ApplyList = () => {
@@ -105,10 +105,22 @@ const ApplyList = () => {
 
   return (
     <FlatList
+      style={{ width: "100%" }}
       data={applyList}
       renderItem={renderItem}
       keyExtractor={(item) => item.request_idx.toString()}
       contentContainerStyle={styles.container}
+      ListEmptyComponent={
+        <Text
+          style={{
+            alignSelf: "center",
+            color: "gray",
+            marginTop: 20,
+          }}
+        >
+          지원자가 없습니다.
+        </Text>
+      }
     />
   );
 };
@@ -117,14 +129,12 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
     paddingVertical: 10,
-    backgroundColor: theme["home-bg"],
   },
   itemContainer: {
     backgroundColor: theme["home-bg"],
     padding: 15,
-    borderRadius: 10,
     marginBottom: 10,
-    borderWidth: 1,
+    borderBottomWidth: 0.45,
     borderColor: theme["default-border"],
     flexDirection: "row",
     alignItems: "center",
@@ -163,7 +173,6 @@ const styles = StyleSheet.create({
     marginLeft: 6,
   },
   approveButton: {
-    // backgroundColor: theme["home-bg"],
     backgroundColor: "#6a994e",
   },
   rejectButton: {
@@ -177,7 +186,7 @@ const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "600",
     textAlign: "center",
     color: theme["default-btn"],
   },

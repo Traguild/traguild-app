@@ -53,7 +53,7 @@ const MyPage = () => {
       </View>
 
       <View style={styles.myCreditBox}>
-        <FontAwesome5 name="coins" size={24} color="#f7b801" />
+        <FontAwesome5 name="coins" size={18} color="#f7b801" />
         <Text style={styles.myCredit}>{getCost(dummyCredit)} 코인</Text>
         <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
           <Text style={styles.chargeButtonText}>충전하기</Text>
@@ -61,11 +61,10 @@ const MyPage = () => {
       </View>
 
       <View style={styles.requestBox}>
-        {/* 각 버튼에 따라 다른 페이지로 이동 */}
         {[
-          { text: "찜한 의뢰", screen: "Favorite" }, // 찜한 의뢰 화면으로 이동
-          { text: "의뢰 내역", screen: "QuestList" }, // 의뢰 내역 화면으로 이동
-          { text: "프로필 수정", screen: "ProfileEdit" }, // 프로필 수정 화면으로 이동
+          { text: "찜한 의뢰", screen: "Favorite" },
+          { text: "의뢰 내역", screen: "QuestList" },
+          { text: "프로필 수정", screen: "ProfileEdit" },
         ].map((item, idx) => (
           <MyItem
             key={idx}
@@ -79,7 +78,9 @@ const MyPage = () => {
 
       <View style={styles.applyListContainer}>
         <Text style={styles.applyListTitle}>지원자 목록</Text>
-        <ApplyList />
+        <View style={styles.applyList}>
+          <ApplyList />
+        </View>
       </View>
     </View>
   );
@@ -125,12 +126,11 @@ const styles = StyleSheet.create({
     width: "100%",
 
     borderColor: "lightgray",
-    borderTopWidth: 0.45,
     borderBottomWidth: 0.45,
   },
 
   myCredit: {
-    marginLeft: 20,
+    marginLeft: 18,
 
     fontSize: 18,
     fontWeight: "500",
@@ -176,14 +176,24 @@ const styles = StyleSheet.create({
   applyListContainer: {
     flex: 1,
     width: "100%",
+    padding: 15,
   },
   applyListTitle: {
+    color: theme["apply-text"],
     fontSize: 18,
     fontWeight: "600",
-    marginTop: 30,
-    marginLeft: 10,
+
+    marginLeft: 5,
+    marginTop: 15,
+    marginBottom: 10,
     textAlign: "flex-start",
     width: "100%",
+  },
+  applyList: {
+    flex: 1,
+    borderWidth: 0.45,
+    borderColor: "lightgray",
+    borderRadius: 15,
   },
 });
 
