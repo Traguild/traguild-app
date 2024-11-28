@@ -37,7 +37,7 @@ export const API = {
         body: JSON.stringify(data),
       });
 
-      const result = await response.json();
+      const result = (await response?.json()) ?? {};
 
       if (result?.message?.includes("index_not_found_exception")) {
         return [];

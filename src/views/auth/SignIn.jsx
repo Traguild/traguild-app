@@ -4,7 +4,10 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 /* IMPORT RESOURCES */
 import { theme } from "resources/theme/common";
@@ -29,8 +32,19 @@ const SignIn = ({ navigation }) => {
     });
   });
 
-  const handleSignIn = () => {
-    navGo.re("AppTabNavigator");
+  const [user_id, setUserId] = useState("");
+  const [user_pw, setUserPw] = useState("");
+
+  const handleSignIn = async () => {
+    const res = await API.POST({
+      url: "/login",
+      data: { user_id, user_pw },
+    });
+
+    if (res) {
+      res.user_idx != -1 ? navGo.re("AppTabNavigator") : null;
+    } else {
+    }
   };
 
   return (
@@ -38,11 +52,20 @@ const SignIn = ({ navigation }) => {
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Label text="아이디 (이메일)" style={{ alignSelf: "flex-start" }} />
-          <Input style={{ width: "100%" }} />
+          <Input
+            style={{ width: "100%" }}
+            value={user_id}
+            onChangeText={setUserId}
+          />
         </View>
         <View style={styles.inputContainer}>
           <Label text="비밀번호" style={{ alignSelf: "flex-start" }} />
-          <Input style={{ width: "100%" }} secureTextEntry={true} />
+          <Input
+            style={{ width: "100%" }}
+            value={user_pw}
+            onChangeText={setUserPw}
+            secureTextEntry={true}
+          />
         </View>
         <Button
           text="계속하기"
