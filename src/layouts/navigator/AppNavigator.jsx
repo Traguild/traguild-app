@@ -4,6 +4,7 @@ import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
 import Main from "views/Main";
+import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
@@ -38,6 +39,11 @@ const AppNavigator = () => {
       initialRouteName="Main"
     >
       <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{ headerShown: true }}
+      />
       <Stack.Screen
         name="SignUp"
         component={SignUp}

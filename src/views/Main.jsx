@@ -25,7 +25,8 @@ const Main = () => {
           style={{ marginBottom: 10 }}
           onPress={() => navGo.to("SignUp")}
         />
-        <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} />
+        <Button text="로그인" onPress={() => navGo.to("SignIn")} />
+        {/* <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} /> */}
       </View>
     </View>
   );

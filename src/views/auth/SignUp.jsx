@@ -36,6 +36,7 @@ const SignUp = ({ navigation }) => {
         elevation: 0,
         shadowOpacity: 0,
       },
+      headerTintColor: theme["default-btn"],
     });
   });
 
@@ -69,46 +70,43 @@ const SignUp = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
+          <Label style={{ alignSelf: "flex-start" }} text="닉네임 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_nickname}
             onChangeText={(text) => setUserNickname(text)}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이름 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_name}
             onChangeText={(text) => setName(text)}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이메일 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_email}
             onChangeText={(text) => setEmail(text)}
             keyboardType="email-address"
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 " />
+          <Label style={{ alignSelf: "flex-start" }} text="비밀번호 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_pw}
             onChangeText={(text) => setPassword(text)}
             secureTextEntry={true}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label
-            style={{ width: "35%", marginBottom: 15 }}
-            text="비밀번호 확인 "
-          />
+          <Label style={{ alignSelf: "flex-start" }} text="비밀번호 확인 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
             secureTextEntry={true}
@@ -129,19 +127,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "800",
-    color: theme["apply-title"],
-    marginBottom: 10,
+    paddingHorizontal: 35,
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
+    width: "100%",
   },
 });
 
