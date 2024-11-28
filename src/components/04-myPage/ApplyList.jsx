@@ -12,46 +12,46 @@ import { theme } from "../../resources/theme/common";
 
 // DUMMY DATA FOR DEMO
 const dummyData = [
-  // {
-  //   request_idx: 1,
-  //   request_title: "청소 도와주세요",
-  //   user_nick: "홍길동",
-  //   request_cost: "20,000",
-  //   applyIntro: "청소 잘 합니다!",
-  //   status: "pending",
-  // },
-  // {
-  //   request_idx: 2,
-  //   request_title: "가구 조립 도와주세요",
-  //   user_nick: "김철수",
-  //   request_cost: "30,000",
-  //   applyIntro: "조립 경험이 많습니다.",
-  //   status: "pending",
-  // },
-  // {
-  //   request_idx: 3,
-  //   request_title: "가구 조립 도와주세요",
-  //   user_nick: "김철수",
-  //   request_cost: "30,000",
-  //   applyIntro: "조립 경험이 많습니다.",
-  //   status: "pending",
-  // },
-  // {
-  //   request_idx: 4,
-  //   request_title: "가구 조립 도와주세요",
-  //   user_nick: "김철수",
-  //   request_cost: "30,000",
-  //   applyIntro: "조립 경험이 많습니다.",
-  //   status: "pending",
-  // },
-  // {
-  //   request_idx: 5,
-  //   request_title: "가구 조립 도와주세요",
-  //   user_nick: "김철수",
-  //   request_cost: "30,000",
-  //   applyIntro: "조립 경험이 많습니다.",
-  //   status: "pending",
-  // },
+  {
+    request_idx: 1,
+    request_title: "청소 도와주세요",
+    user_nick: "홍길동",
+    request_cost: "20,000",
+    applyIntro: "청소 잘 합니다!",
+    status: "pending",
+  },
+  {
+    request_idx: 2,
+    request_title: "가구 조립 도와주세요",
+    user_nick: "김철수",
+    request_cost: "30,000",
+    applyIntro: "조립 경험이 많습니다.",
+    status: "pending",
+  },
+  {
+    request_idx: 3,
+    request_title: "가구 조립 도와주세요",
+    user_nick: "김철수",
+    request_cost: "30,000",
+    applyIntro: "조립 경험이 많습니다.",
+    status: "pending",
+  },
+  {
+    request_idx: 4,
+    request_title: "가구 조립 도와주세요",
+    user_nick: "김철수",
+    request_cost: "30,000",
+    applyIntro: "조립 경험이 많습니다.",
+    status: "pending",
+  },
+  {
+    request_idx: 5,
+    request_title: "가구 조립 도와주세요",
+    user_nick: "김철수",
+    request_cost: "30,000",
+    applyIntro: "조립 경험이 많습니다.",
+    status: "pending",
+  },
 ];
 
 const ApplyList = () => {

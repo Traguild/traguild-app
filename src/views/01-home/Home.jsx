@@ -91,6 +91,7 @@ const Home = () => {
             style={{
               alignSelf: "center",
               color: "gray",
+              marginTop: 20,
             }}
           >
             데이터를 불러올 수 없습니다.
