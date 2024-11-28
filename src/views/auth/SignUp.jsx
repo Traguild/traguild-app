@@ -59,8 +59,8 @@ const SignUp = ({ navigation }) => {
     });
 
     if (res) {
-      toast.show("회원가입이 완료되었습니다.");
-      navGo.to("Main");
+      toast.show(`${user_nickname}님 환영합니다!`);
+      navGo.re("AppTabNavigator");
     } else {
       toast.show("다시 시도해주세요.");
     }

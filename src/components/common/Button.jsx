@@ -14,6 +14,7 @@ const Button = ({
   return (
     <TouchableOpacity
       style={{ ...style, ...styles.btn, backgroundColor: bgColor }}
+      activeOpacity={0.75}
       {...props}
     >
       <Text style={{ ...styles.btnText, color: fontColor }}>{text}</Text>
