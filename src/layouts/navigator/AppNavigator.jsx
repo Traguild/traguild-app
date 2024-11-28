@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
-import SignIn from "views/auth/SignIn";
+import Main from "views/Main";
 import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
@@ -35,9 +35,9 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SignIn"
+      initialRouteName="Main"
     >
-      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Main" component={Main} />
       <Stack.Screen
         name="SignUp"
         component={SignUp}

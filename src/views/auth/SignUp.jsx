@@ -59,7 +59,7 @@ const SignUp = ({ navigation }) => {
 
     if (res) {
       toast.show("회원가입이 완료되었습니다.");
-      navGo.to("SignIn");
+      navGo.to("Main");
     } else {
       toast.show("다시 시도해주세요.");
     }
