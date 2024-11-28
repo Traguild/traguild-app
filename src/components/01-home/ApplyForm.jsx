@@ -27,34 +27,34 @@ const ApplyForm = ({ onFocus }) => {
       </View> */}
 
       <View style={styles.inputColumn}>
-        <View style={{ flexDirection: "row" }}>
-          <Label style={{ width: "20%" }} text={"이름"} />
+        <View>
+          <Label text={"이름"} />
           <Input
-            style={{ marginTop: 10, width: "80%" }}
+            style={{ width: "100%" }}
             text={applyContent.user_name}
             readonly={true}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Label style={{ width: "20%" }} text={"지역"} />
+        <View>
+          <Label text={"지역"} />
           <Input
-            style={{ marginTop: 10, width: "80%" }}
+            style={{ width: "100%" }}
             text={applyContent.user_location}
             readonly={true}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Label style={{ width: "20%" }} text={"이메일"} />
+        <View>
+          <Label text={"이메일"} />
           <Input
-            style={{ marginTop: 10, width: "80%" }}
+            style={{ width: "100%" }}
             text={applyContent.user_email}
             readonly={true}
           />
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Label style={{ width: "20%" }} text={"소개"} />
+        <View>
+          <Label text={"소개"} />
           <TextField
-            style={{ marginTop: 10, width: "80%" }}
+            style={{ width: "100%" }}
             value={applyIntro}
             onChangeText={setApplyIntro}
             onFocus={onFocus}
@@ -69,7 +69,7 @@ export default ApplyForm;
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: 380,
+    height: 500,
     flexDirection: "row",
     paddingHorizontal: 10,
   },

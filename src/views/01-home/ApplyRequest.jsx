@@ -19,7 +19,7 @@ import Button from "components/common/Button";
 
 const ApplyRequest = ({ modalVisible, setModalVisible }) => {
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "65%", "84%"], []);
+  const snapPoints = useMemo(() => ["10%", "80%", "100%"], []);
 
   const handleOpen = useCallback(() => {
     bottomSheetRef.current?.present();
