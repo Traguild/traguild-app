@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 
 // Import Views
+import Main from "views/Main";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
 import RequestDetail from "views/01-home/RequestDetail";
@@ -35,9 +36,14 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="SignIn"
+      initialRouteName="Main"
     >
-      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen
+        name="SignIn"
+        component={SignIn}
+        options={{ headerShown: true }}
+      />
       <Stack.Screen
         name="SignUp"
         component={SignUp}

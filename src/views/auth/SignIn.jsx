@@ -1,68 +1,70 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import React, { useLayoutEffect } from "react";
 
 /* IMPORT RESOURCES */
-import { theme } from "../../resources/theme/common";
+import { theme } from "resources/theme/common";
 
 // IMPORT COMPONENTS
+import Input from "components/common/Input";
+import Label from "components/common/Label";
 import Button from "components/common/Button";
 
-const SignIn = () => {
-  const Logo = require("../../../assets/splash-icon.png");
+const SignIn = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: "",
+      headerStyle: {
+        backgroundColor: theme["default-bg"],
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerTintColor: theme["default-btn"],
+    });
+  });
+
+  const handleSignIn = () => {
+    navGo.re("AppTabNavigator");
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.contents}>
-        <Text style={styles["app-title"]}>모험가 길드</Text>
-        <Image source={Logo} style={styles.logo} />
-      </View>
-
-      <View style={styles.buttons}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <View style={styles.inputContainer}>
+          <Label text="아이디 (이메일)" style={{ alignSelf: "flex-start" }} />
+          <Input style={{ width: "100%" }} />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label text="비밀번호" style={{ alignSelf: "flex-start" }} />
+          <Input style={{ width: "100%" }} secureTextEntry={true} />
+        </View>
         <Button
-          text="가입하기"
-          bgColor="white"
-          fontColor="black"
-          style={{ marginBottom: 10 }}
-          onPress={() => navGo.to("SignUp")}
+          text="계속하기"
+          style={{ marginTop: 15 }}
+          onPress={handleSignIn}
         />
-        <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} />
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
+
+export default SignIn;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "center",
+    paddingHorizontal: 35,
+  },
+  inputContainer: {
+    flexDirection: "column",
     alignItems: "center",
-  },
-
-  contents: {
-    flex: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  "app-title": {
-    marginTop: 180,
-    fontSize: 50,
-    fontWeight: "800",
-    color: "white",
-  },
-  logo: {
-    marginTop: -50,
-    width: 400,
-    height: 400,
-  },
-
-  buttons: {
-    flex: 2,
-    alignItems: "center",
-    justifyContent: "center",
     width: "100%",
-    padding: 30,
   },
 });
-
-export default SignIn;

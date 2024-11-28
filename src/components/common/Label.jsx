@@ -16,7 +16,6 @@ export default Label;
 
 const styles = StyleSheet.create({
   menuName: {
-    marginTop: 15,
     padding: 10,
   },
   applyMenu: {

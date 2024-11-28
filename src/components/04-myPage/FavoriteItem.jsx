@@ -30,7 +30,9 @@ const FavoriteItem = ({ item }) => {
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
             <Text style={styles.itemTitle}>{item.request_title}</Text>
 
             <View
@@ -46,22 +48,26 @@ const FavoriteItem = ({ item }) => {
             </View>
 
             <TouchableOpacity onPress={toggleFavorite}>
-              <Ionicons name={isFavorite ? "heart" : "heart-outline"} size={24} color={"red"}
+              <Ionicons
+                name={isFavorite ? "heart" : "heart-outline"}
+                size={24}
+                color={"red"}
               />
             </TouchableOpacity>
           </View>
 
           <View style={styles.regionBox}>
-            <FontAwesome5 style={styles.region} name="map-marker-alt" size={24} color="black" />
+            <FontAwesome5
+              style={styles.region}
+              name="map-marker-alt"
+              size={24}
+              color="black"
+            />
             <Text style={styles.region}>
               &nbsp;{item.request_state_region}&nbsp;
             </Text>
-            <Text style={styles.region}>
-              {item.request_city_region}&nbsp;
-            </Text>
-            <Text style={styles.region}>
-              {item.created_time}
-            </Text>
+            <Text style={styles.region}>{item.request_city_region}&nbsp;</Text>
+            <Text style={styles.region}>{item.created_time}</Text>
           </View>
 
           <View style={styles.itemCostBox}>
@@ -79,6 +85,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    paddingHorizontal: 10,
   },
   listItem: {
     backgroundColor: theme["home-bg"],
