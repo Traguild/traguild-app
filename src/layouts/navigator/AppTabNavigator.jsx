@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { Platform, StyleSheet, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
@@ -42,7 +42,7 @@ const AppTabNavigator = () => {
 
   const tabOptions = ({ route }) => ({
     tabBarStyle: {
-      height: HEIGHT * 0.08,
+      height: HEIGHT * (0.08 + (Platform.OS === "ios" ? 0.02 : 0)),
       backgroundColor: theme["home-bg"],
     },
     tabBarActiveTintColor: theme["tab-active"],
