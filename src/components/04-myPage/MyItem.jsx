@@ -13,14 +13,20 @@ const MyItem = ({ text, onPress }) => {
   };
 
   return (
-    <TouchableOpacity style={{ alignItems: "center" }} activeOpacity={0.3} onPress={onPress}>
+    <TouchableOpacity
+      style={{ alignItems: "center" }}
+      activeOpacity={0.3}
+      onPress={onPress}
+    >
       <Ionicons
         name={icons[text]}
         size={34}
         color={theme["default-btn"]}
         style={{ marginBottom: 3 }}
       />
-      <Text>{text}</Text>
+      <Text style={{ color: theme["default-btn"], fontWeight: "500" }}>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
