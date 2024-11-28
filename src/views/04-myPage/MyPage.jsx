@@ -1,8 +1,8 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
 
 // IMPORT RESOURCES
-import { defaultImg } from 'resources/img/defaultImg';
+import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "../../resources/theme/common";
 
 // IMPORT LAYOUTS
@@ -15,13 +15,13 @@ import Button from "components/common/Button";
 import ApplyList from "components/04-myPage/ApplyList";
 
 const dummyLogin = {
-  "user_id": "gdhong",
-  "user_pw": "mypassword",
-  "user_name": "홍길동",
-  "user_nick": "RBRoad",
-  "user_email": "gdhong@gmail.com",
-  "user_birth": "1900-01-01",
-  "user_region": "김해시"
+  user_id: "gdhong",
+  user_pw: "mypassword",
+  user_name: "홍길동",
+  user_nick: "RBRoad",
+  user_email: "gdhong@gmail.com",
+  user_birth: "1900-01-01",
+  user_region: "김해시",
 };
 
 const dummyCredit = 9999;
@@ -47,9 +47,9 @@ const MyPage = () => {
       <View style={styles.requestBox}>
         {/* 각 버튼에 따라 다른 페이지로 이동 */}
         {[
-          { text: "찜한 의뢰", screen: "Favorite" },  // 찜한 의뢰 화면으로 이동
-          { text: "의뢰 내역", screen: "QuestList" },   // 의뢰 내역 화면으로 이동
-          { text: "프로필 수정", screen: "ProfileEdit" } // 프로필 수정 화면으로 이동
+          { text: "찜한 의뢰", screen: "Favorite" }, // 찜한 의뢰 화면으로 이동
+          { text: "의뢰 내역", screen: "QuestList" }, // 의뢰 내역 화면으로 이동
+          { text: "프로필 수정", screen: "ProfileEdit" }, // 프로필 수정 화면으로 이동
         ].map((item, idx) => (
           <MyItem
             key={idx}
@@ -66,14 +66,13 @@ const MyPage = () => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
   },
-
   profileBox: {
     flexDirection: "row",
     alignItems: "center",
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
   },
 
   myCredit: {
-    marginLeft: 'auto',
+    marginLeft: "auto",
     marginBottom: 10,
 
     fontSize: 24,
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
   },
 
   chargeButton: {
-    marginLeft: 'auto', // 버튼을 오른쪽으로 밀어냄
+    marginLeft: "auto", // 버튼을 오른쪽으로 밀어냄
     backgroundColor: theme["default-btn"], // 버튼 배경색 (예시)
     paddingVertical: 8,
     paddingHorizontal: 15,
@@ -128,9 +127,9 @@ const styles = StyleSheet.create({
   },
 
   chargeButtonText: {
-    color: 'white', // 텍스트 색상
+    color: "white", // 텍스트 색상
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   requestBox: {
@@ -141,7 +140,7 @@ const styles = StyleSheet.create({
 
     borderColor: "lightgray",
     borderBottomWidth: 0.45,
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   applyListContainer: {
     flex: 1,
