@@ -12,6 +12,7 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import Button from "components/common/Button";
+import ApplyList from "components/04-myPage/ApplyList";
 
 const dummyLogin = {
   "user_id": "gdhong",
@@ -58,6 +59,10 @@ const MyPage = () => {
             }}
           />
         ))}
+      </View>
+
+      <View style={styles.applyListContainer}>
+        <ApplyList />
       </View>
     </View>
   );
@@ -137,6 +142,10 @@ const styles = StyleSheet.create({
     borderColor: "lightgray",
     borderBottomWidth: 0.45,
     justifyContent: "space-around"
+  },
+  applyListContainer: {
+    flex: 1,
+    width: "100%",
   },
 });
 

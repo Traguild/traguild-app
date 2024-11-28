@@ -15,6 +15,7 @@ export const theme = {
 
   "apply-title": "#6C4E31",
   "apply-text": "#6C4E31",
+  "apply-bg": "#e1d3b8",
 
   "input-field": "#fefae0",
 
@@ -30,4 +31,7 @@ export const theme = {
 
   "toast-success": "#a7c957",
   "toast-fail": "#f05650",
+
+  "success-btn": "#B0EAC0",
+  "reject-btn": "#F5C6C6",
 };
