@@ -25,7 +25,7 @@ const dummyLogin = {
   user_name: "홍길동",
   user_nick: "RBRoad",
   user_email: "gdhong@gmail.com",
-  user_region: "김해시",
+  user_region: "김해시 어방동",
 };
 
 const ProfileEdit = ({ navigation }) => {
@@ -35,7 +35,7 @@ const ProfileEdit = ({ navigation }) => {
   const [user_region, setRegion] = useState(dummyLogin.user_region);
   const [user_nick, setNick] = useState(dummyLogin.user_nick);
   const [user_email, setEmail] = useState(dummyLogin.user_email);
-  const [user_pw, setPassword] = useState(dummyLogin.user_pw);
+  const [user_pw, setPassword] = useState("");
   const [new_user_pw, setNewPassword] = useState(""); // 변경할 비밀번호
   const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
 
@@ -53,7 +53,7 @@ const ProfileEdit = ({ navigation }) => {
     });
   });
 
-  const handlePostRequest = () => {
+  const handleSaveMyInfo = () => {
     // 비밀번호 확인 로직
     if (user_pw !== dummyLogin.user_pw) {
       toast.show("현재 비밀번호가 일치하지 않습니다.", { type: "error" });
@@ -87,11 +87,21 @@ const ProfileEdit = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="이름 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이름" />
           <Input
             style={{ width: "100%" }}
             value={user_name}
             onChangeText={(text) => setName(text)}
+            readonly
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ alignSelf: "flex-start" }} text="닉네임" />
+          <Input
+            style={{ width: "100%" }}
+            value={user_nick}
+            onChangeText={(text) => setNick(text)}
+            placeholder="닉네임을 입력하세요"
           />
         </View>
         <View style={styles.inputContainer}>
@@ -104,22 +114,14 @@ const ProfileEdit = ({ navigation }) => {
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="닉네임 " />
-          <Input
-            style={{ width: "100%" }}
-            value={user_nick}
-            onChangeText={(text) => setNick(text)}
-            placeholder="닉네임을 입력하세요"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="이메일 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이메일" />
           <Input
             style={{ width: "100%" }}
             value={user_email}
             onChangeText={(text) => setEmail(text)}
             placeholder="이메일을 입력하세요"
             keyboardType="email-address"
+            readonly
           />
         </View>
 
@@ -158,8 +160,8 @@ const ProfileEdit = ({ navigation }) => {
 
         <Button
           style={{ marginTop: 15 }}
-          text="프로필 업데이트"
-          onPress={handlePostRequest}
+          text="저장하기"
+          onPress={handleSaveMyInfo}
         />
       </View>
     </TouchableWithoutFeedback>
