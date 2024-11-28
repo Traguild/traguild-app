@@ -7,24 +7,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Input = ({
   style = {},
-  keyboardType = "default",
   readonly = false,
-  value = "",
-  onChange = () => { },
-  onChangeText = () => { },
   secureTextEntry = false,
-  props,
+  ...props
 }) => {
   return (
     <View style={{ ...style }}>
       <TextInput
         style={styles.inputText}
         editable={!readonly}
-        keyboardType={keyboardType}
-        value={value}
-        onChange={onChange}
-        onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
+        {...props}
       />
       {readonly ? (
         <MaterialCommunityIcons

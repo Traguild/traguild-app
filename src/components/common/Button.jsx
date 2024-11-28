@@ -6,15 +6,15 @@ import { theme } from "../../resources/theme/common";
 
 const Button = ({
   text,
-  onPress,
   bgColor = theme["default-btn"],
   fontColor = "white",
   style = {},
+  ...props
 }) => {
   return (
     <TouchableOpacity
       style={{ ...style, ...styles.btn, backgroundColor: bgColor }}
-      onPress={onPress}
+      {...props}
     >
       <Text style={{ ...styles.btnText, color: fontColor }}>{text}</Text>
     </TouchableOpacity>

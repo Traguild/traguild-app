@@ -30,10 +30,12 @@ const SignUp = ({ navigation }) => {
     navigation.setOptions({
       headerBackTitleVisible: false,
       headerBackTitle: null,
-      title: null,
-      headerStyle: { backgroundColor: "transparent" },
-      headerTransparent: true,
-      headerTintColor: theme["default-btn"],
+      title: "",
+      headerStyle: {
+        backgroundColor: theme["default-bg"],
+        elevation: 0,
+        shadowOpacity: 0,
+      },
     });
   });
 
@@ -66,8 +68,6 @@ const SignUp = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <Label style={styles.title} text="회원가입" />
-
         <View style={styles.inputContainer}>
           <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
           <Input

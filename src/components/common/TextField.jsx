@@ -4,14 +4,7 @@ import React from "react";
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 
-const TextField = ({
-  style,
-  max = 200,
-  value,
-  onChangeText,
-  props,
-  onFocus,
-}) => {
+const TextField = ({ style, max = 200, ...props }) => {
   return (
     <View style={{ ...styles.inputStyle, ...style }}>
       <TextInput
@@ -19,9 +12,6 @@ const TextField = ({
         textAlignVertical="top"
         multiline
         maxLength={max}
-        onChangeText={onChangeText}
-        value={value}
-        onFocus={onFocus}
         {...props}
       />
     </View>
