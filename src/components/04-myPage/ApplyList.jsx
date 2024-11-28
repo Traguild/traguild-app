@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         backgroundColor: theme["home-bg"],
     },
     itemContainer: {
-        backgroundColor: theme["apply-bg"],
+        backgroundColor: theme["home-bg"],
         padding: 15,
         borderRadius: 10,
         marginBottom: 10,
@@ -165,10 +165,10 @@ const styles = StyleSheet.create({
         borderColor: theme["default-border"],
     },
     approveButton: {
-        backgroundColor: theme["success-btn"],
+        backgroundColor: theme["home-bg"],
     },
     rejectButton: {
-        backgroundColor: theme["reject-btn"],
+        backgroundColor: theme["home-bg"],
     },
     buttonText: {
         color: theme["btn-floating"],
