@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
   },
   applyListTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 10,
+    fontWeight: "600",
+    marginTop: 30,
     marginLeft: 10,
     textAlign: "flex-start",
     width: "100%",
