@@ -1,5 +1,12 @@
-import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import React, { useLayoutEffect, useState } from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
+import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useToast } from "react-native-toast-notifications";
 
@@ -10,7 +17,7 @@ import { theme } from "../../resources/theme/common";
 import Button from "components/common/Button";
 import Label from "components/common/Label";
 import Input from "components/common/Input";
-
+import { layout } from "resources/theme/layout";
 
 const dummyLogin = {
   user_id: "gdhong",
@@ -18,10 +25,11 @@ const dummyLogin = {
   user_name: "홍길동",
   user_nick: "RBRoad",
   user_email: "gdhong@gmail.com",
-  user_region: "김해시"
+  user_region: "김해시",
 };
 
 const ProfileEdit = ({ navigation }) => {
+  const scrollHeight = layout().height * 1.5;
   const toast = useToast();
   const [user_name, setName] = useState(dummyLogin.user_name);
   const [user_region, setRegion] = useState(dummyLogin.user_region);
@@ -35,9 +43,12 @@ const ProfileEdit = ({ navigation }) => {
     navigation.setOptions({
       headerBackTitleVisible: false,
       headerBackTitle: null,
-      title: null,
-      headerStyle: { backgroundColor: "transparent" },
-      headerTransparent: true,
+      title: "",
+      headerStyle: {
+        backgroundColor: theme["default-bg"],
+        elevation: 0,
+        shadowOpacity: 0,
+      },
       headerTintColor: theme["default-btn"],
     });
   });
@@ -50,7 +61,9 @@ const ProfileEdit = ({ navigation }) => {
     }
 
     if (user_pw == new_user_pw) {
-      toast.show("현재 비밀번호와 새 비밀번호가 일치합니다.", { type: "error" });
+      toast.show("현재 비밀번호와 새 비밀번호가 일치합니다.", {
+        type: "error",
+      });
       return;
     }
 
@@ -60,7 +73,9 @@ const ProfileEdit = ({ navigation }) => {
     }
 
     if (new_user_pw !== confirmPassword) {
-      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.", { type: "error" });
+      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.", {
+        type: "error",
+      });
       return;
     }
 
@@ -72,35 +87,35 @@ const ProfileEdit = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="이름 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이름 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_name}
             onChangeText={(text) => setName(text)}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="지역 " />
+          <Label style={{ alignSelf: "flex-start" }} text="지역 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_region}
             onChangeText={(text) => setRegion(text)}
             placeholder="지역을 입력하세요"
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="닉네임 " />
+          <Label style={{ alignSelf: "flex-start" }} text="닉네임 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_nick}
             onChangeText={(text) => setNick(text)}
             placeholder="닉네임을 입력하세요"
           />
         </View>
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="이메일 " />
+          <Label style={{ alignSelf: "flex-start" }} text="이메일 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_email}
             onChangeText={(text) => setEmail(text)}
             placeholder="이메일을 입력하세요"
@@ -109,9 +124,9 @@ const ProfileEdit = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="현재 비밀번호 " />
+          <Label style={{ alignSelf: "flex-start" }} text="현재 비밀번호 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={user_pw}
             onChangeText={(text) => setPassword(text)}
             placeholder="현재 비밀번호를 입력하세요"
@@ -120,9 +135,9 @@ const ProfileEdit = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="새 비밀번호 " />
+          <Label style={{ alignSelf: "flex-start" }} text="새 비밀번호 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={new_user_pw}
             onChangeText={(text) => setNewPassword(text)}
             placeholder="새 비밀번호를 입력하세요"
@@ -131,9 +146,9 @@ const ProfileEdit = ({ navigation }) => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Label style={{ width: "35%", marginBottom: 15 }} text="비밀번호 확인 " />
+          <Label style={{ alignSelf: "flex-start" }} text="비밀번호 확인 " />
           <Input
-            style={{ width: "65%" }}
+            style={{ width: "100%" }}
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
             placeholder="비밀번호를 다시 입력하세요"
@@ -155,14 +170,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["default-bg"],
-    justifyContent: "flex-start",
-    alignItems: "center",
-    padding: 20,
-    paddingTop: 60,
+    paddingHorizontal: 20,
   },
   inputContainer: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
+    width: "100%",
   },
   postButton: {
     backgroundColor: theme["default-btn"],
