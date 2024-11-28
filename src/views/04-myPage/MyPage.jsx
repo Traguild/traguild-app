@@ -62,6 +62,7 @@ const MyPage = () => {
       </View>
 
       <View style={styles.applyListContainer}>
+        <Text style={styles.applyListTitle}>지원자 목록</Text>
         <ApplyList />
       </View>
     </View>
@@ -144,6 +145,14 @@ const styles = StyleSheet.create({
   },
   applyListContainer: {
     flex: 1,
+    width: "100%",
+  },
+  applyListTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginLeft: 10,
+    textAlign: "flex-start",
     width: "100%",
   },
 });
