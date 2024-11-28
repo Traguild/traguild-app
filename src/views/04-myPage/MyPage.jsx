@@ -14,6 +14,8 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
+import Button from "components/common/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const dummyLogin = {
   user_id: "gdhong",
@@ -28,6 +30,11 @@ const dummyLogin = {
 const dummyCredit = 9999;
 
 const MyPage = () => {
+  const signOut = async () => {
+    await AsyncStorage.removeItem("user_idx");
+    navGo.re("Main");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
@@ -36,6 +43,13 @@ const MyPage = () => {
           <Text style={styles.profileName}>{dummyLogin.user_nick}</Text>
           <MyManner />
         </View>
+        <TouchableOpacity
+          style={styles.signOutBtn}
+          activeOpacity={0.7}
+          onPress={signOut}
+        >
+          <Text style={styles.signOutText}>로그아웃</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.myCreditBox}>
@@ -129,11 +143,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     borderRadius: 10,
   },
-
   chargeButtonText: {
     color: "white", // 텍스트 색상
     fontSize: 16,
     fontWeight: "500",
+  },
+
+  signOutBtn: {
+    marginLeft: "auto",
+    backgroundColor: "gray",
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    marginBottom: 50,
+  },
+  signOutText: {
+    color: "white", // 텍스트 색상
+    fontSize: 12,
+    fontWeight: "600",
   },
 
   requestBox: {

@@ -14,11 +14,17 @@ import ProfileEdit from "views/04-myPage/ProfileEdit";
 
 // IMPORT COMPONENTS
 import AppTabNavigator from "./AppTabNavigator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const navigation = useNavigation();
+
+  const isLogin = async () => {
+    const user_idx = await AsyncStorage.getItem("user_idx");
+    return user_idx ? true : false;
+  };
 
   global.navGo = {
     to: (screen, params) => navigation.navigate(screen, params),
@@ -36,7 +42,7 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="Main"
+      initialRouteName={isLogin() ? "AppTabNavigator" : "Main"}
     >
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen

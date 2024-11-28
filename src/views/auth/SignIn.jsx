@@ -5,6 +5,7 @@ import {
   View,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -42,7 +43,11 @@ const SignIn = ({ navigation }) => {
     });
 
     if (res) {
-      res.user_idx != -1 ? navGo.re("AppTabNavigator") : null;
+      if (res.user_idx != -1) {
+        await AsyncStorage.setItem("user_idx", res.user_idx.toString());
+        navGo.re("AppTabNavigator");
+      } else {
+      }
     } else {
     }
   };

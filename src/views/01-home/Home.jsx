@@ -82,22 +82,28 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      {requestData.length === 0 ? (
-        <Text>데이터가 없습니다.</Text>
-      ) : (
-        <FlatList
-          style={{ width: "100%" }}
-          data={requestData}
-          renderItem={({ item }) => <RequestItem item={item} />}
-          keyExtractor={(item) => item.request_idx.toString()}
-          refreshControl={
-            <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
-          }
-          onEndReached={() => !isLoading && onEndReached()}
-          onEndReachedThreshold={0.3}
-          ListFooterComponent={isLoading && <ActivityIndicator />}
-        />
-      )}
+      <FlatList
+        style={{ width: "100%" }}
+        data={requestData}
+        renderItem={({ item }) => <RequestItem item={item} />}
+        ListEmptyComponent={
+          <Text
+            style={{
+              alignSelf: "center",
+              color: "gray",
+            }}
+          >
+            데이터를 불러올 수 없습니다.
+          </Text>
+        }
+        keyExtractor={(item) => item.request_idx.toString()}
+        refreshControl={
+          <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />
+        }
+        onEndReached={() => !isLoading && onEndReached()}
+        onEndReachedThreshold={0.3}
+        ListFooterComponent={isLoading && <ActivityIndicator />}
+      />
 
       <TouchableOpacity
         style={styles.floatingButton}
