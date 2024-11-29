@@ -8,6 +8,9 @@ import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
+
 // IMPORT RESOURCES
 import { theme } from "../../resources/theme/common";
 
@@ -26,8 +29,8 @@ const ProfileEdit = ({ navigation, route }) => {
   );
   const [user_email, setEmail] = useState(userInfo?.user_email ?? "");
   const [user_pw, setPassword] = useState("");
-  const [new_user_pw, setNewPassword] = useState(""); // 변경할 비밀번호
-  const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
+  const [new_user_pw, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,16 +46,43 @@ const ProfileEdit = ({ navigation, route }) => {
     });
   });
 
-  const handleSaveMyInfo = () => {
-    // 비밀번호 확인 로직
-
-    if (new_user_pw !== confirmPassword) {
-      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-      return;
+  const handleSaveMyInfo = async () => {
+    if (new_user_pw || confirmPassword) {
+      if (new_user_pw !== confirmPassword) {
+        toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        return;
+      }
     }
 
-    toast.show("프로필 정보가 업데이트가 되었습니다.", { type: "success" });
-    navigation.goBack();
+    const updatedData = {
+      user_idx: userInfo?.user_idx,
+      user_nickname,
+      user_region,
+      user_email,
+    };
+
+    if (user_pw && new_user_pw) {
+      updatedData.user_pw = user_pw;
+      updatedData.new_user_pw = new_user_pw
+    }
+
+    try {
+      const res = await API.POST({
+        url: "/userInfo/update",
+        data: updatedData,
+      });
+
+      if (res[0] === 1) {
+        toast.show("프로필 정보가 업데이트되었습니다.", { type: "success" });
+        navigation.goBack();
+      }
+      else {
+        toast.show(res.message || "프로필 업데이트에 실패했습니다.", { type: "danger" });
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      toast.show("프로필 업데이트 중 오류가 발생했습니다.", { type: "danger" });
+    }
   };
 
   return (
@@ -90,7 +120,7 @@ const ProfileEdit = ({ navigation, route }) => {
             <Label style={{ alignSelf: "flex-start" }} text="이메일" />
             <Input
               style={{ width: "100%" }}
-              value={user_email}
+              value={userInfo?.user_email ?? "알 수 없음"}
               onChangeText={(text) => setEmail(text)}
               placeholder="이메일을 입력하세요"
               keyboardType="email-address"
