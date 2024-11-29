@@ -9,7 +9,7 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 
-const ApplyForm = ({ onFocus, info, setChildApplyIntro }) => {
+const ApplyForm = ({ info, setChildApplyIntro }) => {
   const [apply_intro, setApplyIntro] = useState("");
   useEffect(() => {
     setChildApplyIntro(apply_intro);
@@ -48,7 +48,6 @@ const ApplyForm = ({ onFocus, info, setChildApplyIntro }) => {
             style={{ width: "100%", height: 130 }}
             value={apply_intro}
             onChangeText={setApplyIntro}
-            onFocus={onFocus}
           />
         </View>
       </View>

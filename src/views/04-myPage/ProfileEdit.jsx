@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // IMPORT RESOURCES
 import { theme } from "../../resources/theme/common";
@@ -57,83 +58,84 @@ const ProfileEdit = ({ navigation, route }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="이름" />
-          <Input
-            style={{ width: "100%" }}
-            value={userInfo?.user_name ?? "알 수 없음"}
-            onChangeText={(text) => setName(text)}
-            readonly
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="닉네임" />
-          <Input
-            style={{ width: "100%" }}
-            value={user_nickname}
-            onChangeText={(text) => setNickname(text)}
-            placeholder="닉네임을 입력하세요"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="지역 " />
-          <Input
-            style={{ width: "100%" }}
-            value={user_region}
-            onChangeText={(text) => setRegion(text)}
-            placeholder="지역을 입력하세요"
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="이메일" />
-          <Input
-            style={{ width: "100%" }}
-            value={user_email}
-            onChangeText={(text) => setEmail(text)}
-            placeholder="이메일을 입력하세요"
-            keyboardType="email-address"
-            readonly
-          />
-        </View>
+        <KeyboardAwareScrollView>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="이름" />
+            <Input
+              style={{ width: "100%" }}
+              value={userInfo?.user_name ?? "알 수 없음"}
+              onChangeText={(text) => setName(text)}
+              readonly
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="닉네임" />
+            <Input
+              style={{ width: "100%" }}
+              value={user_nickname}
+              onChangeText={(text) => setNickname(text)}
+              placeholder="닉네임을 입력하세요"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="지역 " />
+            <Input
+              style={{ width: "100%" }}
+              value={user_region}
+              onChangeText={(text) => setRegion(text)}
+              placeholder="지역을 입력하세요"
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="이메일" />
+            <Input
+              style={{ width: "100%" }}
+              value={user_email}
+              onChangeText={(text) => setEmail(text)}
+              placeholder="이메일을 입력하세요"
+              keyboardType="email-address"
+              readonly
+            />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="현재 비밀번호 " />
-          <Input
-            style={{ width: "100%" }}
-            value={user_pw}
-            onChangeText={(text) => setPassword(text)}
-            placeholder="현재 비밀번호를 입력하세요"
-            secureTextEntry={true}
-          />
-        </View>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="현재 비밀번호 " />
+            <Input
+              style={{ width: "100%" }}
+              value={user_pw}
+              onChangeText={(text) => setPassword(text)}
+              placeholder="현재 비밀번호를 입력하세요"
+              secureTextEntry={true}
+            />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="새 비밀번호 " />
-          <Input
-            style={{ width: "100%" }}
-            value={new_user_pw}
-            onChangeText={(text) => setNewPassword(text)}
-            placeholder="새 비밀번호를 입력하세요"
-            secureTextEntry={true}
-          />
-        </View>
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="새 비밀번호 " />
+            <Input
+              style={{ width: "100%" }}
+              value={new_user_pw}
+              onChangeText={(text) => setNewPassword(text)}
+              placeholder="새 비밀번호를 입력하세요"
+              secureTextEntry={true}
+            />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="비밀번호 확인 " />
-          <Input
-            style={{ width: "100%" }}
-            value={confirmPassword}
-            onChangeText={(text) => setConfirmPassword(text)}
-            placeholder="비밀번호를 다시 입력하세요"
-            secureTextEntry={true}
+          <View style={styles.inputContainer}>
+            <Label style={{ alignSelf: "flex-start" }} text="비밀번호 확인 " />
+            <Input
+              style={{ width: "100%" }}
+              value={confirmPassword}
+              onChangeText={(text) => setConfirmPassword(text)}
+              placeholder="비밀번호를 다시 입력하세요"
+              secureTextEntry={true}
+            />
+          </View>
+          <Button
+            style={{ marginTop: 15 }}
+            text="저장하기"
+            onPress={handleSaveMyInfo}
           />
-        </View>
-
-        <Button
-          style={{ marginTop: 15 }}
-          text="저장하기"
-          onPress={handleSaveMyInfo}
-        />
+        </KeyboardAwareScrollView>
       </View>
     </TouchableWithoutFeedback>
   );

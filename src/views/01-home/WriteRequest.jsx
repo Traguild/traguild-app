@@ -8,6 +8,7 @@ import {
 import React, { useLayoutEffect } from "react";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -52,9 +53,11 @@ const WriteRequest = ({ navigation }) => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
-          <WriteForm onSubmit={handlePostRequest} />
-        </ScrollView>
+        <KeyboardAwareScrollView>
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <WriteForm onSubmit={handlePostRequest} />
+          </ScrollView>
+        </KeyboardAwareScrollView>
       </View>
     </TouchableWithoutFeedback>
   );

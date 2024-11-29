@@ -9,6 +9,7 @@ import {
 import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useToast } from "react-native-toast-notifications";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -24,7 +25,7 @@ import Button from "components/common/Button";
 const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
   const toast = useToast();
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "80%", "100%"], []);
+  const snapPoints = useMemo(() => ["10%", "88%"], []);
 
   const handleOpen = useCallback(() => {
     bottomSheetRef.current?.present();
@@ -34,9 +35,6 @@ const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
     bottomSheetRef.current?.dismiss();
   }, []);
 
-  const handleInputFocus = useCallback(() => {
-    bottomSheetRef.current?.snapToIndex(2);
-  }, []);
   const handleInputOutFocus = useCallback(() => {
     Keyboard.dismiss();
     bottomSheetRef.current?.snapToIndex(1);
@@ -94,20 +92,18 @@ const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
       <TouchableWithoutFeedback onPress={handleInputOutFocus}>
         <View style={styles.container}>
           <View style={styles.modalContainer}>
-            <View style={styles.modalTop}>
-              <TouchableOpacity onPress={() => handleClose()}>
-                <Feather name="x" size={24} color={theme["default-btn"]} />
-              </TouchableOpacity>
-              <Text style={styles.applyTitle}>지원하기</Text>
-            </View>
-            <ApplyForm
-              onFocus={handleInputFocus}
-              info={info}
-              setChildApplyIntro={setChildApplyIntro}
-            />
-            <View style={styles.modalBottom}>
-              <Button text="제출하기" onPress={handleApply} />
-            </View>
+            <KeyboardAwareScrollView>
+              <View style={styles.modalTop}>
+                <TouchableOpacity onPress={() => handleClose()}>
+                  <Feather name="x" size={24} color={theme["default-btn"]} />
+                </TouchableOpacity>
+                <Text style={styles.applyTitle}>지원하기</Text>
+              </View>
+              <ApplyForm info={info} setChildApplyIntro={setChildApplyIntro} />
+              <View style={styles.modalBottom}>
+                <Button text="제출하기" onPress={handleApply} />
+              </View>
+            </KeyboardAwareScrollView>
           </View>
         </View>
       </TouchableWithoutFeedback>

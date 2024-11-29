@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground, Pressable } from "react-native";
 import { useToast } from "react-native-toast-notifications";
+import * as ImagePicker from "expo-image-picker";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -17,6 +18,9 @@ import TextField from "components/common/TextField";
 
 const WriteForm = ({ onSubmit }) => {
   const toast = useToast();
+
+  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  const [image, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
   const [request_cost, setCost] = useState("");
@@ -25,8 +29,27 @@ const WriteForm = ({ onSubmit }) => {
     return defaultImg.logo;
   };
 
-  const handleImagePicker = () => {
-    // 이미지 선택 로직 추가 예정
+  const handleImagePicker = async () => {
+    if (!status?.granted) {
+      const permission = await requestPermission();
+      if (!permission.granted) {
+        toast.show("권한이 없습니다.", { type: "warning" });
+        return null;
+      }
+    }
+
+    console.log("Image Picker");
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      allowsEditing: false,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.assets[0].uri);
+      return null;
+    }
   };
 
   const handleSubmit = () => {
@@ -38,17 +61,17 @@ const WriteForm = ({ onSubmit }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, height: layout().height }}>
       <ImageBackground
-        source={getDefaultImage()}
+        source={image ? { uri: image } : getDefaultImage()}
         style={{
           width: layout().width,
           height: layout().width,
         }}
       >
-        <View style={styles.itemImg}>
+        <Pressable style={styles.itemImg} onPress={handleImagePicker}>
           <Feather name="image" size={layout().width * 0.1} color="lightgray" />
-        </View>
+        </Pressable>
       </ImageBackground>
 
       <View style={styles.inputContainer}>
@@ -102,7 +125,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme["default-bg"],
   },
   itemImg: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
     width: "100%",
     height: "100%",
 
