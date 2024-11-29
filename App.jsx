@@ -5,10 +5,7 @@ import { ToastProvider } from "react-native-toast-notifications";
 
 export default function App() {
   return (
-    <ToastProvider
-      offsetTop={50}
-      duration={3000}
-    >
+    <ToastProvider offsetBottom={100} duration={3000}>
       <NavigationContainer>
         <AppNavigator />
       </NavigationContainer>

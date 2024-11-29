@@ -6,6 +6,7 @@ import {
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -19,6 +20,7 @@ import Label from "components/common/Label";
 import Button from "components/common/Button";
 
 const SignIn = ({ navigation }) => {
+  const toasts = useToast();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
@@ -45,8 +47,11 @@ const SignIn = ({ navigation }) => {
     if (res) {
       if (res.user_idx != -1) {
         await AsyncStorage.setItem("user_idx", res.user_idx.toString());
+
+        toasts.show(`환영합니다`);
         navGo.re("AppTabNavigator");
       } else {
+        toasts.show(`아이디 또는 비밀번호가 일치하지 않습니다`);
       }
     } else {
     }
