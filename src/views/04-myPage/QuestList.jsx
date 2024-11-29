@@ -36,33 +36,42 @@ const QuestList = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      const user_idx = await AsyncStorage.getItem("user_idx");
+    const fetchDatas = async () => {
       setIsLoading(true);
-      try {
-        if (mainFilter === "등록한 의뢰") {
+      const user_idx = await AsyncStorage.getItem("user_idx");
+
+      const fetchRequests = async () => {
+        try {
           const res = await API.POST({
             url: "/requestInfo/onlyMine",
             data: { user_idx, page, limit: LIMIT },
           });
           setRequests(res);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        } finally {
+          setIsLoading(false);
         }
-
-        if (mainFilter === "지원한 의뢰") {
+      };
+      const fetchApplications = async () => {
+        try {
           const res = await API.POST({
             url: "/requestApplicant/applyRequest",
             data: { user_idx, page, limit: LIMIT },
           });
           setApplications(res);
+        } catch (error) {
+          console.error("Error fetching data: ", error);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error("Error fetching data: ", error);
-      } finally {
-        setIsLoading(false);
-      }
+      };
+
+      fetchApplications();
+      fetchRequests();
     };
-    fetchRequests();
-  }, [mainFilter]);
+    fetchDatas();
+  }, []);
 
   const filteredMainData =
     mainFilter === "등록한 의뢰" ? requests : applications;
