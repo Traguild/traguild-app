@@ -8,7 +8,7 @@ import { API } from "config/fetch.config";
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { getCost } from "resources/js/common";
-import { theme } from "../../resources/theme/common";
+import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 // IMPORT LAYOUTS
@@ -18,17 +18,6 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
-import Button from "components/common/Button";
-
-const dummyLogin = {
-  user_id: "gdhong",
-  user_pw: "mypassword",
-  user_name: "홍길동",
-  user_nick: "RBRoad",
-  user_email: "gdhong@gmail.com",
-  user_birth: "1900-01-01",
-  user_region: "김해시",
-};
 
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState({});

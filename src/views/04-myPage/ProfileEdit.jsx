@@ -3,11 +3,8 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
-  ScrollView,
-  KeyboardAvoidingView,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { useToast } from "react-native-toast-notifications";
 
 // IMPORT RESOURCES
@@ -17,7 +14,6 @@ import { theme } from "../../resources/theme/common";
 import Button from "components/common/Button";
 import Label from "components/common/Label";
 import Input from "components/common/Input";
-import { layout } from "resources/theme/layout";
 
 const ProfileEdit = ({ navigation, route }) => {
   const { userInfo } = route.params;
