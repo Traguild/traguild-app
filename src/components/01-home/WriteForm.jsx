@@ -19,7 +19,7 @@ const WriteForm = ({ onSubmit }) => {
   const toast = useToast();
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
-  const [request_cost, setCost] = useState(0);
+  const [request_cost, setCost] = useState("");
 
   const getDefaultImage = () => {
     return defaultImg.logo;
@@ -66,7 +66,13 @@ const WriteForm = ({ onSubmit }) => {
           style={{ width: "100%" }}
           placeholder="가격을 제시해주세요"
           value={getCost(request_cost)}
-          onChangeText={(text) => setCost(text)}
+          onChangeText={(text) => {
+            if (text.startsWith("0") && text.length > 1) {
+              text = text.replace(/^0+/, "");
+            }
+            const cost = text.replace(/[^0-9]/g, "");
+            setCost(cost);
+          }}
           keyboardType="number-pad"
         />
       </View>
