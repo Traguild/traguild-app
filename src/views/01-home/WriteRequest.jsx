@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { useToast } from "react-native-toast-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -29,15 +30,16 @@ const WriteRequest = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const handlePostRequest = ({
+  const handlePostRequest = async ({
     request_title,
     request_content,
     request_cost,
   }) => {
-    API.PUT({
+    const user_idx = await AsyncStorage.getItem("user_idx");
+    await API.PUT({
       url: "/requestInfo",
       data: {
-        user_idx: 1,
+        user_idx,
         request_title,
         request_content,
         request_cost,

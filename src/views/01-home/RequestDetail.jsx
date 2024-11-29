@@ -9,20 +9,25 @@ import {
 import React, { useLayoutEffect, useState } from "react";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
+
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
-import { icons } from "resources/theme/icons";
-import { Entypo } from "react-native-vector-icons";
 import { layout } from "resources/theme/layout";
 import { getCost } from "resources/js/common";
 
 // IMPORT COMPONENTS
 import ApplyRequest from "views/01-home/ApplyRequest";
 import RequestState from "components/01-home/RequestState";
+import MyManner from "components/04-myPage/MyManner";
 
 const RequestDetail = ({ navigation, route }) => {
   const { item } = route.params;
+  console.log(item);
+
+  const [userInfo, setUserInfo] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
@@ -32,10 +37,18 @@ const RequestDetail = ({ navigation, route }) => {
       title: null,
       headerStyle: { backgroundColor: "transparent" },
       headerTransparent: true,
-      // headerStyle: { backgroundColor: theme["tab-active"] },
       headerTintColor: theme["default-btn"],
     });
-  });
+
+    const getUserInfo = async () => {
+      const res = await API.POST({
+        url: "/userInfo",
+        data: { user_idx: item.user_idx },
+      });
+      setUserInfo(res);
+    };
+    getUserInfo();
+  }, []);
 
   return (
     <BottomSheetModalProvider>
@@ -77,12 +90,12 @@ const RequestDetail = ({ navigation, route }) => {
                 fontWeight: "600",
               }}
             >
-              홍길동
+              {userInfo?.user_nickname ?? "알 수 없음"}
             </Text>
-            <Entypo
-              name={icons["manner-default"]}
+            <MyManner
+              rate={userInfo?.user_rate}
+              descript={false}
               size={16}
-              color={theme[icons["manner-default"]]}
               style={{ marginBottom: 25 }}
             />
           </View>
@@ -127,6 +140,7 @@ const styles = StyleSheet.create({
   },
   itemDescription: {
     fontSize: 16,
+    lineHeight: 24,
   },
 
   footerContainer: {

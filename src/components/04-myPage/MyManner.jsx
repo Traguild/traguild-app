@@ -13,7 +13,7 @@ const getManner = (rate) => {
   return "manner-bad";
 };
 
-const MyManner = ({ rate }) => {
+const MyManner = ({ rate, descript = true, size = 20, ...props }) => {
   const [manner, setManner] = useState("manner-default");
 
   const mannerText = {
@@ -29,10 +29,17 @@ const MyManner = ({ rate }) => {
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <Entypo name={icons[manner]} size={20} color={theme[icons[manner]]} />
-      <Text style={{ ...styles.profileManner, color: theme[icons[manner]] }}>
-        {mannerText[manner]}
-      </Text>
+      <Entypo
+        name={icons[manner]}
+        size={size}
+        color={theme[icons[manner]]}
+        {...props}
+      />
+      {descript && (
+        <Text style={{ ...styles.profileManner, color: theme[icons[manner]] }}>
+          {mannerText[manner]}
+        </Text>
+      )}
     </View>
   );
 };
