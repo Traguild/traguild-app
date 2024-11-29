@@ -65,7 +65,7 @@ const ApplyList = () => {
     const getApplyList = async () => {
       const user_idx = await AsyncStorage.getItem("user_idx");
       const res = await API.POST({
-        url: "/requestApplicant/applyRequest",
+        url: "/requestInfo/getApply",
         data: {
           user_idx,
           page: 1,

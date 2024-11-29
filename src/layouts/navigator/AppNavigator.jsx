@@ -22,12 +22,12 @@ const AppNavigator = () => {
   const navigation = useNavigation();
   const [isLogined, setIsLogined] = useState(false);
 
-  const checkLoginStatus = async () => {
-    const user_idx = await AsyncStorage.getItem("user_idx");
-    setIsLogined(user_idx ? true : false);
-  };
-
   useEffect(() => {
+    const checkLoginStatus = async () => {
+      const user_idx = await AsyncStorage.getItem("user_idx");
+
+      setIsLogined(!!user_idx);
+    };
     checkLoginStatus();
   }, []);
 

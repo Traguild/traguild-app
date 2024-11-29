@@ -20,8 +20,9 @@ import Input from "components/common/Input";
 
 const SignUp = ({ navigation }) => {
   const toast = useToast();
-  const [user_nickname, setUserNickname] = useState("");
   const [user_name, setName] = useState("");
+  const [user_region, setUserRegion] = useState("");
+  const [user_nickname, setUserNickname] = useState("");
   const [user_email, setEmail] = useState("");
   const [user_pw, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -49,10 +50,11 @@ const SignUp = ({ navigation }) => {
     res = await API.PUT({
       url: "/userInfo",
       data: {
+        user_name,
+        user_region,
         user_id: user_email,
         user_email,
         user_pw,
-        user_name,
         user_nickname,
         user_birth: Date.now(),
       },
@@ -70,6 +72,22 @@ const SignUp = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.inputContainer}>
+          <Label style={{ alignSelf: "flex-start" }} text="이름" />
+          <Input
+            style={{ width: "100%" }}
+            value={user_name}
+            onChangeText={(text) => setName(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <Label style={{ alignSelf: "flex-start" }} text="지역" />
+          <Input
+            style={{ width: "100%" }}
+            value={user_region}
+            onChangeText={(text) => setUserRegion(text)}
+          />
+        </View>
+        <View style={styles.inputContainer}>
           <Label style={{ alignSelf: "flex-start" }} text="닉네임 " />
           <Input
             style={{ width: "100%" }}
@@ -77,14 +95,7 @@ const SignUp = ({ navigation }) => {
             onChangeText={(text) => setUserNickname(text)}
           />
         </View>
-        <View style={styles.inputContainer}>
-          <Label style={{ alignSelf: "flex-start" }} text="이름 " />
-          <Input
-            style={{ width: "100%" }}
-            value={user_name}
-            onChangeText={(text) => setName(text)}
-          />
-        </View>
+
         <View style={styles.inputContainer}>
           <Label style={{ alignSelf: "flex-start" }} text="이메일 " />
           <Input
