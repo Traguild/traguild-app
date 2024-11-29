@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "../../resources/theme/common";
+import { getContents } from "../../resources/js/common";
 
 // DUMMY DATA FOR DEMO
 const dummyData = [
@@ -55,20 +60,36 @@ const dummyData = [
 ];
 
 const ApplyList = () => {
-  const [applyList, setApplyList] = useState(dummyData);
+  const [applyList, setApplyList] = useState([]);
+  useLayoutEffect(() => {
+    const getApplyList = async () => {
+      const user_idx = await AsyncStorage.getItem("user_idx");
+      const res = await API.POST({
+        url: "/requestApplicant/applyRequest",
+        data: {
+          user_idx,
+          page: 1,
+          limit: 10,
+        },
+      });
+
+      setApplyList(res);
+    };
+    getApplyList();
+  }, []);
 
   const handleApprove = (idx) => {
-    const updatedList = applyList.map((item) =>
-      item.request_idx === idx ? { ...item, status: "approved" } : item
-    );
-    setApplyList(updatedList);
+    // const updatedList = applyList.map((item) =>
+    //   item.request_idx === idx ? { ...item, status: "approved" } : item
+    // );
+    // setApplyList(updatedList);
   };
 
   const handleReject = (idx) => {
-    const updatedList = applyList.map((item) =>
-      item.request_idx === idx ? { ...item, status: "rejected" } : item
-    );
-    setApplyList(updatedList);
+    // const updatedList = applyList.map((item) =>
+    //   item.request_idx === idx ? { ...item, status: "rejected" } : item
+    // );
+    // setApplyList(updatedList);
   };
 
   const renderItem = ({ item }) => (
@@ -76,11 +97,15 @@ const ApplyList = () => {
       <View style={styles.itemContent}>
         <Text style={styles.title}>의뢰: {item.request_title}</Text>
         <View style={styles.subtitleRow}>
-          <Text style={styles.subtitle}>{item.user_nick}</Text>
+          <Text style={styles.subtitle}>
+            {item?.user_nickname ?? "알 수 없음"}
+          </Text>
         </View>
-        <Text style={styles.applyIntro}>{item.applyIntro}</Text>
+        <Text style={styles.applyIntro}>
+          {getContents(item.applicant_intro, 25)}
+        </Text>
       </View>
-      {item.status === "pending" ? (
+      {item.applicant_state === "대기" ? (
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.approveButton]}
@@ -97,7 +122,7 @@ const ApplyList = () => {
         </View>
       ) : (
         <Text style={styles.statusText}>
-          {item.status === "approved" ? "승인됨" : "반려됨"}
+          {item.status === "승인" ? "승인됨" : "반려됨"}
         </Text>
       )}
     </View>
@@ -150,7 +175,7 @@ const styles = StyleSheet.create({
   },
   subtitleRow: {
     flexDirection: "row",
-    marginTop: 8,
+    marginTop: 5,
   },
   subtitle: {
     fontSize: 15,
