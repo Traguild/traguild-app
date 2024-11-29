@@ -25,11 +25,15 @@ const WriteRequest = ({ navigation }) => {
       title: null,
       headerStyle: { backgroundColor: "transparent" },
       headerTransparent: true,
-      headerTintColor: theme["default-btn"],
+      headerTintColor: theme["light-btn"],
     });
   }, [navigation]);
 
-  const handlePostRequest = ({ request_title, request_content, request_cost }) => {
+  const handlePostRequest = ({
+    request_title,
+    request_content,
+    request_cost,
+  }) => {
     API.PUT({
       url: "/requestInfo",
       data: {
