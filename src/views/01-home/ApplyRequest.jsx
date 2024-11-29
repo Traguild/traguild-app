@@ -60,7 +60,10 @@ const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
       },
     });
 
-    if (res) {
+    if (res?.http_status === "fail") {
+      toast.show("이미 지원한 의뢰입니다.");
+      handleClose();
+    } else {
       toast.show("지원이 완료되었습니다.");
       handleClose();
     }

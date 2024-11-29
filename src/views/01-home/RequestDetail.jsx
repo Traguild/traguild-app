@@ -126,7 +126,7 @@ const RequestDetail = ({ navigation, route }) => {
             />
           </View>
           <TouchableOpacity style={styles.applyBtn} onPress={handleApply}>
-            <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
               지원하기
             </Text>
           </TouchableOpacity>
@@ -149,8 +149,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   itemTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: "600",
   },
   itemCost: {
     fontSize: 18,
