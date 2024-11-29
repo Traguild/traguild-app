@@ -9,13 +9,7 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 
-const ApplyForm = ({ onFocus }) => {
-  const applyTitle = useMemo(() => ["이름", "지역", "이메일", "소개"], []);
-  const applyContent = {
-    user_name: "홍길동",
-    user_location: "경상남도 창원시 성산구",
-    user_email: "gdhong1119@gmail.com",
-  };
+const ApplyForm = ({ onFocus, info }) => {
   const [applyIntro, setApplyIntro] = useState("");
 
   return (
@@ -28,10 +22,10 @@ const ApplyForm = ({ onFocus }) => {
 
       <View style={styles.inputColumn}>
         <View>
-          <Label text={"이름"} />
+          <Label text={"닉네임"} />
           <Input
             style={{ width: "100%" }}
-            text={applyContent.user_name}
+            value={info?.user_nickname ?? "알 수 없음"}
             readonly={true}
           />
         </View>
@@ -39,7 +33,7 @@ const ApplyForm = ({ onFocus }) => {
           <Label text={"지역"} />
           <Input
             style={{ width: "100%" }}
-            text={applyContent.user_location}
+            value={info?.user_region ?? ""}
             readonly={true}
           />
         </View>
@@ -47,7 +41,7 @@ const ApplyForm = ({ onFocus }) => {
           <Label text={"이메일"} />
           <Input
             style={{ width: "100%" }}
-            text={applyContent.user_email}
+            value={info?.user_email ?? ""}
             readonly={true}
           />
         </View>

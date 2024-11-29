@@ -25,8 +25,8 @@ import MyManner from "components/04-myPage/MyManner";
 
 const RequestDetail = ({ navigation, route }) => {
   const { item } = route.params;
-  console.log(item);
 
+  const [postUserInfo, setPostUserInfo] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -40,6 +40,14 @@ const RequestDetail = ({ navigation, route }) => {
       headerTintColor: theme["default-btn"],
     });
 
+    const getPostUserInfo = async () => {
+      const res = await API.POST({
+        url: "/userInfo",
+        data: { user_idx: item.user_idx },
+      });
+      setPostUserInfo(res);
+    };
+
     const getUserInfo = async () => {
       const res = await API.POST({
         url: "/userInfo",
@@ -47,6 +55,8 @@ const RequestDetail = ({ navigation, route }) => {
       });
       setUserInfo(res);
     };
+
+    getPostUserInfo();
     getUserInfo();
   }, []);
 
@@ -56,6 +66,7 @@ const RequestDetail = ({ navigation, route }) => {
         <ApplyRequest
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
+          info={userInfo}
         />
         <View style={{ height: layout().height * 0.9 }}>
           <ScrollView>
@@ -90,10 +101,10 @@ const RequestDetail = ({ navigation, route }) => {
                 fontWeight: "600",
               }}
             >
-              {userInfo?.user_nickname ?? "알 수 없음"}
+              {postUserInfo?.user_nickname ?? "알 수 없음"}
             </Text>
             <MyManner
-              rate={userInfo?.user_rate}
+              rate={postUserInfo?.user_rate}
               descript={false}
               size={16}
               style={{ marginBottom: 25 }}

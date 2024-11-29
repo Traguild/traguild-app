@@ -17,7 +17,7 @@ import { Feather } from "@expo/vector-icons";
 import ApplyForm from "components/01-home/ApplyForm";
 import Button from "components/common/Button";
 
-const ApplyRequest = ({ modalVisible, setModalVisible }) => {
+const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["10%", "80%", "100%"], []);
 
@@ -72,7 +72,7 @@ const ApplyRequest = ({ modalVisible, setModalVisible }) => {
               </TouchableOpacity>
               <Text style={styles.applyTitle}>지원하기</Text>
             </View>
-            <ApplyForm onFocus={handleInputFocus} />
+            <ApplyForm onFocus={handleInputFocus} info={info} />
             <View style={styles.modalBottom}>
               <Button text="제출하기" />
             </View>
