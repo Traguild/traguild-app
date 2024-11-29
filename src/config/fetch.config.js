@@ -45,7 +45,7 @@ export const API = {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      return await result;
+      return result;
     } catch (error) {
       console.error(error);
     }

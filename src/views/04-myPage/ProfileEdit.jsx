@@ -19,22 +19,15 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import { layout } from "resources/theme/layout";
 
-const dummyLogin = {
-  user_id: "gdhong",
-  user_pw: "mypassword",
-  user_name: "홍길동",
-  user_nick: "RBRoad",
-  user_email: "gdhong@gmail.com",
-  user_region: "김해시 어방동",
-};
+const ProfileEdit = ({ navigation, route }) => {
+  const { userInfo } = route.params;
 
-const ProfileEdit = ({ navigation }) => {
-  const scrollHeight = layout().height * 1.5;
   const toast = useToast();
-  const [user_name, setName] = useState(dummyLogin.user_name);
-  const [user_region, setRegion] = useState(dummyLogin.user_region);
-  const [user_nick, setNick] = useState(dummyLogin.user_nick);
-  const [user_email, setEmail] = useState(dummyLogin.user_email);
+  const [user_region, setRegion] = useState(userInfo?.user_region ?? "");
+  const [user_nickname, setNickname] = useState(
+    userInfo?.user_nickname ?? "알 수 없음"
+  );
+  const [user_email, setEmail] = useState(userInfo?.user_email ?? "");
   const [user_pw, setPassword] = useState("");
   const [new_user_pw, setNewPassword] = useState(""); // 변경할 비밀번호
   const [confirmPassword, setConfirmPassword] = useState(""); // 비밀번호 확인
@@ -55,27 +48,9 @@ const ProfileEdit = ({ navigation }) => {
 
   const handleSaveMyInfo = () => {
     // 비밀번호 확인 로직
-    if (user_pw !== dummyLogin.user_pw) {
-      toast.show("현재 비밀번호가 일치하지 않습니다.", { type: "error" });
-      return;
-    }
-
-    if (user_pw == new_user_pw) {
-      toast.show("현재 비밀번호와 새 비밀번호가 일치합니다.", {
-        type: "error",
-      });
-      return;
-    }
-
-    if (new_user_pw === "") {
-      toast.show("새 비밀번호를 입력해주세요.", { type: "error" });
-      return;
-    }
 
     if (new_user_pw !== confirmPassword) {
-      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.", {
-        type: "error",
-      });
+      toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -90,7 +65,7 @@ const ProfileEdit = ({ navigation }) => {
           <Label style={{ alignSelf: "flex-start" }} text="이름" />
           <Input
             style={{ width: "100%" }}
-            value={user_name}
+            value={userInfo?.user_name ?? "알 수 없음"}
             onChangeText={(text) => setName(text)}
             readonly
           />
@@ -99,8 +74,8 @@ const ProfileEdit = ({ navigation }) => {
           <Label style={{ alignSelf: "flex-start" }} text="닉네임" />
           <Input
             style={{ width: "100%" }}
-            value={user_nick}
-            onChangeText={(text) => setNick(text)}
+            value={user_nickname}
+            onChangeText={(text) => setNickname(text)}
             placeholder="닉네임을 입력하세요"
           />
         </View>

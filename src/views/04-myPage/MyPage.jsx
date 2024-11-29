@@ -1,5 +1,9 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
@@ -15,7 +19,6 @@ import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
 import Button from "components/common/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const dummyLogin = {
   user_id: "gdhong",
@@ -27,9 +30,23 @@ const dummyLogin = {
   user_region: "김해시",
 };
 
-const dummyCredit = 9999;
-
 const MyPage = () => {
+  const [userInfo, setUserInfo] = useState({});
+
+  useLayoutEffect(() => {
+    const getUserInfo = async () => {
+      const user_idx = await AsyncStorage.getItem("user_idx");
+
+      const res = await API.POST({
+        url: "/userInfo",
+        data: { user_idx },
+      });
+
+      setUserInfo(res);
+    };
+    getUserInfo();
+  }, []);
+
   const signOut = async () => {
     await AsyncStorage.removeItem("user_idx");
     navGo.re("Main");
@@ -40,8 +57,10 @@ const MyPage = () => {
       <View style={styles.profileBox}>
         <Image source={defaultImg.logo} style={styles.profilePic} />
         <View style={styles.profileTop}>
-          <Text style={styles.profileName}>{dummyLogin.user_nick}</Text>
-          <MyManner />
+          <Text style={styles.profileName}>
+            {userInfo?.user_nickname ?? "알 수 없음"}
+          </Text>
+          <MyManner rate={userInfo?.user_rate ?? 50} />
         </View>
         <TouchableOpacity
           style={styles.signOutBtn}
@@ -54,7 +73,9 @@ const MyPage = () => {
 
       <View style={styles.myCreditBox}>
         <FontAwesome5 name="coins" size={18} color="#f7b801" />
-        <Text style={styles.myCredit}>{getCost(dummyCredit)} 코인</Text>
+        <Text style={styles.myCredit}>
+          {getCost(userInfo?.user_credit ?? 0)} 코인
+        </Text>
         <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
           <Text style={styles.chargeButtonText}>충전하기</Text>
         </TouchableOpacity>
@@ -70,7 +91,7 @@ const MyPage = () => {
             key={idx}
             text={item.text}
             onPress={() => {
-              navGo.to(item.screen);
+              navGo.to(item.screen, { userInfo });
             }}
           />
         ))}
