@@ -79,7 +79,7 @@ const WriteForm = ({ onSubmit }) => {
       <View style={styles.inputContainer}>
         <Label text="내용" />
         <TextField
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: 140 }}
           placeholder="내용을 입력해주세요"
           value={request_content}
           onChangeText={(text) => setContent(text)}

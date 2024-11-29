@@ -142,7 +142,9 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   modalBottom: {
+    marginTop: 15,
     width: "100%",
     alignItems: "center",
+    paddingHorizontal: 15,
   },
 });

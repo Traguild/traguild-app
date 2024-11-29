@@ -45,7 +45,7 @@ const ApplyForm = ({ onFocus, info, setChildApplyIntro }) => {
         <View>
           <Label text={"소개"} />
           <TextField
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: 130 }}
             value={apply_intro}
             onChangeText={setApplyIntro}
             onFocus={onFocus}
@@ -60,7 +60,6 @@ export default ApplyForm;
 
 const styles = StyleSheet.create({
   modalContent: {
-    height: 500,
     flexDirection: "row",
     paddingHorizontal: 10,
   },

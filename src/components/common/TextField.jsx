@@ -8,7 +8,7 @@ const TextField = ({ style, max = 200, ...props }) => {
   return (
     <View style={{ ...styles.inputStyle, ...style }}>
       <TextInput
-        style={{ height: 150 }}
+        style={{ height: "100%" }}
         textAlignVertical="top"
         multiline
         maxLength={max}
