@@ -37,7 +37,7 @@ const MyPage = () => {
   }, []);
 
   const signOut = async () => {
-    await AsyncStorage.removeItem("user_idx");
+    await AsyncStorage.clear();
     navGo.re("Main");
   };
 

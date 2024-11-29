@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 
@@ -20,11 +20,16 @@ const Stack = createStackNavigator();
 
 const AppNavigator = () => {
   const navigation = useNavigation();
+  const [isLogined, setIsLogined] = useState(false);
 
-  const isLogin = async () => {
+  const checkLoginStatus = async () => {
     const user_idx = await AsyncStorage.getItem("user_idx");
-    return user_idx ? true : false;
+    setIsLogined(user_idx ? true : false);
   };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
 
   global.navGo = {
     to: (screen, params) => navigation.navigate(screen, params),
@@ -42,7 +47,7 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName={isLogin() ? "AppTabNavigator" : "Main"}
+      initialRouteName={isLogined ? "AppTabNavigator" : "Main"}
     >
       <Stack.Screen name="Main" component={Main} />
       <Stack.Screen
