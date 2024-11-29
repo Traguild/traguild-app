@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
 
   signOutBtn: {
     marginLeft: "auto",
-    backgroundColor: "gray",
+    backgroundColor: theme["light-btn"],
     paddingVertical: 8,
     paddingHorizontal: 15,
     borderRadius: 15,
