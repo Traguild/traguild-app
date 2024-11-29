@@ -5,7 +5,11 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -13,58 +17,10 @@ import { theme } from "resources/theme/common";
 // IMPORT COMPONENTS
 import QuestListItem from "src/components/04-myPage/QuestListItem";
 
-const dummyAllData = []; // 전체 데이터
-const dummyMyRequests = []; // 내가 의뢰한 글 데이터
-const dummyMyApplications = []; // 내가 신청한 글 데이터
-const states = ["대기", "완료", "반려"];
-
-for (let i = 1; i <= 20; i++) {
-  const formattedDate = new Date(Date.now())
-    .toLocaleDateString("ko-KR", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .slice(0, -1)
-    .replace(/\./g, "-")
-    .trim();
-
-  dummyAllData.push({
-    request_idx: i,
-    user_idx: i % 2 === 0 ? 1 : 2,
-    request_title: `전체 의뢰 ${i}`,
-    request_content: `내용 ${i}`,
-    request_cost: "200,000",
-    request_state: states[i % 3],
-    created_time: formattedDate,
-  });
-
-  if (i % 2 === 0) {
-    dummyMyRequests.push({
-      request_idx: i,
-      user_idx: 1,
-      request_title: `내가 의뢰한 글 ${i}`,
-      request_content: `내용 ${i}`,
-      request_cost: "200,000",
-      request_state: states[i % 3],
-      created_time: formattedDate,
-    });
-  }
-
-  if (i % 2 !== 0) {
-    dummyMyApplications.push({
-      request_idx: i,
-      user_idx: 2,
-      request_title: `내가 신청한 글 ${i}`,
-      request_content: `내용 ${i}`,
-      request_cost: "150,000", //구별 하기 위해 값 바꿈
-      request_state: states[i % 3],
-      created_time: formattedDate,
-    });
-  }
-}
+const LIMIT = 10;
 
 const QuestList = ({ navigation }) => {
+  let page = 1;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
@@ -72,27 +28,50 @@ const QuestList = ({ navigation }) => {
       title: "의뢰 내역",
       headerTintColor: theme["default-btn"],
     });
-  });
+  }, [navigation]);
 
-  const [mainFilter, setMainFilter] = useState("전체");
-  const [subFilter, setSubFilter] = useState("전체");
+  const [mainFilter, setMainFilter] = useState("등록한 의뢰");
+  const [requests, setRequests] = useState([]);
+  const [applications, setApplications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      const user_idx = await AsyncStorage.getItem("user_idx");
+      setIsLoading(true);
+      try {
+        if (mainFilter === "등록한 의뢰") {
+          const res = await API.POST({
+            url: "/requestInfo/onlyMine",
+            data: { user_idx, page, limit: LIMIT },
+          });
+          setRequests(res);
+        }
+
+        if (mainFilter === "지원한 의뢰") {
+          const res = await API.POST({
+            url: "/requestApplicant/applyRequest",
+            data: { user_idx, page, limit: LIMIT },
+          });
+          setApplications(res);
+        }
+
+      } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchRequests();
+  }, [mainFilter]);
 
   const filteredMainData =
-    mainFilter === "전체"
-      ? dummyAllData
-      : mainFilter === "내가 의뢰한 글"
-        ? dummyMyRequests
-        : dummyMyApplications;
-
-  const finalData =
-    subFilter === "전체"
-      ? filteredMainData
-      : filteredMainData.filter((item) => item.request_state === subFilter);
+    mainFilter === "등록한 의뢰" ? requests : applications;
 
   return (
     <View style={styles.container}>
       <View style={styles.mainFilterContainer}>
-        {["전체", "등록한 의뢰", "지원한 의뢰"].map((filter) => (
+        {["등록한 의뢰", "지원한 의뢰"].map((filter) => (
           <TouchableOpacity
             key={filter}
             style={[
@@ -114,29 +93,38 @@ const QuestList = ({ navigation }) => {
         ))}
       </View>
 
-      <FlatList
-        style={{ width: "100%" }}
-        data={finalData}
-        renderItem={({ item }) => <QuestListItem item={item} />}
-        keyExtractor={(item) => item.request_idx.toString()}
-      />
+      {isLoading ? (
+        <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+      ) : (
+        <FlatList
+          style={{ width: "100%" }}
+          data={filteredMainData}
+          renderItem={({ item }) => (
+            <QuestListItem
+              item={{
+                user_idx: item.user_idx,
+                request_idx: item.request_idx,
+                request_title: item.request_title,
+                request_content: item.request_content,
+                request_cost: item.request_cost,
+                request_state: item.request_state,
+                request_region: item.request_region,
+                created_date: new Date(item.created_date).toLocaleDateString(
+                  "ko-KR",
+                  { year: "numeric", month: "2-digit", day: "2-digit" }
+                ),
+              }}
+            />
+          )}
+          keyExtractor={(item) => item.request_idx.toString()}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>의뢰 내역이 없습니다.</Text>
+          }
+        />
+      )}
     </View>
   );
 };
-/**<View style={styles.subFilterContainer}>
-        {["전체", "대기", "완료", "반려"].map((filter) => (
-          <TouchableOpacity
-            key={filter}
-            style={[
-              styles.subFilterButton,
-              subFilter === filter && styles.activeSubFilterButton,
-            ]}
-            onPress={() => setSubFilter(filter)}
-          >
-            <Text style={styles.subFilterText}>{filter}</Text>
-          </TouchableOpacity>
-        ))}
-      </View> */
 
 const styles = StyleSheet.create({
   container: {
@@ -151,7 +139,7 @@ const styles = StyleSheet.create({
   },
   mainFilterButton: {
     paddingVertical: 8,
-    paddingHorizontal: 25,
+    paddingHorizontal: 5,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -166,23 +154,17 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
   },
-  subFilterContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 10,
-    backgroundColor: "#f0f0f0",
+  loadingText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    color: "gray",
   },
-  subFilterButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
-  },
-  activeSubFilterButton: {
-    backgroundColor: theme["request-proceed"],
-  },
-  subFilterText: {
-    color: "black",
-    fontWeight: "bold",
+  emptyText: {
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+    color: "gray",
   },
 });
 

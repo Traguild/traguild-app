@@ -4,19 +4,16 @@ import React, { useState } from "react";
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
-import { FontAwesome5 } from "react-native-vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { getTitle } from "resources/js/common";
 
 const QuestListItem = ({ item }) => {
-  // 하트 상태 관리 (기본값은 true로 설정하여 채워진 하트 표시)
-  const [isFavorite, setIsFavorite] = useState(true);
 
-  // 하트 버튼 클릭 시 상태 변경 함수
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite); // 현재 상태 반전
-    // 현재 상태에 따라 DB 업데이트 필요 여부 검토
+  const movDetail = () => {
+    if (navGo) {
+      navGo.to("RequestDetail", { item });
+    }
   };
-
-  const movDetail = () => navGo.to("RequestDetail", { item });
 
   return (
     <View style={styles.container}>
@@ -26,12 +23,12 @@ const QuestListItem = ({ item }) => {
         onPress={movDetail}
       >
         <Image
-          source={item.request_img ? item.request_img : defaultImg.logo}
+          source={item?.request_img ? { uri: item.request_img } : defaultImg.logo}
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
           <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={styles.itemTitle}>{item.request_title}</Text>
+            <Text style={styles.itemTitle}>{getTitle(item.request_title, 10)}</Text>
             <View
               style={{
                 ...styles.itemStateBox,
@@ -43,7 +40,7 @@ const QuestListItem = ({ item }) => {
                       : theme["request-done"],
               }}
             >
-              <Text style={styles.itemState}>{item.request_state}</Text>
+              <Text style={styles.itemState}>{item.request_state ?? "상태 없음"}</Text>
             </View>
           </View>
 
@@ -55,17 +52,20 @@ const QuestListItem = ({ item }) => {
               color="black"
             />
             <Text style={styles.region}>
-              &nbsp;{item.request_state_region}&nbsp;
+              &nbsp;{item.request_region ?? "지역 없음"}&nbsp;
             </Text>
-            <Text style={styles.region}>{item.request_city_region}</Text>
           </View>
 
           <View style={styles.dateBox}>
-            <Text style={styles.dateText}>{item.created_time}</Text>
+            <Text style={styles.dateText}>
+              {item.created_date ?? "날짜 없음"}
+            </Text>
           </View>
 
           <View style={styles.itemCostBox}>
-            <Text style={styles.itemCost}>{item.request_cost} 원</Text>
+            <Text style={styles.itemCost}>
+              {item.request_cost ? `${item.request_cost} 원` : "비용 미정"}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     paddingVertical: 13,
+    position: "relative",
   },
   itemImg: {
     width: 100,
@@ -137,6 +138,11 @@ const styles = StyleSheet.create({
   },
   itemCost: {
     fontSize: 18,
+  },
+  favoriteButton: {
+    position: "absolute",
+    right: 10,
+    top: 10,
   },
 });
 

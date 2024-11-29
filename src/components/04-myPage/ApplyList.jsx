@@ -15,50 +15,6 @@ import { API } from "config/fetch.config";
 import { theme } from "../../resources/theme/common";
 import { getContents } from "../../resources/js/common";
 
-// DUMMY DATA FOR DEMO
-const dummyData = [
-  {
-    request_idx: 1,
-    request_title: "청소 도와주세요",
-    user_nick: "홍길동",
-    request_cost: "20,000",
-    applicant_intro: "청소 잘 합니다!",
-    applicant_state: "pending",
-  },
-  {
-    request_idx: 2,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applicant_intro: "조립 경험이 많습니다.",
-    applicant_state: "pending",
-  },
-  {
-    request_idx: 3,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applicant_intro: "조립 경험이 많습니다.",
-    applicant_state: "pending",
-  },
-  {
-    request_idx: 4,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applicant_intro: "조립 경험이 많습니다.",
-    applicant_state: "pending",
-  },
-  {
-    request_idx: 5,
-    request_title: "가구 조립 도와주세요",
-    user_nick: "김철수",
-    request_cost: "30,000",
-    applicant_intro: "조립 경험이 많습니다.",
-    applicant_state: "pending",
-  },
-];
-
 const ApplyList = () => {
   const [applyList, setApplyList] = useState([]);
   useLayoutEffect(() => {
