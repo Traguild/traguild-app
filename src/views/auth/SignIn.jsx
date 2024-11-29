@@ -41,10 +41,10 @@ const SignIn = ({ navigation }) => {
   const toast = useToast();
 
   const handleSignIn = async () => {
-    if (!getEmail(user_id)) {
-      toast.show("유효하지 않은 이메일 형식입니다.", "올바른 이메일 주소를 입력해주세요.");
-      return;
-    }
+    // if (!getEmail(user_id)) {
+    //   toast.show("유효하지 않은 이메일 형식입니다.", "올바른 이메일 주소를 입력해주세요.");
+    //   return;
+    // }
     const res = await API.POST({
       url: "/login",
       data: { user_id, user_pw },
