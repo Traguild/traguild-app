@@ -3,16 +3,14 @@ export const getTitle = (title, limit) =>
   title.length > limit ? title.slice(0, limit) + "..." : title;
 
 export const getContents = (contents, limit) => {
-  contents =
-    contents.length > limit ? contents.slice(0, limit) + "..." : contents;
-
-  if (contents.split("\n").length - 1 < 2) return contents;
-  else return contents.split("\n")[0] + "...";
+  contents = contents.split("\n")[0];
+  return contents.length > limit ? contents.slice(0, limit) + "..." : contents;
 };
+
 export const getCost = (cost) =>
   cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
 export const getEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
-}
+};
