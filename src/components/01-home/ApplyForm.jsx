@@ -14,12 +14,6 @@ const ApplyForm = ({ onFocus, info }) => {
 
   return (
     <View style={styles.modalContent}>
-      {/* <View style={styles.menuColumn}>
-        {applyTitle.map((title, idx) => (
-          <Label text={title} key={idx} />
-        ))}
-      </View> */}
-
       <View style={styles.inputColumn}>
         <View>
           <Label text={"닉네임"} />
