@@ -92,7 +92,7 @@ const QuestList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.mainFilterContainer}>
-        {["전체", "내가 의뢰한 글", "내가 신청한 글"].map((filter) => (
+        {["전체", "등록한 의뢰", "지원한 의뢰"].map((filter) => (
           <TouchableOpacity
             key={filter}
             style={[
@@ -150,20 +150,21 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   mainFilterButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   activeMainFilterButton: {
     backgroundColor: theme["filter-btn"],
   },
   mainFilterText: {
     color: "black",
-    fontWeight: "500",
   },
   focusedMainFilterText: {
     color: "white",
-    fontWeight: "800",
+    fontWeight: "600",
   },
   subFilterContainer: {
     flexDirection: "row",
