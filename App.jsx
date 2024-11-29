@@ -20,10 +20,10 @@ export default function App() {
 
 const styles = StyleSheet.create({
   toastContainer: {
-    width: "85%", // 고정된 너비 설정
-    backgroundColor: "rgba(0, 0, 0, 0.6)", // 배경색 설정
-    borderRadius: 20, // 테두리 둥글게 설정
-    alignItems: "center", // 텍스트 가운데 정렬
-    justifyContent: "center", // 세로 방향 중앙 정렬
+    width: "85%",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
