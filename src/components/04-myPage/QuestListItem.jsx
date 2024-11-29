@@ -6,7 +6,7 @@ import { defaultImg } from "resources/img/defaultImg";
 import { getCost } from "resources/js/common";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { getTitle } from "resources/js/common";
+import { getTitle, getCost } from "resources/js/common";
 
 const QuestListItem = ({ item }) => {
   const movDetail = () => {
@@ -74,9 +74,7 @@ const QuestListItem = ({ item }) => {
 
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>
-              {item.request_cost
-                ? `${getCost(item.request_cost)} 원`
-                : "비용 미정"}
+              {`${getCost(item.request_cost)} 원`}
             </Text>
           </View>
         </View>
