@@ -6,12 +6,14 @@ import {
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
 
 /* IMPORT RESOURCES */
 import { theme } from "resources/theme/common";
+import { getEmail } from "resources/js/common";
 
 // IMPORT COMPONENTS
 import Input from "components/common/Input";
@@ -35,8 +37,13 @@ const SignIn = ({ navigation }) => {
 
   const [user_id, setUserId] = useState("");
   const [user_pw, setUserPw] = useState("");
+  const toast = useToast();
 
   const handleSignIn = async () => {
+    if (!getEmail(user_id)) {
+      toast.show("유효하지 않은 이메일 형식입니다.", "올바른 이메일 주소를 입력해주세요.");
+      return;
+    }
     const res = await API.POST({
       url: "/login",
       data: { user_id, user_pw },

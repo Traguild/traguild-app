@@ -4,3 +4,8 @@ export const getTitle = (title, limit) =>
 
 export const getCost = (cost) =>
   cost.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+export const getEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
