@@ -43,7 +43,7 @@ const WriteRequest = ({ navigation }) => {
         request_cost,
       },
     });
-    toast.show("글이 작성되었습니다.", { type: "success" });
+    toast.show("작성되었습니다.");
     navigation.goBack();
   };
 

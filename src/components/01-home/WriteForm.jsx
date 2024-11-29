@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ImageBackground,
-} from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { getCost } from "resources/js/common";
 import { defaultImg } from "resources/img/defaultImg";
 import { layout } from "resources/theme/layout";
 import { Feather } from "@expo/vector-icons";
@@ -58,7 +52,7 @@ const WriteForm = ({ onSubmit }) => {
       </ImageBackground>
 
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%" }} text="제목" />
+        <Label text="제목" />
         <Input
           style={{ width: "100%" }}
           placeholder="제목을 입력해주세요"
@@ -67,17 +61,17 @@ const WriteForm = ({ onSubmit }) => {
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%" }} text="가격" />
+        <Label text="가격" />
         <Input
           style={{ width: "100%" }}
           placeholder="가격을 제시해주세요"
-          value={request_cost}
+          value={getCost(request_cost)}
           onChangeText={(text) => setCost(text)}
           keyboardType="number-pad"
         />
       </View>
       <View style={styles.inputContainer}>
-        <Label style={{ width: "20%" }} text="내용" />
+        <Label text="내용" />
         <TextField
           style={{ width: "100%" }}
           placeholder="내용을 입력해주세요"

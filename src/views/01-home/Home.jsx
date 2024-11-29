@@ -7,12 +7,8 @@ import {
   RefreshControl,
   ActivityIndicator,
 } from "react-native";
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import React, { useCallback, useState } from "react";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -76,9 +72,11 @@ const Home = () => {
     }
   }, []);
 
-  useEffect(() => {
-    getList();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getList();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
