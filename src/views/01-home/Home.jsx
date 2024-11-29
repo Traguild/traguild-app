@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useCallback, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -33,9 +34,10 @@ const Home = () => {
   const [requestData, setRequestData] = useState([]);
 
   const getList = async (reset = false) => {
+    const user_idx = await AsyncStorage.getItem("user_idx");
     const res = await API.POST({
       url: "/requestInfo/fetch",
-      data: { page: page, limit: LIMIT },
+      data: { user_idx, page, limit: LIMIT },
     });
 
     setRequestData((prev) => {
