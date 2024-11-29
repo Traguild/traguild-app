@@ -3,7 +3,6 @@ import React, { useState } from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
-import { getCost } from "resources/js/common";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getTitle, getCost } from "resources/js/common";
