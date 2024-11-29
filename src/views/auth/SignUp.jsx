@@ -41,10 +41,10 @@ const SignUp = ({ navigation }) => {
   });
 
   const handleSignUp = async () => {
-    if (user_pw !== confirmPassword) {
-      toast.show("비밀번호가 일치하지 않습니다.");
-      return;
-    }
+    // if (user_pw !== confirmPassword) {
+    //   toast.show("비밀번호가 일치하지 않습니다.");
+    //   return;
+    // }
 
     res = await API.PUT({
       url: "/userInfo",
