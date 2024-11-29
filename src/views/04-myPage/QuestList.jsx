@@ -110,7 +110,7 @@ const QuestList = ({ navigation }) => {
           renderItem={({ item }) => <QuestListItem item={item} />}
           keyExtractor={(item) => item.request_idx.toString()}
           ListEmptyComponent={
-            <Text style={styles.emptyText}>의뢰 내역이 없습니다.</Text>
+            <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>
           }
         />
       )}
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 50,
     fontSize: 16,
     color: "gray",
   },

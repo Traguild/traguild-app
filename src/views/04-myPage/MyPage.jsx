@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
@@ -20,25 +20,39 @@ import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
 
 const MyPage = () => {
+  const USER_IDX = useRef(null);
   const [userInfo, setUserInfo] = useState({});
 
+  const getUserInfo = async () => {
+    USER_IDX.current = await AsyncStorage.getItem("user_idx");
+    const user_idx = USER_IDX.current;
+
+    const res = await API.POST({
+      url: "/userInfo",
+      data: { user_idx },
+    });
+
+    setUserInfo(res);
+  };
+
   useLayoutEffect(() => {
-    const getUserInfo = async () => {
-      const user_idx = await AsyncStorage.getItem("user_idx");
-
-      const res = await API.POST({
-        url: "/userInfo",
-        data: { user_idx },
-      });
-
-      setUserInfo(res);
-    };
     getUserInfo();
   }, []);
 
   const signOut = async () => {
     await AsyncStorage.clear();
     navGo.re("Main");
+  };
+
+  const chargeCredit = async () => {
+    const user_idx = USER_IDX.current;
+
+    const res = await API.POST({
+      url: "/userInfo/updateforcredit",
+      data: { user_idx, user_credit: 300 },
+    });
+
+    if (res) getUserInfo();
   };
 
   return (
@@ -65,7 +79,11 @@ const MyPage = () => {
         <Text style={styles.myCredit}>
           {getCost(userInfo?.user_credit ?? 0)} 코인
         </Text>
-        <TouchableOpacity style={styles.chargeButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.chargeButton}
+          activeOpacity={0.7}
+          onPress={chargeCredit}
+        >
           <Text style={styles.chargeButtonText}>충전하기</Text>
         </TouchableOpacity>
       </View>
