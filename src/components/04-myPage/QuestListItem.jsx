@@ -3,12 +3,12 @@ import React, { useState } from "react";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
+import { getCost } from "resources/js/common";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { getTitle } from "resources/js/common";
 
 const QuestListItem = ({ item }) => {
-
   const movDetail = () => {
     if (navGo) {
       navGo.to("RequestDetail", { item });
@@ -23,24 +23,30 @@ const QuestListItem = ({ item }) => {
         onPress={movDetail}
       >
         <Image
-          source={item?.request_img ? { uri: item.request_img } : defaultImg.logo}
+          source={
+            item?.request_img ? { uri: item.request_img } : defaultImg.logo
+          }
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={styles.itemTitle}>{getTitle(item.request_title, 10)}</Text>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={styles.itemTitle}>
+              {getTitle(item.request_title, 10)}
+            </Text>
             <View
               style={{
                 ...styles.itemStateBox,
                 backgroundColor:
-                  item.request_state === "대기"
+                  item.request_state === "모집"
                     ? theme["request-proceed"]
-                    : item.request_state === "반려"
-                      ? theme["request-reject"]
-                      : theme["request-done"],
+                    : theme["request-done"],
               }}
             >
-              <Text style={styles.itemState}>{item.request_state ?? "상태 없음"}</Text>
+              <Text style={styles.itemState}>
+                {item.request_state ?? "상태 없음"}
+              </Text>
             </View>
           </View>
 
@@ -48,23 +54,29 @@ const QuestListItem = ({ item }) => {
             <FontAwesome5
               style={styles.region}
               name="map-marker-alt"
-              size={24}
+              size={20}
               color="black"
             />
             <Text style={styles.region}>
-              &nbsp;{item.request_region ?? "지역 없음"}&nbsp;
+              {item.request_region ?? "지역 없음"}
             </Text>
           </View>
 
           <View style={styles.dateBox}>
             <Text style={styles.dateText}>
-              {item.created_date ?? "날짜 없음"}
+              {new Date(item.created_date).toLocaleDateString("ko-KR", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              }) ?? ""}
             </Text>
           </View>
 
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>
-              {item.request_cost ? `${item.request_cost} 원` : "비용 미정"}
+              {item.request_cost
+                ? `${getCost(item.request_cost)} 원`
+                : "비용 미정"}
             </Text>
           </View>
         </View>
@@ -101,8 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemTitle: {
-    fontSize: 24,
-    fontWeight: "800",
+    fontSize: 20,
+    fontWeight: "600",
   },
   itemStateBox: {
     width: 60,
@@ -124,6 +136,7 @@ const styles = StyleSheet.create({
   },
   region: {
     fontSize: 13,
+    marginLeft: 5,
   },
   dateBox: {
     marginBottom: 5,
@@ -137,12 +150,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   itemCost: {
-    fontSize: 18,
-  },
-  favoriteButton: {
-    position: "absolute",
-    right: 10,
-    top: 10,
+    fontSize: 16,
   },
 });
 

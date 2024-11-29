@@ -55,7 +55,6 @@ const QuestList = ({ navigation }) => {
           });
           setApplications(res);
         }
-
       } catch (error) {
         console.error("Error fetching data: ", error);
       } finally {
@@ -99,23 +98,7 @@ const QuestList = ({ navigation }) => {
         <FlatList
           style={{ width: "100%" }}
           data={filteredMainData}
-          renderItem={({ item }) => (
-            <QuestListItem
-              item={{
-                user_idx: item.user_idx,
-                request_idx: item.request_idx,
-                request_title: item.request_title,
-                request_content: item.request_content,
-                request_cost: item.request_cost,
-                request_state: item.request_state,
-                request_region: item.request_region,
-                created_date: new Date(item.created_date).toLocaleDateString(
-                  "ko-KR",
-                  { year: "numeric", month: "2-digit", day: "2-digit" }
-                ),
-              }}
-            />
-          )}
+          renderItem={({ item }) => <QuestListItem item={item} />}
           keyExtractor={(item) => item.request_idx.toString()}
           ListEmptyComponent={
             <Text style={styles.emptyText}>의뢰 내역이 없습니다.</Text>
