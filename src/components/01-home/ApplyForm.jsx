@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -9,8 +9,11 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 
-const ApplyForm = ({ onFocus, info }) => {
-  const [applyIntro, setApplyIntro] = useState("");
+const ApplyForm = ({ onFocus, info, setChildApplyIntro }) => {
+  const [apply_intro, setApplyIntro] = useState("");
+  useEffect(() => {
+    setChildApplyIntro(apply_intro);
+  }, [apply_intro]);
 
   return (
     <View style={styles.modalContent}>
@@ -43,7 +46,7 @@ const ApplyForm = ({ onFocus, info }) => {
           <Label text={"소개"} />
           <TextField
             style={{ width: "100%" }}
-            value={applyIntro}
+            value={apply_intro}
             onChangeText={setApplyIntro}
             onFocus={onFocus}
           />

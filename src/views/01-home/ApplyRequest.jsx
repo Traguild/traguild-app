@@ -8,6 +8,10 @@ import {
 } from "react-native";
 import React, { useCallback, useLayoutEffect, useMemo, useRef } from "react";
 import { BottomSheetBackdrop, BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useToast } from "react-native-toast-notifications";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -18,6 +22,7 @@ import ApplyForm from "components/01-home/ApplyForm";
 import Button from "components/common/Button";
 
 const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
+  const toast = useToast();
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["10%", "80%", "100%"], []);
 
@@ -40,6 +45,26 @@ const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
   useLayoutEffect(() => {
     if (modalVisible) handleOpen();
   }, [modalVisible]);
+
+  const setChildApplyIntro = (text) => {
+    info.applicant_intro = text;
+  };
+
+  const handleApply = useCallback(async () => {
+    const res = await API.PUT({
+      url: "/requestApplicant",
+      data: {
+        request_idx: info.request_idx,
+        user_idx: info.user_idx,
+        applicant_intro: info.applicant_intro,
+      },
+    });
+
+    if (res) {
+      toast.show("지원이 완료되었습니다.");
+      handleClose();
+    }
+  });
 
   return (
     <BottomSheetModal
@@ -72,9 +97,13 @@ const ApplyRequest = ({ modalVisible, setModalVisible, info }) => {
               </TouchableOpacity>
               <Text style={styles.applyTitle}>지원하기</Text>
             </View>
-            <ApplyForm onFocus={handleInputFocus} info={info} />
+            <ApplyForm
+              onFocus={handleInputFocus}
+              info={info}
+              setChildApplyIntro={setChildApplyIntro}
+            />
             <View style={styles.modalBottom}>
-              <Button text="제출하기" />
+              <Button text="제출하기" onPress={handleApply} />
             </View>
           </View>
         </View>

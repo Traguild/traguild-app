@@ -6,8 +6,10 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -24,10 +26,12 @@ import RequestState from "components/01-home/RequestState";
 import MyManner from "components/04-myPage/MyManner";
 
 const RequestDetail = ({ navigation, route }) => {
+  const toast = useToast();
   const { item } = route.params;
 
+  const USER_IDX = useRef(null);
   const [postUserInfo, setPostUserInfo] = useState({});
-  const [userInfo, setUserInfo] = useState({});
+  const [applyInfo, setApplyInfo] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
@@ -49,16 +53,27 @@ const RequestDetail = ({ navigation, route }) => {
     };
 
     const getUserInfo = async () => {
+      USER_IDX.current = await AsyncStorage.getItem("user_idx");
+
       const res = await API.POST({
         url: "/userInfo",
-        data: { user_idx: item.user_idx },
+        data: { user_idx: USER_IDX.current },
       });
-      setUserInfo(res);
+      res.request_idx = item.request_idx;
+      setApplyInfo(res);
     };
 
     getPostUserInfo();
     getUserInfo();
   }, []);
+
+  const handleApply = () => {
+    setModalVisible(true);
+    if (USER_IDX.current === item.user_idx) {
+      toast.show("본인의 의뢰에는 지원할 수 없습니다.");
+      setModalVisible(false);
+    }
+  };
 
   return (
     <BottomSheetModalProvider>
@@ -66,7 +81,7 @@ const RequestDetail = ({ navigation, route }) => {
         <ApplyRequest
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          info={userInfo}
+          info={applyInfo}
         />
         <View style={{ height: layout().height * 0.9 }}>
           <ScrollView>
@@ -110,10 +125,7 @@ const RequestDetail = ({ navigation, route }) => {
               style={{ marginBottom: 25 }}
             />
           </View>
-          <TouchableOpacity
-            style={styles.applyBtn}
-            onPress={() => setModalVisible(true)}
-          >
+          <TouchableOpacity style={styles.applyBtn} onPress={handleApply}>
             <Text style={{ color: "white", fontSize: 18, fontWeight: "600" }}>
               지원하기
             </Text>
