@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "components/*": ["src/components/*"],
       "layouts/*": ["src/layouts/*"],
       "resources/*": ["src/resources/*"],
       "views/*": ["src/views/*"],
-      "config/*": ["src/config/*"],
-    }
+      "config/*": ["src/config/*"]
+    },
+    "typeRoots": ["node_modules/@types"],
+    "types": ["hammerjs"]
   },
   "include": ["src"]
 }
