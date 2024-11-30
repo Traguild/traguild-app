@@ -5,13 +5,17 @@ import React from "react";
 import { theme } from "resources/theme/common";
 
 const RequestState = ({ text, style }) => {
+  const stateBg = {
+    완료: theme["request-done"],
+    모집: theme["request-proceed"],
+  };
+
   return (
     <View
       style={{
         ...style,
         ...styles.itemStateBox,
-        backgroundColor:
-          text === "완료" ? theme["request-done"] : theme["request-proceed"],
+        backgroundColor: stateBg[text],
       }}
     >
       <Text style={styles.itemState}>{text}</Text>

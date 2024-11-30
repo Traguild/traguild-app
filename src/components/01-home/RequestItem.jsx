@@ -5,7 +5,7 @@ import React from "react";
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "react-native-vector-icons";
-import { getTitle, getCost } from "resources/js/common";
+import { getTitle, getCost, getKorDate } from "resources/js/common";
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item }) => {
@@ -15,7 +15,7 @@ const RequestItem = ({ item }) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.listItem}
-        activeOpacity={0.5}
+        activeOpacity={0.7}
         onPress={movDetail}
       >
         <Image
@@ -29,20 +29,20 @@ const RequestItem = ({ item }) => {
               {getTitle(item.request_title, 18)}
             </Text>
           </View>
-          {/*지역 text*/}
-          {/* <View style={styles.regionBox}>
+          <View style={styles.regionBox}>
             <FontAwesome5
               style={styles.region}
               name="map-marker-alt"
               size={24}
               color="black"
             />
-            <Text style={styles.region}>
-              &nbsp;{item.request_state_region}&nbsp;
+            <Text style={{ ...styles.region, marginLeft: 5 }}>
+              {item.request_region}
             </Text>
-            <Text style={styles.region}>{item.request_city_region}&nbsp;</Text>
-            <Text style={styles.region}>{item.created_time}</Text>
-          </View> */}
+          </View>
+          <View style={styles.dateBox}>
+            <Text style={styles.dateText}>{getKorDate(item.created_date)}</Text>
+          </View>
 
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
@@ -88,15 +88,18 @@ const styles = StyleSheet.create({
   },
 
   regionBox: {
-    height: 30,
     flexDirection: "row",
     alignItems: "flex-end",
   },
   region: {
-    height: 30,
-    fontSize: 13,
+    fontSize: 12,
     flexDirection: "row",
     alignItems: "flex-end",
+  },
+  dateBox: {},
+  dateText: {
+    fontSize: 10,
+    color: "#999",
   },
   itemCostBox: {
     flexDirection: "row",

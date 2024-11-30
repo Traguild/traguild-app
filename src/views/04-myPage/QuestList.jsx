@@ -15,7 +15,7 @@ import { API } from "config/fetch.config";
 import { theme } from "resources/theme/common";
 
 // IMPORT COMPONENTS
-import QuestListItem from "src/components/04-myPage/QuestListItem";
+import RequestItem from "components/01-home/RequestItem";
 
 const LIMIT = 10;
 
@@ -53,6 +53,7 @@ const QuestList = ({ navigation }) => {
           setIsLoading(false);
         }
       };
+
       const fetchApplications = async () => {
         try {
           const res = await API.POST({
@@ -107,7 +108,7 @@ const QuestList = ({ navigation }) => {
         <FlatList
           style={{ width: "100%" }}
           data={filteredMainData}
-          renderItem={({ item }) => <QuestListItem item={item} />}
+          renderItem={({ item }) => <RequestItem item={item} />}
           keyExtractor={(item) => item.request_idx.toString()}
           ListEmptyComponent={
             <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>

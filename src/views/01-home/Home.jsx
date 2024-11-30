@@ -44,11 +44,11 @@ const Home = () => {
       const newData = reset
         ? res
         : res.filter(
-          (item) =>
-            !prev.some(
-              (prevItem) => prevItem.request_idx === item.request_idx
-            )
-        );
+            (item) =>
+              !prev.some(
+                (prevItem) => prevItem.request_idx === item.request_idx
+              )
+          );
 
       prevData = newData.length;
       if (prevData === LIMIT) page++;
@@ -87,15 +87,7 @@ const Home = () => {
         data={requestData}
         renderItem={({ item }) => <RequestItem item={item} />}
         ListEmptyComponent={
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "gray",
-              marginTop: 20,
-            }}
-          >
-            데이터를 불러올 수 없습니다.
-          </Text>
+          <Text style={styles.emptyItems}>데이터를 불러올 수 없습니다.</Text>
         }
         keyExtractor={(item) => item.request_idx.toString()}
         refreshControl={
@@ -145,6 +137,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+  },
+  emptyItems: {
+    alignSelf: "center",
+    color: "gray",
+    marginTop: 20,
   },
   btnText: {
     color: "white",

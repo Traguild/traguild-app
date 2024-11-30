@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -35,18 +36,35 @@ const ApplyList = () => {
     getApplyList();
   }, []);
 
-  const handleApprove = (idx) => {
-    // const updatedList = applyList.map((item) =>
-    //   item.request_idx === idx ? { ...item, status: "approved" } : item
-    // );
-    // setApplyList(updatedList);
-  };
+  const handleApply = async ({
+    request_idx,
+    user_idx,
+    applicant_state,
+    ...item
+  }) => {
+    console.log(item);
+    return null;
 
-  const handleReject = (idx) => {
-    // const updatedList = applyList.map((item) =>
-    //   item.request_idx === idx ? { ...item, status: "rejected" } : item
-    // );
-    // setApplyList(updatedList);
+    const res = await API.POST({
+      url: "/requestApplicant/update",
+      data: { request_idx, user_idx, applicant_state },
+    });
+
+    if (res) {
+      if (applicant_state === "승인") {
+        API.POST({
+          url: "/requestApplicant/rejectAll",
+          data: { request_idx },
+        });
+      }
+
+      setApplyList((prev) =>
+        prev.filter(
+          (item) =>
+            item.request_idx !== request_idx && item.user_idx !== user_idx
+        )
+      );
+    }
   };
 
   const renderItem = ({ item }) => (
@@ -62,26 +80,20 @@ const ApplyList = () => {
           {getContents(item.applicant_intro, 25)}
         </Text>
       </View>
-      {item.applicant_state === "대기" ? (
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.approveButton]}
-            onPress={() => handleApprove(item.request_idx)}
-          >
-            <Text style={styles.buttonText}>승인</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.button, styles.rejectButton]}
-            onPress={() => handleReject(item.request_idx)}
-          >
-            <Text style={{ ...styles.buttonText, color: "#ff7f51" }}>반려</Text>
-          </TouchableOpacity>
-        </View>
-      ) : (
-        <Text style={styles.statusText}>
-          {item.applicant_state === "승인" ? "승인됨" : "반려됨"}
-        </Text>
-      )}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, styles.approveButton]}
+          onPress={() => handleApply({ ...item, applicant_state: "승인" })}
+        >
+          <Text style={styles.buttonText}>승인</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.rejectButton]}
+          onPress={() => handleApply({ ...item, applicant_state: "반려" })}
+        >
+          <Text style={{ ...styles.buttonText, color: "#ff7f51" }}>반려</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
