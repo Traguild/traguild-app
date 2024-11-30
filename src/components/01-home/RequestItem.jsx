@@ -1,15 +1,35 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getTitle, getCost, getKorDate } from "resources/js/common";
+
+// IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
+  const [img, setImg] = useState(null);
+
+  useLayoutEffect(() => {
+    if (item.request_img) {
+      getRequestImg(item.request_idx).then((res) => {
+        item.request_img = res;
+        setImg(res);
+      });
+    }
+  }, []);
+
+  const getRequestImg = async (idx) => {
+    const url = `/requestInfo/getImage/${idx}`;
+    return await API.GetImage({ url });
+  };
 
   return (
     <View style={styles.container}>
@@ -19,7 +39,7 @@ const RequestItem = ({ item }) => {
         onPress={movDetail}
       >
         <Image
-          source={item.request_img ? item.request_img : defaultImg.logo}
+          source={item.request_img ? { uri: img } : defaultImg.logo}
           style={styles.itemImg}
         />
         <View style={styles.itemText}>

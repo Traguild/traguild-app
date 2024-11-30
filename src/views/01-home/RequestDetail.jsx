@@ -51,6 +51,11 @@ const RequestDetail = ({ navigation, route }) => {
         data: { user_idx: item.user_idx },
       });
       setPostUserInfo(res);
+
+      const img_url = await API.GetImage({
+        url: `/userInfo/userImg/${item.user_idx}?timestamp=${new Date().getTime()}`,
+      });
+      setPostUserInfo({ ...res, user_img: img_url });
     };
 
     const getUserInfo = async () => {
@@ -87,7 +92,9 @@ const RequestDetail = ({ navigation, route }) => {
         <View style={{ height: layout().height * 0.9 }}>
           <ScrollView>
             <Image
-              source={defaultImg.logo}
+              source={
+                item.request_img ? { uri: item.request_img } : defaultImg.logo
+              }
               style={{
                 ...styles.itemImg,
                 height: layout().width,
@@ -110,7 +117,14 @@ const RequestDetail = ({ navigation, route }) => {
           style={{ ...styles.footerContainer, height: layout().height * 0.1 }}
         >
           <View style={styles.footerProfiles}>
-            <Image source={defaultImg.logo} style={styles.profileImg} />
+            <Image
+              source={
+                postUserInfo.user_img
+                  ? { uri: postUserInfo.user_img }
+                  : defaultImg.logo
+              }
+              style={styles.profileImg}
+            />
             <Text
               style={{
                 fontSize: 20,
