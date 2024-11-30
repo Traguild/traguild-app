@@ -1,12 +1,15 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useLayoutEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+// import ImagePicker from "react-native-image-crop-picker";
+// import * as ImagePicker from "expo-image-picker";
+
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
-import { defaultImg } from "resources/img/defaultImg";
 import { getCost } from "resources/js/common";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -19,9 +22,13 @@ import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
 import Button from "components/common/Button";
+import ImagePicker from "components/common/ImagePicker";
 
 const MyPage = () => {
+  // const toast = useToast();
   const USER_IDX = useRef(null);
+  // const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  const [image, setImage] = useState(null);
   const [userInfo, setUserInfo] = useState({});
 
   const getUserInfo = async () => {
@@ -60,7 +67,7 @@ const MyPage = () => {
   return (
     <View style={styles.container}>
       <View style={styles.profileBox}>
-        <Image source={defaultImg.logo} style={styles.profilePic} />
+        <ImagePicker style={styles.profilePic} source={image} />
         <View style={styles.profileTop}>
           <Text style={styles.profileName}>
             {userInfo?.user_nickname ?? "알 수 없음"}
@@ -101,7 +108,7 @@ const MyPage = () => {
             key={idx}
             text={item.text}
             onPress={() => {
-              navGo.to(item.screen, { userInfo });
+              navGo.to(item.screen, { userInfo, setUserInfo });
             }}
           />
         ))}

@@ -38,7 +38,6 @@ const WriteForm = ({ onSubmit }) => {
       }
     }
 
-    console.log("Image Picker");
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsEditing: false,
