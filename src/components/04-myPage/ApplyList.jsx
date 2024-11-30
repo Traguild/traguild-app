@@ -26,6 +26,7 @@ const ApplyList = () => {
           user_idx,
           page: 1,
           limit: 10,
+          status: "대기",
         },
       });
 
