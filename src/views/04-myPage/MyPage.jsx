@@ -1,10 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useLayoutEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import ImagePicker from "react-native-image-crop-picker";
-// import * as ImagePicker from "expo-image-picker";
-
-import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -27,9 +23,13 @@ import ImagePicker from "components/common/ImagePicker";
 const MyPage = () => {
   // const toast = useToast();
   const USER_IDX = useRef(null);
-  // const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({});
+  const [image, setImage] = useState(null);
+
+  useLayoutEffect(() => {
+    getUserInfo();
+  }, []);
 
   const getUserInfo = async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
@@ -39,13 +39,14 @@ const MyPage = () => {
       url: "/userInfo",
       data: { user_idx },
     });
-
     setUserInfo(res);
-  };
 
-  useLayoutEffect(() => {
-    getUserInfo();
-  }, []);
+    const img_url = await API.GetImage({
+      url: `/userInfo/userImg/${user_idx}?timestamp=${new Date().getTime()}`,
+    });
+    setImage(img_url);
+    setIsLoading(false);
+  };
 
   const signOut = async () => {
     await AsyncStorage.clear();
@@ -64,67 +65,96 @@ const MyPage = () => {
     if (res) getUserInfo();
   };
 
+  const uploadImage = async (image) => {
+    const formData = new FormData();
+    formData.append("user_idx", USER_IDX.current);
+    formData.append("image", {
+      uri: image.uri,
+      type: image.type,
+      name: image.fileName,
+    });
+
+    return await API.POST({
+      type: "multipart",
+      url: "/userInfo/updateUserImg",
+      data: formData,
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.profileBox}>
-        <ImagePicker style={styles.profilePic} source={image} />
-        <View style={styles.profileTop}>
-          <Text style={styles.profileName}>
-            {userInfo?.user_nickname ?? "알 수 없음"}
-          </Text>
-          <MyManner rate={userInfo?.user_rate ?? 50} />
-        </View>
-        <TouchableOpacity
-          style={styles.signOutBtn}
-          activeOpacity={0.7}
-          onPress={signOut}
-        >
-          <Text style={styles.signOutText}>로그아웃</Text>
-        </TouchableOpacity>
-      </View>
+    <>
+      {isLoading ? (
+        <View style={styles.loadingWrap}></View>
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.profileBox}>
+            <ImagePicker
+              style={styles.profilePic}
+              source={image}
+              onOk={uploadImage}
+            />
+            <View style={styles.profileTop}>
+              <Text style={styles.profileName}>
+                {userInfo?.user_nickname ?? "알 수 없음"}
+              </Text>
+              <MyManner rate={userInfo?.user_rate ?? 50} />
+            </View>
+            <TouchableOpacity
+              style={styles.signOutBtn}
+              activeOpacity={0.7}
+              onPress={signOut}
+            >
+              <Text style={styles.signOutText}>로그아웃</Text>
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.myCreditBox}>
-        <View style={{ flexDirection: "row" }}>
-          <FontAwesome5 name="coins" size={22} color="#f7b801" />
-          <Text style={styles.myCredit}>
-            {getCost(userInfo?.user_credit ?? 0)} 코인
-          </Text>
-        </View>
-        <Button
-          type="light"
-          textStyle={{ fontSize: 16 }}
-          text="충전하기"
-          onPress={chargeCredit}
-        />
-      </View>
+          <View style={styles.myCreditBox}>
+            <View style={{ flexDirection: "row" }}>
+              <FontAwesome5 name="coins" size={22} color="#f7b801" />
+              <Text style={styles.myCredit}>
+                {getCost(userInfo?.user_credit ?? 0)} 코인
+              </Text>
+            </View>
+            <Button
+              type="light"
+              textStyle={{ fontSize: 16 }}
+              text="충전하기"
+              onPress={chargeCredit}
+            />
+          </View>
 
-      <View style={styles.requestBox}>
-        {[
-          { text: "찜한 의뢰", screen: "Favorite" },
-          { text: "의뢰 내역", screen: "QuestList" },
-          { text: "프로필 수정", screen: "ProfileEdit" },
-        ].map((item, idx) => (
-          <MyItem
-            key={idx}
-            text={item.text}
-            onPress={() => {
-              navGo.to(item.screen, { userInfo, setUserInfo });
-            }}
-          />
-        ))}
-      </View>
+          <View style={styles.requestBox}>
+            {[
+              { text: "찜한 의뢰", screen: "Favorite" },
+              { text: "의뢰 내역", screen: "QuestList" },
+              { text: "프로필 수정", screen: "ProfileEdit" },
+            ].map((item, idx) => (
+              <MyItem
+                key={idx}
+                text={item.text}
+                onPress={() => {
+                  navGo.to(item.screen, { userInfo, setUserInfo });
+                }}
+              />
+            ))}
+          </View>
 
-      <View style={styles.applyListContainer}>
-        <Text style={styles.applyListTitle}>지원자 목록</Text>
-        <View style={styles.applyList}>
-          <ApplyList />
+          <View style={styles.applyListContainer}>
+            <Text style={styles.applyListTitle}>지원자 목록</Text>
+            <View style={styles.applyList}>
+              <ApplyList />
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      )}
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  loadingWrap: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     alignItems: "center",

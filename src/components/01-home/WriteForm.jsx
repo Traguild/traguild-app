@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground, Pressable } from "react-native";
 import { useToast } from "react-native-toast-notifications";
-import * as ImagePicker from "expo-image-picker";
+// import * as ImagePicker from "expo-image-picker";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 import { getCost } from "resources/js/common";
-import { defaultImg } from "resources/img/defaultImg";
 import { layout } from "resources/theme/layout";
 import { Feather } from "@expo/vector-icons";
 
@@ -15,41 +14,14 @@ import Button from "components/common/Button";
 import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
+import ImagePicker from "components/common/ImagePicker";
 
 const WriteForm = ({ onSubmit }) => {
   const toast = useToast();
-
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
   const [image, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
   const [request_cost, setCost] = useState("");
-
-  const getDefaultImage = () => {
-    return defaultImg.logo;
-  };
-
-  const handleImagePicker = async () => {
-    if (!status?.granted) {
-      const permission = await requestPermission();
-      if (!permission.granted) {
-        toast.show("권한이 없습니다.", { type: "warning" });
-        return null;
-      }
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      allowsEditing: false,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.cancelled) {
-      setImage(result.assets[0].uri);
-      return null;
-    }
-  };
 
   const handleSubmit = () => {
     if (!request_title || !request_content || !request_cost) {
@@ -61,18 +33,18 @@ const WriteForm = ({ onSubmit }) => {
 
   return (
     <View style={{ ...styles.container, height: layout().height }}>
-      <ImageBackground
-        source={image ? { uri: image } : getDefaultImage()}
-        style={{
-          width: layout().width,
-          height: layout().width,
-        }}
+      <ImagePicker
+        style={{ width: layout().width, height: layout().width }}
+        source={image}
       >
-        <Pressable style={styles.itemImg} onPress={handleImagePicker}>
-          <Feather name="image" size={layout().width * 0.1} color="lightgray" />
-        </Pressable>
-      </ImageBackground>
-
+        <View style={styles.itemImg}>
+          <Feather
+            name="image"
+            size={layout().width * 0.1}
+            color="rgba(250, 250, 250, 0.5)"
+          />
+        </View>
+      </ImagePicker>
       <View style={styles.inputContainer}>
         <Label text="제목" />
         <Input
@@ -127,6 +99,8 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.3)",
     width: "100%",
     height: "100%",
+    position: "absolute",
+    top: 0,
 
     alignItems: "center",
     justifyContent: "center",

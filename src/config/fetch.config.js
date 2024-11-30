@@ -29,8 +29,6 @@ export const API = {
       const url = BASE_URL + obj.url;
       const data = obj.data == null ? {} : obj.data;
 
-      console.log(data);
-
       const response =
         obj.type === "multipart"
           ? await fetch(url, {
@@ -105,6 +103,16 @@ export const API = {
       return response.status === 200 ? "Delete Successful" : "Delete failed";
     } catch (error) {
       console.error(error);
+    }
+  },
+  GetImage: async (obj) => {
+    const url = BASE_URL + obj.url;
+    const res = await fetch(url);
+
+    if (res.ok) {
+      return res.url;
+    } else {
+      console.error("Failed to fetch image:", res.status);
     }
   },
 };
