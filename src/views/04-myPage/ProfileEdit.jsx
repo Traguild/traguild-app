@@ -20,7 +20,7 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 
 const ProfileEdit = ({ navigation, route }) => {
-  const { userInfo } = route.params;
+  const { userInfo, setUserInfo } = route.params;
 
   const toast = useToast();
   const [user_region, setRegion] = useState(userInfo?.user_region ?? "");
@@ -63,7 +63,7 @@ const ProfileEdit = ({ navigation, route }) => {
 
     if (user_pw && new_user_pw) {
       updatedData.user_pw = user_pw;
-      updatedData.new_user_pw = new_user_pw
+      updatedData.new_user_pw = new_user_pw;
     }
 
     try {
@@ -73,11 +73,13 @@ const ProfileEdit = ({ navigation, route }) => {
       });
 
       if (res[0] === 1) {
+        setUserInfo({ ...userInfo, user_nickname });
         toast.show("프로필 정보가 업데이트되었습니다.", { type: "success" });
         navigation.goBack();
-      }
-      else {
-        toast.show(res.message || "프로필 업데이트에 실패했습니다.", { type: "danger" });
+      } else {
+        toast.show(res.message || "프로필 업데이트에 실패했습니다.", {
+          type: "danger",
+        });
       }
     } catch (error) {
       console.error("Error updating profile:", error);
