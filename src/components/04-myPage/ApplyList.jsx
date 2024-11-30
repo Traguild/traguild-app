@@ -36,15 +36,7 @@ const ApplyList = () => {
     getApplyList();
   }, []);
 
-  const handleApply = async ({
-    request_idx,
-    user_idx,
-    applicant_state,
-    ...item
-  }) => {
-    console.log(item);
-    return null;
-
+  const proceedApply = async ({ request_idx, user_idx, applicant_state }) => {
     const res = await API.POST({
       url: "/requestApplicant/update",
       data: { request_idx, user_idx, applicant_state },
@@ -56,6 +48,14 @@ const ApplyList = () => {
           url: "/requestApplicant/rejectAll",
           data: { request_idx },
         });
+        API.POST({
+          url: "/requestInfo/update",
+          data: {
+            request_idx,
+            request_state: "완료",
+            applicant_idx: user_idx,
+          },
+        });
       }
 
       setApplyList((prev) =>
@@ -65,6 +65,25 @@ const ApplyList = () => {
         )
       );
     }
+  };
+
+  const handleApply = (item) => {
+    Alert.alert(
+      `${item.request_title}`,
+      `지원자 ${item.user_nickname}님을 ${item.applicant_state}하시겠습니까?`,
+      [
+        {
+          text: "취소",
+          style: "cancel",
+        },
+        {
+          text: "계속하기",
+          onPress: () => {
+            proceedApply(item);
+          },
+        },
+      ]
+    );
   };
 
   const renderItem = ({ item }) => (
