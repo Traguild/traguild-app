@@ -47,10 +47,11 @@ const MyPage = () => {
 
   const chargeCredit = async () => {
     const user_idx = USER_IDX.current;
+    const myCredit = userInfo?.user_credit ?? 0;
 
     const res = await API.POST({
       url: "/userInfo/updateforcredit",
-      data: { user_idx, user_credit: 300 },
+      data: { user_idx, user_credit: myCredit + 300 },
     });
 
     if (res) getUserInfo();
