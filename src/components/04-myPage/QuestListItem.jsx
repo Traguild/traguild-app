@@ -32,7 +32,7 @@ const QuestListItem = ({ item }) => {
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={styles.itemTitle}>
-              {getTitle(item.request_title, 10)}
+              {getTitle(item.request_title, 14)}
             </Text>
             <View
               style={{
@@ -44,7 +44,7 @@ const QuestListItem = ({ item }) => {
               }}
             >
               <Text style={styles.itemState}>
-                {item.request_state ?? "상태 없음"}
+                {item?.request_state ?? "없음"}
               </Text>
             </View>
           </View>

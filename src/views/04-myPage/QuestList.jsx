@@ -131,8 +131,8 @@ const styles = StyleSheet.create({
   },
   mainFilterButton: {
     paddingVertical: 8,
-    paddingHorizontal: 5,
-    borderRadius: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
