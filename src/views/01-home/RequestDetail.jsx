@@ -24,6 +24,7 @@ import { getCost } from "resources/js/common";
 import ApplyRequest from "views/01-home/ApplyRequest";
 import RequestState from "components/01-home/RequestState";
 import MyManner from "components/04-myPage/MyManner";
+import Button from "components/common/Button";
 
 const RequestDetail = ({ navigation, route }) => {
   const toast = useToast();
@@ -125,11 +126,11 @@ const RequestDetail = ({ navigation, route }) => {
               style={{ marginBottom: 25 }}
             />
           </View>
-          <TouchableOpacity style={styles.applyBtn} onPress={handleApply}>
-            <Text style={{ color: "white", fontSize: 18, fontWeight: "500" }}>
-              지원하기
-            </Text>
-          </TouchableOpacity>
+          {item.request_state === "완료" ? (
+            <Button type="light" text="지원마감" bgColor="gray" disabled />
+          ) : (
+            <Button type="light" text="지원하기" onPress={handleApply} />
+          )}
         </View>
       </View>
     </BottomSheetModalProvider>
@@ -187,15 +188,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 50,
     marginRight: 12,
-  },
-  applyBtn: {
-    backgroundColor: theme["default-btn"],
-    paddingVertical: 15,
-    paddingHorizontal: 25,
-    borderRadius: 25,
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 

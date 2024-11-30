@@ -18,6 +18,7 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 import MyItem from "components/04-myPage/MyItem";
 import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
+import Button from "components/common/Button";
 
 const MyPage = () => {
   const USER_IDX = useRef(null);
@@ -75,17 +76,18 @@ const MyPage = () => {
       </View>
 
       <View style={styles.myCreditBox}>
-        <FontAwesome5 name="coins" size={18} color="#f7b801" />
-        <Text style={styles.myCredit}>
-          {getCost(userInfo?.user_credit ?? 0)} 코인
-        </Text>
-        <TouchableOpacity
-          style={styles.chargeButton}
-          activeOpacity={0.7}
+        <View style={{ flexDirection: "row" }}>
+          <FontAwesome5 name="coins" size={22} color="#f7b801" />
+          <Text style={styles.myCredit}>
+            {getCost(userInfo?.user_credit ?? 0)} 코인
+          </Text>
+        </View>
+        <Button
+          type="light"
+          textStyle={{ fontSize: 16 }}
+          text="충전하기"
           onPress={chargeCredit}
-        >
-          <Text style={styles.chargeButtonText}>충전하기</Text>
-        </TouchableOpacity>
+        />
       </View>
 
       <View style={styles.requestBox}>
@@ -149,8 +151,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 15,
-    paddingLeft: 25,
+    padding: 10,
+    paddingLeft: 30,
     width: "100%",
 
     borderColor: "lightgray",
@@ -158,8 +160,7 @@ const styles = StyleSheet.create({
   },
 
   myCredit: {
-    marginLeft: 18,
-
+    marginLeft: 16,
     fontSize: 18,
     fontWeight: "500",
   },

@@ -9,15 +9,35 @@ const Button = ({
   bgColor = theme["default-btn"],
   fontColor = "white",
   style = {},
+  textStyle = {},
+  type = "default",
   ...props
 }) => {
+  if (type === "light") {
+    return (
+      <TouchableOpacity
+        style={{ ...styles.lightBtn, backgroundColor: bgColor, ...style }}
+        activeOpacity={0.75}
+        {...props}
+      >
+        <Text
+          style={{ ...styles.lightBtnText, color: fontColor, ...textStyle }}
+        >
+          {text}
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <TouchableOpacity
-      style={{ ...style, ...styles.btn, backgroundColor: bgColor }}
+      style={{ ...styles.btn, backgroundColor: bgColor, ...style }}
       activeOpacity={0.75}
       {...props}
     >
-      <Text style={{ ...styles.btnText, color: fontColor }}>{text}</Text>
+      <Text style={{ ...styles.btnText, color: fontColor, ...textStyle }}>
+        {text}
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -35,5 +55,17 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 20,
     fontWeight: "600",
+  },
+
+  lightBtn: {
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  lightBtnText: {
+    fontSize: 18,
+    fontWeight: "500",
   },
 });
