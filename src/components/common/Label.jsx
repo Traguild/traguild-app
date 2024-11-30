@@ -4,10 +4,12 @@ import React from "react";
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 
-const Label = ({ text, style }) => {
+const Label = ({ text, style, ...props }) => {
   return (
     <View style={{ ...styles.menuName, ...style }}>
-      <Text style={styles.applyMenu}>{text}</Text>
+      <Text style={styles.applyMenu} {...props}>
+        {text}
+      </Text>
     </View>
   );
 };

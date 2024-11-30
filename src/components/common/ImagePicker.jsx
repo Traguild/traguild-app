@@ -10,7 +10,7 @@ import { defaultImg } from "resources/img/defaultImg";
 const ImagePicker = ({
   children,
   style,
-  source,
+  source = null,
   onOk = () => {},
   onLoad,
   ...props

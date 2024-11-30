@@ -31,21 +31,16 @@ const WriteRequest = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const handlePostRequest = async ({
-    request_title,
-    request_content,
-    request_cost,
-  }) => {
+  const handlePostRequest = async (formData) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
+    formData.append("user_idx", user_idx);
+
     await API.PUT({
+      type: "multipart",
       url: "/requestInfo",
-      data: {
-        user_idx,
-        request_title,
-        request_content,
-        request_cost,
-      },
+      data: formData,
     });
+
     toast.show("작성되었습니다.");
     navigation.goBack();
   };

@@ -65,13 +65,22 @@ export const API = {
       const url = BASE_URL + obj.url;
       const data = obj.data == null ? {} : obj.data;
 
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
+      const response =
+        obj.type === "multipart"
+          ? await fetch(url, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+              body: data,
+            })
+          : await fetch(url, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            });
 
       const result = await response.json();
 

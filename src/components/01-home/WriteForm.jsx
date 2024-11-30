@@ -18,7 +18,7 @@ import ImagePicker from "components/common/ImagePicker";
 
 const WriteForm = ({ onSubmit }) => {
   const toast = useToast();
-  const [image, setImage] = useState(null);
+  const [reqeust_img, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
   const [request_content, setContent] = useState("");
   const [request_cost, setCost] = useState("");
@@ -28,14 +28,31 @@ const WriteForm = ({ onSubmit }) => {
       toast.show("모든 필드를 입력해주세요.", { type: "warning" });
       return;
     }
-    onSubmit({ request_title, request_content, request_cost });
+
+    const formData = new FormData();
+    if (reqeust_img) {
+      formData.append("image", {
+        uri: reqeust_img.uri,
+        type: reqeust_img.type,
+        name: reqeust_img.fileName,
+      });
+    }
+    formData.append("request_title", request_title);
+    formData.append("request_content", request_content);
+    formData.append("request_cost", request_cost);
+
+    onSubmit(formData);
+  };
+
+  const handleImagePicker = async (resizedImage) => {
+    setImage(resizedImage);
   };
 
   return (
     <View style={{ ...styles.container, height: layout().height }}>
       <ImagePicker
         style={{ width: layout().width, height: layout().width }}
-        source={image}
+        onOk={handleImagePicker}
       >
         <View style={styles.itemImg}>
           <Feather
@@ -52,6 +69,7 @@ const WriteForm = ({ onSubmit }) => {
           placeholder="제목을 입력해주세요"
           value={request_title}
           onChangeText={(text) => setTitle(text)}
+          maxLength={20}
         />
       </View>
       <View style={styles.inputContainer}>
