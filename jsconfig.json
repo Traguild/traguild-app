@@ -9,7 +9,8 @@
       "config/*": ["src/config/*"]
     },
     "typeRoots": ["node_modules/@types"],
-    "types": ["hammerjs"]
+    "types": ["hammerjs"],
+    "lib": ["es6"]
   },
   "include": ["src"]
 }
