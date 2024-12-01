@@ -13,7 +13,7 @@ import { API } from "config/fetch.config";
 
 /* IMPORT RESOURCES */
 import { theme } from "resources/theme/common";
-import { isEmail } from "resources/js/common";
+
 
 // IMPORT COMPONENTS
 import Input from "components/common/Input";
@@ -41,10 +41,6 @@ const SignIn = ({ navigation }) => {
   const toast = useToast();
 
   const handleSignIn = async () => {
-    if (!isEmail(user_id)) {
-      toast.show("유효하지 않은 이메일 형식입니다.");
-      return;
-    }
     const res = await API.POST({
       url: "/auth/signIn",
       data: { user_id, user_pw },

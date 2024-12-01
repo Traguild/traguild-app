@@ -13,6 +13,7 @@ import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { isEmail } from "resources/js/common";
 
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
@@ -47,6 +48,11 @@ const SignUp = ({ navigation }) => {
     //   toast.show("비밀번호가 일치하지 않습니다.");
     //   return;
     // }
+
+    if (!isEmail(user_id)) {
+      toast.show("유효하지 않은 이메일 형식입니다.");
+      return;
+    }
 
     res = await API.PUT({
       url: "/auth/signUp",
