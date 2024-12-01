@@ -50,8 +50,8 @@ export const API = {
 
       const result = (await response?.json()) ?? {};
 
-      if (result?.message?.includes("index_not_found_exception")) {
-        return [];
+      if (result?.message) {
+        return result;
       } else if (!response.ok) {
         console.error(`API URI: ${obj.url}`);
         throw new Error(`HTTP error! Status: ${response.status}`);

@@ -47,11 +47,16 @@ const ProfileEdit = ({ navigation, route }) => {
   });
 
   const handleSaveMyInfo = async () => {
-    if (new_user_pw || confirmPassword) {
-      if (new_user_pw !== confirmPassword) {
-        toast.show("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
-        return;
-      }
+    /* Validation */
+    if (!user_nickname) return toast.show("닉네임을 입력하세요");
+    else if (!user_region) return toast.show("지역을 입력하세요");
+    else if (user_pw || new_user_pw || confirmPassword) {
+      if (!user_pw) return toast.show("현재 비밀번호를 입력하세요");
+      else if (!new_user_pw) return toast.show("새로운 비밀번호를 입력하세요");
+      else if (!confirmPassword)
+        return toast.show("새로운 비밀번호를 한번 더 입력하세요");
+      else if (new_user_pw !== confirmPassword)
+        return toast.show("새로운 비밀번호가 일치하지 않습니다");
     }
 
     const updatedData = {
@@ -72,18 +77,21 @@ const ProfileEdit = ({ navigation, route }) => {
         data: updatedData,
       });
 
-      if (res[0] === 1) {
+      if (res?.message) {
+        setPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        return toast.show(res.message);
+      } else if (res) {
         setUserInfo({ ...userInfo, user_nickname });
-        toast.show("프로필 정보가 업데이트되었습니다.", { type: "success" });
+        toast.show("저장되었습니다", { type: "success" });
         navigation.goBack();
       } else {
-        toast.show(res.message || "프로필 업데이트에 실패했습니다.", {
-          type: "danger",
-        });
+        toast.show(res.message || "저장 중 오류가 발생했습니다");
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.show("프로필 업데이트 중 오류가 발생했습니다.", { type: "danger" });
+      toast.show("저장 중 오류가 발생했습니다");
     }
   };
 
@@ -142,7 +150,10 @@ const ProfileEdit = ({ navigation, route }) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Label style={{ alignSelf: "flex-start" }} text="새 비밀번호 " />
+            <Label
+              style={{ alignSelf: "flex-start" }}
+              text="새로운 비밀번호 "
+            />
             <Input
               style={{ width: "100%" }}
               value={new_user_pw}
