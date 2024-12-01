@@ -17,7 +17,6 @@ import RequestState from "components/01-home/RequestState";
 const RequestItem = ({ item, isOwner, isMenuVisible, setIsMenuVisible }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
   const [img, setImg] = useState(null);
-  const [isMenuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
     item.imgUri = `https://traguild.kro.kr/api/requestInfo/getImage/${item.request_idx}`;
