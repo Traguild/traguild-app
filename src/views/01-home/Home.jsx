@@ -35,12 +35,12 @@ const Home = () => {
 
   const getList = async (reset = false) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
-    const res =
-      (await API.POST({
-        url: "/requestInfo/fetch",
-        data: { user_idx, page, limit: LIMIT },
-      })) ?? [];
+    const res = await API.POST({
+      url: "/requestInfo/fetch",
+      data: { user_idx, page, limit: LIMIT },
+    });
 
+    if (res?.message) res = [];
     setRequestData((prev) => {
       const newData = reset
         ? res
