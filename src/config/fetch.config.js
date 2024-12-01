@@ -15,11 +15,13 @@ export const API = {
       if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
+        console.error(`API URI: ${obj.url}`);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       return await result;
     } catch (error) {
+      console.error(`API URI: ${obj.url}`);
       console.error(error);
     }
   },
@@ -51,11 +53,13 @@ export const API = {
       if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
+        console.error(`API URI: ${obj.url}`);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       return result;
     } catch (error) {
+      console.error(`API URI: ${obj.url}`);
       console.error(error);
     }
   },
@@ -87,11 +91,13 @@ export const API = {
       if (result?.message?.includes("index_not_found_exception")) {
         return [];
       } else if (!response.ok) {
+        console.error(`API URI: ${obj.url}`);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       return await result;
     } catch (error) {
+      console.error(`API URI: ${obj.url}`);
       console.error(error);
     }
   },
@@ -106,11 +112,13 @@ export const API = {
       });
 
       if (!response.ok) {
+        console.error(`API URI: ${obj.url}`);
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       return response.status === 200 ? "Delete Successful" : "Delete failed";
     } catch (error) {
+      console.error(`API URI: ${obj.url}`);
       console.error(error);
     }
   },
@@ -121,6 +129,7 @@ export const API = {
     if (res.ok) {
       return res.url;
     } else {
+      console.error(`API URI: ${obj.url}`);
       console.error("Failed to fetch image:", res.status);
     }
   },
