@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, TouchableWithoutFeedback, } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 // IMPORT CONFIGS
@@ -14,8 +14,9 @@ import { Feather } from "@expo/vector-icons";
 // IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
-const RequestItem = ({ item, isOwner }) => {
+const RequestItem = ({ item, isOwner, isMenuVisible, setIsMenuVisible }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
+  const [img, setImg] = useState(null);
   const [isMenuVisible, setMenuVisible] = useState(false);
 
   useEffect(() => {
@@ -41,6 +42,10 @@ const RequestItem = ({ item, isOwner }) => {
     } catch (error) {
       console.error("에러가 발생함", error);
     }
+  };
+
+  const handleToggleMenu = () => {
+    setIsMenuVisible((prev) => !prev);
   };
 
   return (
@@ -85,11 +90,10 @@ const RequestItem = ({ item, isOwner }) => {
         <>
           <TouchableOpacity
             style={styles.iconContainer}
-            onPress={() => setMenuVisible((prev) => !prev)}
+            onPress={handleToggleMenu}
           >
             <Feather name="more-vertical" size={24} color="black" />
           </TouchableOpacity>
-
           {isMenuVisible && (
             <View style={styles.menu}>
               <TouchableOpacity

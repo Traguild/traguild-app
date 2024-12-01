@@ -4,6 +4,7 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -34,6 +35,7 @@ const QuestList = ({ navigation }) => {
   const [requests, setRequests] = useState([]);
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   useEffect(() => {
     const fetchDatas = async () => {
@@ -74,50 +76,59 @@ const QuestList = ({ navigation }) => {
     fetchDatas();
   }, []);
 
+  const handleDismissMenu = () => {
+    if (isMenuVisible) {
+      setIsMenuVisible(false);
+    }
+  }
+
   const filteredMainData =
     mainFilter === "등록한 의뢰" ? requests : applications;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.mainFilterContainer}>
-        {["등록한 의뢰", "지원한 의뢰"].map((filter) => (
-          <TouchableOpacity
-            key={filter}
-            style={[
-              styles.mainFilterButton,
-              mainFilter === filter && styles.activeMainFilterButton,
-            ]}
-            onPress={() => setMainFilter(filter)}
-          >
-            <Text
-              style={
-                mainFilter === filter
-                  ? styles.focusedMainFilterText
-                  : styles.mainFilterText
-              }
+    <TouchableWithoutFeedback onPress={handleDismissMenu}>
+      <View style={styles.container}>
+        <View style={styles.mainFilterContainer}>
+          {["등록한 의뢰", "지원한 의뢰"].map((filter) => (
+            <TouchableOpacity
+              key={filter}
+              style={[
+                styles.mainFilterButton,
+                mainFilter === filter && styles.activeMainFilterButton,
+              ]}
+              onPress={() => setMainFilter(filter)}
             >
-              {filter}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+              <Text
+                style={
+                  mainFilter === filter
+                    ? styles.focusedMainFilterText
+                    : styles.mainFilterText
+                }
+              >
+                {filter}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {isLoading ? (
-        <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
-      ) : (
-        <FlatList
-          style={{ width: "100%" }}
-          data={filteredMainData}
-          renderItem={({ item }) => (
-            <RequestItem item={item} isOwner={mainFilter === "등록한 의뢰"} />
-          )}
-          keyExtractor={(item) => item.request_idx.toString()}
-          ListEmptyComponent={
-            <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>
-          }
-        />
-      )}
-    </View>
+        {isLoading ? (
+          <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+        ) : (
+          <FlatList
+            style={{ width: "100%" }}
+            data={filteredMainData}
+            renderItem={({ item }) => (
+              <RequestItem item={item} isOwner={mainFilter === "등록한 의뢰"} isMenuVisible={isMenuVisible}
+                setIsMenuVisible={setIsMenuVisible} />
+            )}
+            keyExtractor={(item) => item.request_idx.toString()}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>
+            }
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
