@@ -108,7 +108,9 @@ const QuestList = ({ navigation }) => {
         <FlatList
           style={{ width: "100%" }}
           data={filteredMainData}
-          renderItem={({ item }) => <RequestItem item={item} />}
+          renderItem={({ item }) => (
+            <RequestItem item={item} isOwner={mainFilter === "등록한 의뢰"} />
+          )}
           keyExtractor={(item) => item.request_idx.toString()}
           ListEmptyComponent={
             <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>
