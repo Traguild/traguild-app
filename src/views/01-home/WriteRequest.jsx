@@ -33,6 +33,13 @@ const WriteRequest = ({ navigation }) => {
 
   const handlePostRequest = async (formData) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
+
+    /**
+     * TODO:
+     * API로 userInfo 가져와서,
+     * formData.append("request_region", user_idx);
+     * */
+
     formData.append("user_idx", user_idx);
 
     await API.PUT({
