@@ -1,4 +1,4 @@
-const BASE_URL = "http://103.60.127.72/api";
+const BASE_URL = "https://traguild.kro.kr/api";
 
 export const API = {
   /* ***  GET METHOD *** */
