@@ -46,7 +46,7 @@ const SignIn = ({ navigation }) => {
     //   return;
     // }
     const res = await API.POST({
-      url: "/login",
+      url: "/auth/signIn",
       data: { user_id, user_pw },
     });
 

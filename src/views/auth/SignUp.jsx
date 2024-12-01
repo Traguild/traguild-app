@@ -49,7 +49,7 @@ const SignUp = ({ navigation }) => {
     // }
 
     res = await API.PUT({
-      url: "/userInfo",
+      url: "/auth/signUp",
       data: {
         user_name,
         user_region,
