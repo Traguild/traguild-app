@@ -16,7 +16,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.arc.capstone",
+      "package": "com.arc.travelerguild",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#d2c1a0"
@@ -28,14 +28,15 @@
     },
     "extra": {
       "eas": {
-        "projectId": "562d4eb9-62b1-4ac9-b158-8e9e1bbe6bc1"
+        "projectId": "552f3f67-cb00-4345-8a02-605d74a4b6a0"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/562d4eb9-62b1-4ac9-b158-8e9e1bbe6bc1"
-    }
+      "url": "https://u.expo.dev/552f3f67-cb00-4345-8a02-605d74a4b6a0"
+    },
+    "owner": "arc_o"
   }
 }
