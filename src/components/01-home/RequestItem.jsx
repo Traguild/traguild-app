@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -9,29 +9,18 @@ import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "react-native-vector-icons";
 import { getTitle, getCost, getKorDate } from "resources/js/common";
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
 
 // IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item, isOwner }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
-  const [img, setImg] = useState(null);
   const [isMenuVisible, setMenuVisible] = useState(false);
 
-  useLayoutEffect(() => {
-    if (item.request_img) {
-      getRequestImg(item.request_idx).then((res) => {
-        item.request_img = res;
-        setImg(res);
-      });
-    }
+  useEffect(() => {
+    item.imgUri = `https://traguild.kro.kr/api/requestInfo/getImage/${item.request_idx}`;
   }, []);
-
-  const getRequestImg = async (idx) => {
-    const url = `/requestInfo/getImage/${idx}`;
-    return await API.GetImage({ url });
-  };
 
   const handleDeleteRequest = async () => {
     try {
@@ -62,7 +51,7 @@ const RequestItem = ({ item, isOwner }) => {
         onPress={movDetail}
       >
         <Image
-          source={item.request_img ? { uri: img } : defaultImg.logo}
+          source={item.request_img ? { uri: item.imgUri } : defaultImg.logo}
           style={styles.itemImg}
         />
         <View style={styles.itemText}>

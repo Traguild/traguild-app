@@ -50,12 +50,9 @@ const RequestDetail = ({ navigation, route }) => {
         url: "/userInfo",
         data: { user_idx: item.user_idx },
       });
-      setPostUserInfo(res);
+      res.user_img = `https://traguild.kro.kr/api/userInfo/userImg/${item.user_idx}`;
 
-      const img_url = await API.GetImage({
-        url: `/userInfo/userImg/${item.user_idx}?timestamp=${new Date().getTime()}`,
-      });
-      setPostUserInfo({ ...res, user_img: img_url });
+      setPostUserInfo(res);
     };
 
     const getUserInfo = async () => {
@@ -92,9 +89,7 @@ const RequestDetail = ({ navigation, route }) => {
         <View style={{ height: layout().height * 0.9 }}>
           <ScrollView>
             <Image
-              source={
-                item.request_img ? { uri: item.request_img } : defaultImg.logo
-              }
+              source={item.request_img ? { uri: item.imgUri } : defaultImg.logo}
               style={{
                 ...styles.itemImg,
                 height: layout().width,
