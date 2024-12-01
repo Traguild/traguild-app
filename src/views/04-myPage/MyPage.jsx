@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
@@ -19,6 +19,7 @@ import MyManner from "components/04-myPage/MyManner";
 import ApplyList from "components/04-myPage/ApplyList";
 import Button from "components/common/Button";
 import ImagePicker from "components/common/ImagePicker";
+import { useFocusEffect } from "@react-navigation/native";
 
 const MyPage = () => {
   // const toast = useToast();
@@ -27,9 +28,14 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState({});
   const [image, setImage] = useState(null);
 
-  useLayoutEffect(() => {
-    getUserInfo();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        await getUserInfo();
+      };
+      getData();
+    }, [getUserInfo])
+  );
 
   const getUserInfo = async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
@@ -39,12 +45,16 @@ const MyPage = () => {
       url: "/userInfo",
       data: { user_idx },
     });
-    setUserInfo(res);
 
-    const img_url = await API.GetImage({
-      url: `/userInfo/userImg/${user_idx}?timestamp=${new Date().getTime()}`,
-    });
-    setImage(img_url);
+    if (JSON.stringify(res) !== JSON.stringify(userInfo)) {
+      setUserInfo(res);
+    }
+
+    const img_url = `https://traguild.kro.kr/api/userInfo/userImg/${user_idx}?timestamp=${new Date().getTime()}`;
+    if (img_url != image) {
+      setImage(img_url);
+    }
+
     setIsLoading(false);
   };
 
@@ -133,7 +143,7 @@ const MyPage = () => {
                 key={idx}
                 text={item.text}
                 onPress={() => {
-                  navGo.to(item.screen, { userInfo, setUserInfo });
+                  navGo.to(item.screen, { userInfo });
                 }}
               />
             ))}

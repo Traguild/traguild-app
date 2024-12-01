@@ -20,7 +20,7 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 
 const ProfileEdit = ({ navigation, route }) => {
-  const { userInfo, setUserInfo } = route.params;
+  const { userInfo } = route.params;
 
   const toast = useToast();
   const [user_region, setRegion] = useState(userInfo?.user_region ?? "");
@@ -83,7 +83,6 @@ const ProfileEdit = ({ navigation, route }) => {
         setConfirmPassword("");
         return toast.show(res.message);
       } else if (res) {
-        setUserInfo({ ...userInfo, user_nickname });
         toast.show("저장되었습니다", { type: "success" });
         navigation.goBack();
       } else {
