@@ -114,6 +114,7 @@ const ProfileEdit = ({ navigation, route }) => {
               value={user_nickname}
               onChangeText={(text) => setNickname(text)}
               placeholder="닉네임을 입력하세요"
+              maxLength={10}
             />
           </View>
           <View style={styles.inputContainer}>

@@ -30,6 +30,8 @@ const RequestDetail = ({ navigation, route }) => {
   const toast = useToast();
   const { item } = route.params;
 
+  const userImgUri = "https://traguild.kro.kr/api/userInfo/userImg/";
+  const requestImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const USER_IDX = useRef(null);
   const [postUserInfo, setPostUserInfo] = useState({});
   const [applyInfo, setApplyInfo] = useState({});
@@ -50,7 +52,7 @@ const RequestDetail = ({ navigation, route }) => {
         url: "/userInfo",
         data: { user_idx: item.user_idx },
       });
-      res.user_img = `https://traguild.kro.kr/api/userInfo/userImg/${item.user_idx}`;
+      res.user_img = `${userImgUri}${item.user_idx}`;
 
       setPostUserInfo(res);
     };
@@ -89,7 +91,11 @@ const RequestDetail = ({ navigation, route }) => {
         <View style={{ height: layout().height * 0.9 }}>
           <ScrollView>
             <Image
-              source={item.request_img ? { uri: item.imgUri } : defaultImg.logo}
+              source={
+                item.request_img
+                  ? { uri: `${requestImgUri}${item.request_idx}` }
+                  : defaultImg.logo
+              }
               style={{
                 ...styles.itemImg,
                 height: layout().width,

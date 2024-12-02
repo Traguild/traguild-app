@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, TouchableWithoutFeedback, } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TouchableWithoutFeedback,
+} from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 // IMPORT CONFIGS
@@ -15,12 +22,9 @@ import { Feather } from "@expo/vector-icons";
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
+  const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
   const [img, setImg] = useState(null);
-
-  useEffect(() => {
-    item.imgUri = `https://traguild.kro.kr/api/requestInfo/getImage/${item.request_idx}`;
-  }, []);
 
   const handleDeleteRequest = async () => {
     try {
@@ -33,13 +37,13 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
       });
 
       if (res) {
-        console.log("의뢰글이 성공적으로 삭제되었습니다.");
+        console.log("삭제되었습니다.");
         onToggleMenu();
       } else {
-        console.error("의뢰글 삭제에 실패하였습니다.");
+        console.error("삭제중 오류가 발생하였습니다.");
       }
     } catch (error) {
-      console.error("에러가 발생함", error);
+      console.error("Error Messgae: ", error);
     }
   };
 
@@ -51,7 +55,11 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         onPress={movDetail}
       >
         <Image
-          source={item.request_img ? { uri: item.imgUri } : defaultImg.logo}
+          source={
+            item.request_img
+              ? { uri: `${thumbImgUri}${item.request_idx}` }
+              : defaultImg.logo
+          }
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
@@ -83,10 +91,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
       </TouchableOpacity>
       {isOwner && (
         <>
-          <TouchableOpacity
-            style={styles.iconContainer}
-            onPress={onToggleMenu}
-          >
+          <TouchableOpacity style={styles.iconContainer} onPress={onToggleMenu}>
             <Feather name="more-vertical" size={24} color="black" />
           </TouchableOpacity>
           {isMenuVisible && (
