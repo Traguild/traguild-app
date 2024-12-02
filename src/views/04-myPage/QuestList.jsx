@@ -123,11 +123,17 @@ const QuestList = ({ navigation }) => {
                 isOwner={mainFilter === "등록한 의뢰"}
                 isMenuVisible={activeMenuId === item.request_idx}
                 onToggleMenu={() =>
-                  setActiveMenuId(activeMenuId === item.request_idx ? null : item.request_idx)
+                  setActiveMenuId(
+                    activeMenuId === item.request_idx ? null : item.request_idx
+                  )
                 }
               />
             )}
-            keyExtractor={(item) => item.request_idx.toString()}
+            keyExtractor={(item) =>
+              mainFilter === "등록한 의뢰"
+                ? item.request_idx.toString()
+                : item.id.toString()
+            }
             ListEmptyComponent={
               <Text style={styles.emptyText}>데이터를 불러올 수 없습니다.</Text>
             }

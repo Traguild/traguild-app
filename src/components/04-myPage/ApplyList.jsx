@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useCallback, useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -15,26 +15,29 @@ import { API } from "config/fetch.config";
 // IMPORT RESOURCES
 import { theme } from "../../resources/theme/common";
 import { getContents } from "../../resources/js/common";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ApplyList = () => {
   const [applyList, setApplyList] = useState([]);
-  useLayoutEffect(() => {
-    const getApplyList = async () => {
-      const user_idx = await AsyncStorage.getItem("user_idx");
-      const res = await API.POST({
-        url: "/requestApplicant/getApply",
-        data: {
-          user_idx,
-          page: 1,
-          limit: 10,
-          status: "대기",
-        },
-      });
+  useFocusEffect(
+    useCallback(() => {
+      const getApplyList = async () => {
+        const user_idx = await AsyncStorage.getItem("user_idx");
+        const res = await API.POST({
+          url: "/requestApplicant/getApply",
+          data: {
+            user_idx,
+            page: 1,
+            limit: 10,
+            status: "대기",
+          },
+        });
 
-      setApplyList(res);
-    };
-    getApplyList();
-  }, []);
+        setApplyList(res);
+      };
+      getApplyList();
+    }, [proceedApply])
+  );
 
   const proceedApply = async ({ request_idx, user_idx, applicant_state }) => {
     const res = await API.POST({

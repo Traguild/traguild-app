@@ -1,8 +1,11 @@
-import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
-import AppNavigator from "./src/layouts/navigator/AppNavigator";
-import { ToastProvider } from "react-native-toast-notifications";
+import { useEffect } from "react";
 import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import "react-native-gesture-handler";
+import { ToastProvider } from "react-native-toast-notifications";
+import io from "socket.io-client";
+
+import AppNavigator from "./src/layouts/navigator/AppNavigator";
 
 export default function App() {
   return (
