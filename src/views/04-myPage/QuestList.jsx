@@ -35,7 +35,7 @@ const QuestList = ({ navigation }) => {
   const [requests, setRequests] = useState([]);
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [activeMenuId, setActiveMenuId] = useState(null);
 
   useEffect(() => {
     const fetchDatas = async () => {
@@ -77,10 +77,10 @@ const QuestList = ({ navigation }) => {
   }, []);
 
   const handleDismissMenu = () => {
-    if (isMenuVisible) {
-      setIsMenuVisible(false);
+    if (activeMenuId !== null) {
+      setActiveMenuId(null);
     }
-  }
+  };
 
   const filteredMainData =
     mainFilter === "등록한 의뢰" ? requests : applications;
@@ -118,8 +118,14 @@ const QuestList = ({ navigation }) => {
             style={{ width: "100%" }}
             data={filteredMainData}
             renderItem={({ item }) => (
-              <RequestItem item={item} isOwner={mainFilter === "등록한 의뢰"} isMenuVisible={isMenuVisible}
-                setIsMenuVisible={setIsMenuVisible} />
+              <RequestItem
+                item={item}
+                isOwner={mainFilter === "등록한 의뢰"}
+                isMenuVisible={activeMenuId === item.request_idx}
+                onToggleMenu={() =>
+                  setActiveMenuId(activeMenuId === item.request_idx ? null : item.request_idx)
+                }
+              />
             )}
             keyExtractor={(item) => item.request_idx.toString()}
             ListEmptyComponent={

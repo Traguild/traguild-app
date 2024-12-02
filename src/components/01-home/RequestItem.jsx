@@ -14,7 +14,7 @@ import { Feather } from "@expo/vector-icons";
 // IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
-const RequestItem = ({ item, isOwner, isMenuVisible, setIsMenuVisible }) => {
+const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const movDetail = () => navGo.to("RequestDetail", { item });
   const [img, setImg] = useState(null);
 
@@ -34,17 +34,13 @@ const RequestItem = ({ item, isOwner, isMenuVisible, setIsMenuVisible }) => {
 
       if (res) {
         console.log("의뢰글이 성공적으로 삭제되었습니다.");
-        setMenuVisible(false);
+        onToggleMenu();
       } else {
         console.error("의뢰글 삭제에 실패하였습니다.");
       }
     } catch (error) {
       console.error("에러가 발생함", error);
     }
-  };
-
-  const handleToggleMenu = () => {
-    setIsMenuVisible((prev) => !prev);
   };
 
   return (
@@ -89,7 +85,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, setIsMenuVisible }) => {
         <>
           <TouchableOpacity
             style={styles.iconContainer}
-            onPress={handleToggleMenu}
+            onPress={onToggleMenu}
           >
             <Feather name="more-vertical" size={24} color="black" />
           </TouchableOpacity>
