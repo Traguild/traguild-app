@@ -57,8 +57,12 @@ const SignUp = ({ navigation }) => {
       },
     });
 
-    if (!isEmail(user_id)) {
+    /*if (!isEmail(user_email)) {
       toast.show("유효하지 않은 이메일 형식입니다.");
+      return;
+    }*/
+    if (user_pw !== confirmPassword) {
+      toast.show("비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -68,6 +72,7 @@ const SignUp = ({ navigation }) => {
     } else {
       toast.show("다시 시도해주세요.");
     }
+    console.log("회원가입 응답:", res);
   };
 
   return (
