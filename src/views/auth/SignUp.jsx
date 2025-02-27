@@ -44,6 +44,15 @@ const SignUp = ({ navigation }) => {
   });
 
   const handleSignUp = async () => {
+    if (!isEmail(user_email)) {
+      toast.show("유효하지 않은 이메일 형식입니다.");
+      return;
+    }
+    if (user_pw !== confirmPassword) {
+      toast.show("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
     res = await API.PUT({
       url: "/auth/signUp",
       data: {
@@ -53,18 +62,8 @@ const SignUp = ({ navigation }) => {
         user_email,
         user_pw,
         user_nickname,
-        user_birth: Date.now().toISOString(),
       },
     });
-
-    /*if (!isEmail(user_email)) {
-      toast.show("유효하지 않은 이메일 형식입니다.");
-      return;
-    }*/
-    if (user_pw !== confirmPassword) {
-      toast.show("비밀번호가 일치하지 않습니다.");
-      return;
-    }
 
     if (res) {
       toast.show(`${user_nickname}님 환영합니다!`);
