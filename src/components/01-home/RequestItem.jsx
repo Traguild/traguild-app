@@ -14,7 +14,7 @@ import { API } from "config/fetch.config";
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
-import { FontAwesome5 } from "react-native-vector-icons";
+import { FontAwesome5, Ionicons } from "react-native-vector-icons";
 import { getTitle, getCost, getKorDate } from "resources/js/common";
 import { Feather } from "@expo/vector-icons";
 
@@ -25,6 +25,11 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
   const [img, setImg] = useState(null);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = () => {
+    setIsFavorite((prev) => !prev);
+  };
 
   const handleDeleteRequest = async () => {
     try {
@@ -54,6 +59,13 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         activeOpacity={0.7}
         onPress={movDetail}
       >
+        <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
+          <Ionicons
+            name={isFavorite ? "heart" : "heart-outline"}
+            size={24}
+            color="red"
+          />
+        </TouchableOpacity>
         <Image
           source={
             item.request_img
@@ -68,6 +80,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
             <Text style={styles.itemTitle}>
               {getTitle(item.request_title, 18)}
             </Text>
+
           </View>
           <View style={styles.regionBox}>
             <FontAwesome5
@@ -143,7 +156,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
   },
-
+  heartButton: {
+    position: "absolute",
+    right: 10,
+    top: 10,
+  },
   regionBox: {
     flexDirection: "row",
     alignItems: "flex-end",

@@ -1,13 +1,13 @@
-import React, { useCallback, useState, useRef, useMemo } from "react";
+import React, { useCallback, useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BottomSheetModal, BottomSheetBackdrop, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -17,11 +17,8 @@ import { theme } from "../../resources/theme/common";
 import { getContents } from "../../resources/js/common";
 import { useFocusEffect } from "@react-navigation/native";
 
-const ApplyList = () => {
+const ApplyList = ({ onSelectApplicant }) => {
   const [applyList, setApplyList] = useState([]);
-  const [selectedApplicant, setSelectedApplicant] = useState(null);
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "80%"], []);
 
   useFocusEffect(
     useCallback(() => {
@@ -66,88 +63,64 @@ const ApplyList = () => {
       }
 
       setApplyList((prev) =>
-        prev.filter(
-          (item) =>
-            item.request_idx !== request_idx && item.user_idx !== user_idx
-        )
+        prev ? prev.filter((item) => item.request_idx !== request_idx || item.user_idx !== user_idx) : []
       );
-
-      bottomSheetRef.current?.dismiss();
     }
   };
 
-  const handleOpenModal = (applicant) => {
-    setSelectedApplicant(applicant);
-    bottomSheetRef.current?.present();
+  const handleApply = (item) => {
+    Alert.alert(
+      `${item.request_title}`,
+      `지원자 ${item.user_nickname}님을 ${item.applicant_state}하시겠습니까?`,
+      [
+        {
+          text: "취소",
+          style: "cancel",
+        },
+        {
+          text: "확인",
+          onPress: () => proceedApply(item),
+        },
+      ]
+    );
   };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      key={item.request_idx}
       style={styles.itemContainer}
-      onPress={() => handleOpenModal(item)}
+      onPress={() => onSelectApplicant(item)}
     >
       <View style={styles.itemContent}>
         <Text style={styles.title}>의뢰: {item.request_title}</Text>
         <Text style={styles.subtitle}>{item?.user_nickname ?? "알 수 없음"}</Text>
         <Text style={styles.applyIntro}>{getContents(item.applicant_intro, 25)}</Text>
       </View>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, styles.approveButton]}
+          onPress={() => handleApply({ ...item, applicant_state: "승인" })}
+        >
+          <Text style={styles.buttonText}>승인</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, styles.rejectButton]}
+          onPress={() => handleApply({ ...item, applicant_state: "반려" })}
+        >
+          <Text style={{ ...styles.buttonText, color: "#ff7f51" }}>반려</Text>
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 
   return (
-    <BottomSheetModalProvider>
-      <FlatList
-        style={{ width: "100%" }}
-        data={applyList}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.request_idx.toString()}
-        contentContainerStyle={styles.container}
-        ListEmptyComponent={<Text style={styles.emptyText}>지원자가 없습니다.</Text>}
-      />
-
-      <BottomSheetModal
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        backdropComponent={(props) =>
-          <BottomSheetBackdrop
-            {...props}
-            disappearsOnIndex={-1}
-            opacity={0.5}
-            pressBehavior="close"
-          />}
-        onDismiss={() => setSelectedApplicant(false)}
-        backgroundStyle={{
-          backgroundColor: theme["default-bg"],
-          borderColor: "white",
-          borderWidth: 5,
-        }}
-      >
-        {selectedApplicant && (
-          <View style={styles.modalContainer}>
-            <Text style={styles.modalTitle}>{selectedApplicant.request_title}</Text>
-            <Text style={styles.modalText}>지원자: {selectedApplicant.user_nickname}</Text>
-            <Text style={styles.modalText}>소개: {selectedApplicant.applicant_intro}</Text>
-
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.button, styles.approveButton]}
-                onPress={() => proceedApply({ ...selectedApplicant, applicant_state: "승인" })}
-              >
-                <Text style={styles.buttonText}>승인</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.rejectButton]}
-                onPress={() => proceedApply({ ...selectedApplicant, applicant_state: "반려" })}
-              >
-                <Text style={{ ...styles.buttonText, color: "#ff7f51" }}>반려</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-      </BottomSheetModal>
-    </BottomSheetModalProvider>
+    <FlatList
+      style={{ width: "100%" }}
+      data={applyList}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.request_idx.toString()}
+      contentContainerStyle={styles.container}
+      ListEmptyComponent={<Text style={styles.emptyText}>지원자가 없습니다.</Text>}
+    />
   );
 };
 
@@ -162,6 +135,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 0.45,
     borderColor: theme["default-border"],
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   itemContent: {
     flex: 1,
@@ -183,21 +159,8 @@ const styles = StyleSheet.create({
     color: "gray",
     marginTop: 20,
   },
-  modalContainer: {
-    padding: 20,
-  },
-  modalTitle: {
-    fontSize: 22,
-    fontWeight: "600",
-    marginBottom: 10,
-  },
-  modalText: {
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  modalButtons: {
+  buttonContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
   },
   button: {
     paddingVertical: 10,

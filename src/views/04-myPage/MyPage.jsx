@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
+import React, { useCallback, useLayoutEffect, useRef, useState, useMemo } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { BottomSheetModal, BottomSheetBackdrop, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -9,6 +10,7 @@ import { API } from "config/fetch.config";
 import { getCost } from "resources/js/common";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 // IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
@@ -27,6 +29,9 @@ const MyPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [userInfo, setUserInfo] = useState({});
   const [image, setImage] = useState(null);
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ["10%", "60%"], []);
 
   useFocusEffect(
     useCallback(() => {
@@ -90,9 +95,13 @@ const MyPage = () => {
       data: formData,
     });
   };
+  const handleOpenModal = (applicant) => {
+    setSelectedApplicant(applicant);
+    bottomSheetRef.current?.present();
+  };
 
   return (
-    <>
+    <BottomSheetModalProvider>
       {isLoading ? (
         <View style={styles.loadingWrap}></View>
       ) : (
@@ -152,12 +161,52 @@ const MyPage = () => {
           <View style={styles.applyListContainer}>
             <Text style={styles.applyListTitle}>지원자 목록</Text>
             <View style={styles.applyList}>
-              <ApplyList />
+              <ApplyList onSelectApplicant={handleOpenModal} />
             </View>
           </View>
         </View>
       )}
-    </>
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop {...props} disappearsOnIndex={-1} opacity={0.5} pressBehavior="close" />
+        )}
+        onDismiss={() => setSelectedApplicant(null)}
+        backgroundStyle={styles.modalBackground}
+      >
+        {selectedApplicant && (
+          <View style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>지원자 정보</Text>
+              <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
+                <Feather name="x" size={24} color={theme["default-btn"]} />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalText}>
+              <Text style={styles.boldText}>의뢰:</Text> {selectedApplicant.request_title}
+            </Text>
+            <Text style={styles.modalText}>
+              <Text style={styles.boldText}>지원자:</Text> {selectedApplicant.user_nickname}
+            </Text>
+            <Text style={styles.modalText}>
+              <Text style={styles.boldText}>소개:</Text> {selectedApplicant.applicant_intro}
+            </Text>
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={[styles.button, styles.approveButton]}>
+                <Text style={styles.buttonText}>승인</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.button, styles.rejectButton]}>
+                <Text style={styles.rejectText}>반려</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </BottomSheetModal>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -212,7 +261,38 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "500",
   },
-
+  modalBackground: {
+    backgroundColor: theme["default-bg"],
+    borderColor: "white",
+    borderWidth: 5,
+  },
+  modalContainer: {
+    padding: 20,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: "600",
+    color: theme["apply-title"],
+  },
+  modalText: {
+    fontSize: 16,
+    color: "black",
+    marginBottom: 10,
+  },
+  boldText: {
+    fontWeight: "700",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 15,
+  },
   chargeButton: {
     marginLeft: "auto",
     backgroundColor: theme["default-btn"],
@@ -221,7 +301,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   chargeButtonText: {
-    color: "white", // 텍스트 색상
+    color: "white",
     fontSize: 16,
     fontWeight: "500",
   },
@@ -235,7 +315,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   signOutText: {
-    color: "white", // 텍스트 색상
+    color: "white",
     fontSize: 12,
     fontWeight: "600",
   },
@@ -271,6 +351,30 @@ const styles = StyleSheet.create({
     borderWidth: 0.45,
     borderColor: "lightgray",
     borderRadius: 15,
+  },
+  approveButton: {
+    backgroundColor: "#6a994e",
+  },
+  rejectButton: {
+    borderWidth: 1,
+    borderColor: "#ff7f51",
+  },
+  rejectText: {
+    color: "#ff7f51",
+    fontWeight: "500",
+    fontSize: 15,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "500",
+    fontSize: 15,
+  },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
