@@ -36,4 +36,7 @@ export const theme = {
 
   "success-btn": "#B0EAC0",
   "reject-btn": "#F5C6C6",
+
+  "message-me": "",
+  "meesage-other": "",
 };

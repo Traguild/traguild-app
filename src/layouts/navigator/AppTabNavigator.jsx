@@ -83,11 +83,11 @@ const AppTabNavigator = () => {
         options={{ headerShown: false, title: "커뮤니티" }}
       />
 
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Chat"
         component={Chat}
         options={{ headerShown: false, title: "채팅" }}
-      /> */}
+      />
 
       <Tab.Screen
         name="MyPage"

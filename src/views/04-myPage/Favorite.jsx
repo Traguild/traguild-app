@@ -4,85 +4,164 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
+
+// IMPORT CONFIGS
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 // IMPORT COMPONENTS
-import FavoriteItem from "components/04-myPage/FavoriteItem";
+import RequestItem from "components/01-home/RequestItem";
 
-const dummyData = [];
-
-for (let i = 1; i <= 20; i++) {
-  const formattedDate = new Date(Date.now())
-    .toLocaleDateString("ko-KR", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .slice(0, -1)
-    .replace(/\./g, "-")
-    .trim();
-
-  dummyData.push({
-    request_idx: i,
-    user_idx: 1,
-    request_state_region: "경상남도",
-    request_city_region: "창원시",
-    request_title: `테스트 ${i}`,
-    request_content: `테스트 ${i} 내용`,
-    request_cost: "200,000",
-    request_state: i % 2 == 0 ? "완료" : "모집 중",
-    transaction_state: "대기중",
-    // "created_time": Date.now(),
-    // "updated_time": Date.now(),
-    created_time: formattedDate,
-    updated_time: formattedDate,
-    is_deleted: 0,
-    applicant_idx: i + 1,
-    // "favoriteItem": (i % 2 == 0 ? "찜" : "찜해제"),
-  });
-}
-
-const Favorite = ({ navigation }) => {
+const FavoriteList = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
       headerBackTitle: null,
-      title: "찜한 의뢰",
+      title: "찜한 의뢰 목록",
       headerTintColor: theme["default-btn"],
     });
-  });
+  }, [navigation]);
+
+  const [favorites, setFavorites] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [activeMenuId, setActiveMenuId] = useState(null);
+  const [UserIdx, setUserIdx] = useState(null);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      setIsLoading(true);
+      try {
+        const user_idx = await AsyncStorage.getItem("user_idx");
+        if (!user_idx) {
+          setIsLoading(false);
+          return;
+        }
+        setUserIdx(user_idx);
+
+        const interestRes = await API.POST({
+          url: "/interestRequest/all",
+          data: { user_idx },
+        });
+
+        if (!Array.isArray(interestRes) || interestRes.length === 0) {
+          setFavorites([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const InterestRequest = interestRes.filter(
+          (item) => item.user_idx === user_idx
+        );
+
+        if (InterestRequest.length === 0) {
+          setFavorites([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const requestIdxList = [...new Set(InterestRequest.map((item) => item.request_idx))];
+
+        if (requestIdxList.length === 0) {
+          setFavorites([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const requestPromises = requestIdxList.map(async (request_idx) => {
+          const res = await API.POST({
+            url: "/requestInfo",
+            data: { request_idx },
+          });
+          return res;
+        });
+
+        const requestRes = await Promise.all(requestPromises);
+        const flattenedRequests = requestRes.flat();
+        const validRequests = flattenedRequests.filter((res) => res && res.request_idx);
+
+        if (validRequests.length === 0) {
+          setFavorites([]);
+          setIsLoading(false);
+          return;
+        }
+
+        const favoriteItems = validRequests.map((item) => ({
+          ...item,
+          is_favorite: true,
+        }));
+
+        setFavorites(favoriteItems);
+      } catch (error) {
+        console.error("찜한 의뢰 가져오기 오류:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
+
+  const handleDismissMenu = () => {
+    if (activeMenuId !== null) {
+      setActiveMenuId(null);
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        style={{ width: "100%", height: "100%" }}
-        data={dummyData}
-        renderItem={({ item }) => <FavoriteItem item={item} />}
-        keyExtractor={(item) => item.request_idx.toString()}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
+    <TouchableWithoutFeedback onPress={handleDismissMenu}>
+      <View style={styles.container}>
+        {isLoading ? (
+          <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+        ) : (
+          <FlatList
+            style={{ width: "100%" }}
+            data={favorites}
+            renderItem={({ item }) => (
+              <RequestItem
+                item={item}
+                isOwner={item.user_idx === UserIdx}
+                isMenuVisible={activeMenuId === item.request_idx}
+                onToggleMenu={() =>
+                  setActiveMenuId(
+                    activeMenuId === item.request_idx ? null : item.request_idx
+                  )
+                }
+              />
+            )}
+            keyExtractor={(item) => item.request_idx.toString()}
+            ListEmptyComponent={
+              <Text style={styles.emptyText}>찜한 의뢰가 없습니다.</Text>
+            }
+          />
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "white",
   },
-  btnText: {
-    color: "white",
+  loadingText: {
+    textAlign: "center",
+    marginTop: 20,
     fontSize: 16,
-    fontWeight: "500",
-    marginLeft: 10,
+    color: "gray",
+  },
+  emptyText: {
+    textAlign: "center",
+    marginTop: 50,
+    fontSize: 16,
+    color: "gray",
   },
 });
 
-export default Favorite;
+export default FavoriteList;

@@ -13,6 +13,7 @@ import WriteRequest from "views/01-home/WriteRequest";
 import Favorite from "views/04-myPage/Favorite";
 import QuestList from "views/04-myPage/QuestList";
 import ProfileEdit from "views/04-myPage/ProfileEdit";
+import ChatDetail from "views/03-chat/ChatDetail";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -78,7 +79,11 @@ const AppNavigator = () => {
           component={WriteRequest}
           options={{ headerShown: true }}
         />
-
+        <Stack.Screen
+          name="ChatDetail"
+          component={ChatDetail}
+          options={{ headerShown: true }}
+        />
         <Stack.Screen
           name="Favorite"
           component={Favorite}

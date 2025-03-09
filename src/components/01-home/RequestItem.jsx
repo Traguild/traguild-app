@@ -4,53 +4,60 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  TouchableWithoutFeedback,
 } from "react-native";
-import React, { useEffect, useLayoutEffect, useState } from "react";
-
-// IMPORT CONFIGS
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "config/fetch.config";
-
-// IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5, Ionicons } from "react-native-vector-icons";
 import { getTitle, getCost, getKorDate } from "resources/js/common";
 import { Feather } from "@expo/vector-icons";
-
-// IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
-  const [img, setImg] = useState(null);
-  const [isFavorite, setIsFavorite] = useState(false);
 
-  const toggleFavorite = () => {
-    setIsFavorite((prev) => !prev);
-  };
+  const [isFavorite, setIsFavorite] = useState(item.is_favorite || false);
+  const [userIdx, setUserIdx] = useState(null);
 
-  const handleDeleteRequest = async () => {
+  useEffect(() => {
+    const fetchUserIdx = async () => {
+      const idx = await AsyncStorage.getItem("user_idx");
+      setUserIdx(idx);
+    };
+
+    fetchUserIdx();
+  }, []);
+
+  const toggleFavorite = async () => {
+    if (!userIdx) {
+      console.error("❌ 사용자 ID가 없습니다.");
+      return;
+    }
+
     try {
-      const res = await API.POST({
-        url: `/requestInfo/update`,
+      const res = await API.PUT({
+        url: "/interestRequest",
         data: {
+          user_idx: userIdx,
           request_idx: item.request_idx,
-          is_deleted: true,
         },
       });
 
-      if (res) {
-        console.log("삭제되었습니다.");
-        onToggleMenu();
+      console.log("📌 찜하기 API 응답:", res);
+
+      if (res?.interest_idx) {
+        setIsFavorite((prev) => !prev);
       } else {
-        console.error("삭제중 오류가 발생하였습니다.");
+        console.error("❌ 찜하기 실패: 응답 데이터가 예상과 다릅니다.", res);
       }
     } catch (error) {
-      console.error("Error Messgae: ", error);
+      console.error("❌ 찜하기 요청 실패:", error);
     }
   };
+
 
   return (
     <View style={styles.container}>
@@ -59,13 +66,15 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         activeOpacity={0.7}
         onPress={movDetail}
       >
-        <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
-          <Ionicons
-            name={isFavorite ? "heart" : "heart-outline"}
-            size={24}
-            color="red"
-          />
-        </TouchableOpacity>
+        {!isOwner && (
+          <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
+            <Ionicons
+              name={isFavorite ? "heart" : "heart-outline"}
+              size={24}
+              color="red"
+            />
+          </TouchableOpacity>
+        )}
         <Image
           source={
             item.request_img
@@ -80,7 +89,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
             <Text style={styles.itemTitle}>
               {getTitle(item.request_title, 18)}
             </Text>
-
           </View>
           <View style={styles.regionBox}>
             <FontAwesome5
@@ -96,7 +104,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           <View style={styles.dateBox}>
             <Text style={styles.dateText}>{getKorDate(item.created_date)}</Text>
           </View>
-
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
           </View>
@@ -111,7 +118,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
             <View style={styles.menu}>
               <TouchableOpacity
                 style={styles.menuItem}
-                onPress={handleDeleteRequest}
+                onPress={() => onToggleMenu(item.request_idx)}
               >
                 <Text style={styles.menuText}>삭제</Text>
               </TouchableOpacity>
@@ -129,15 +136,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-
     paddingHorizontal: 10,
   },
-
   listItem: {
     backgroundColor: theme["home-bg"],
     borderColor: theme["home-border"],
     borderTopWidth: 1,
-
     width: "100%",
     flexDirection: "row",
     paddingVertical: 13,
@@ -146,7 +150,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginRight: 10,
-
     borderRadius: 15,
   },
   itemText: {

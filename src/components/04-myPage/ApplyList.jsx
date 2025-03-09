@@ -117,7 +117,7 @@ const ApplyList = ({ onSelectApplicant }) => {
       style={{ width: "100%" }}
       data={applyList}
       renderItem={renderItem}
-      keyExtractor={(item) => item.request_idx.toString()}
+      keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.container}
       ListEmptyComponent={<Text style={styles.emptyText}>지원자가 없습니다.</Text>}
     />
