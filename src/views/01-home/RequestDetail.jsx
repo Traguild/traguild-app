@@ -52,7 +52,7 @@ const RequestDetail = ({ navigation, route }) => {
         url: "/userInfo",
         data: { user_idx: item.user_idx },
       });
-      res.user_img = `${userImgUri}${item.user_idx}`;
+      if (res.user_img != "") res.user_img = `${userImgUri}${item.user_idx}`;
 
       setPostUserInfo(res);
     };
@@ -120,7 +120,7 @@ const RequestDetail = ({ navigation, route }) => {
           <View style={styles.footerProfiles}>
             <Image
               source={
-                postUserInfo.user_img
+                postUserInfo.user_img != ""
                   ? { uri: postUserInfo.user_img }
                   : defaultImg.logo
               }
@@ -207,3 +207,4 @@ const styles = StyleSheet.create({
 });
 
 export default RequestDetail;
+
