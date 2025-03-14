@@ -8,7 +8,7 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useRoute } from "@react-navigation/native";
 
 // IMPORT RESOURCES
@@ -27,12 +27,17 @@ const ChatDetail = () => {
     const { chatData } = route.params;
     const [messages, setMessages] = useState(dummyMessages);
     const [inputText, setInputText] = useState("");
+    const flatListRef = useRef(null);
 
     const sendMessage = () => {
         if (inputText.trim().length === 0) return;
         const newMessage = { id: Date.now().toString(), sender: "me", text: inputText };
         setMessages((prevMessages) => [...prevMessages, newMessage]);
         setInputText("");
+
+        setTimeout(() => {
+            flatListRef.current?.scrollToEnd({ animated: true });
+        }, 100);
     };
 
     return (
@@ -41,6 +46,7 @@ const ChatDetail = () => {
             behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
             <FlatList
+                ref={flatListRef}
                 data={messages}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
@@ -53,8 +59,8 @@ const ChatDetail = () => {
                         <Text style={styles.messageText}>{item.text}</Text>
                     </View>
                 )}
-                contentContainerStyle={{ flexGrow: 1, justifyContent: "flex-end", padding: 10 }}
-                inverted
+                contentContainerStyle={{ flexGrow: 1, padding: 10 }}
+                onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
             />
 
             <View style={styles.inputContainer}>

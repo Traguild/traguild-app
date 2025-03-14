@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
@@ -31,22 +32,22 @@ const FavoriteList = ({ navigation }) => {
   const [favorites, setFavorites] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState(null);
-  const [UserIdx, setUserIdx] = useState(null);
+  const [userIdx, setUserIdx] = useState(null);
 
   useEffect(() => {
     const fetchFavorites = async () => {
       setIsLoading(true);
       try {
-        const user_idx = await AsyncStorage.getItem("user_idx");
-        if (!user_idx) {
+        const storedUserIdx = await AsyncStorage.getItem("user_idx");
+        if (!storedUserIdx) {
           setIsLoading(false);
           return;
         }
-        setUserIdx(user_idx);
+        setUserIdx(storedUserIdx);
 
         const interestRes = await API.POST({
           url: "/interestRequest/all",
-          data: { user_idx },
+          data: { user_idx: storedUserIdx },
         });
 
         if (!Array.isArray(interestRes) || interestRes.length === 0) {
@@ -55,17 +56,7 @@ const FavoriteList = ({ navigation }) => {
           return;
         }
 
-        const InterestRequest = interestRes.filter(
-          (item) => item.user_idx === user_idx
-        );
-
-        if (InterestRequest.length === 0) {
-          setFavorites([]);
-          setIsLoading(false);
-          return;
-        }
-
-        const requestIdxList = [...new Set(InterestRequest.map((item) => item.request_idx))];
+        const requestIdxList = [...new Set(interestRes.map((item) => item.request_idx))];
 
         if (requestIdxList.length === 0) {
           setFavorites([]);
@@ -73,28 +64,23 @@ const FavoriteList = ({ navigation }) => {
           return;
         }
 
-        const requestPromises = requestIdxList.map(async (request_idx) => {
-          const res = await API.POST({
-            url: "/requestInfo",
-            data: { request_idx },
-          });
-          return res;
+        const requestRes = await API.POST({
+          url: "/requestInfo/all",
+          data: { request_idx_list: requestIdxList },
         });
 
-        const requestRes = await Promise.all(requestPromises);
-        const flattenedRequests = requestRes.flat();
-        const validRequests = flattenedRequests.filter((res) => res && res.request_idx);
-
-        if (validRequests.length === 0) {
+        if (!Array.isArray(requestRes) || requestRes.length === 0) {
           setFavorites([]);
           setIsLoading(false);
           return;
         }
 
-        const favoriteItems = validRequests.map((item) => ({
-          ...item,
-          is_favorite: true,
-        }));
+        const favoriteItems = requestRes
+          .filter((item) => item.user_idx !== storedUserIdx)
+          .map((item) => ({
+            ...item,
+            is_favorite: true,
+          }));
 
         setFavorites(favoriteItems);
       } catch (error) {
@@ -117,20 +103,20 @@ const FavoriteList = ({ navigation }) => {
     <TouchableWithoutFeedback onPress={handleDismissMenu}>
       <View style={styles.container}>
         {isLoading ? (
-          <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={theme["default-btn"]} />
+            <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+          </View>
         ) : (
           <FlatList
-            style={{ width: "100%" }}
             data={favorites}
             renderItem={({ item }) => (
               <RequestItem
                 item={item}
-                isOwner={item.user_idx === UserIdx}
+                isOwner={item.user_idx === userIdx}
                 isMenuVisible={activeMenuId === item.request_idx}
                 onToggleMenu={() =>
-                  setActiveMenuId(
-                    activeMenuId === item.request_idx ? null : item.request_idx
-                  )
+                  setActiveMenuId(activeMenuId === item.request_idx ? null : item.request_idx)
                 }
               />
             )}
@@ -150,9 +136,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   loadingText: {
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 10,
     fontSize: 16,
     color: "gray",
   },

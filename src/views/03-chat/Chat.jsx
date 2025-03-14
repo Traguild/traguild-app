@@ -4,9 +4,11 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import React from "react";
 import defaultLayout from "layouts/hoc/defaultLayout";
+
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 
@@ -21,7 +23,7 @@ const chatListData = [
 const ChatList = () => {
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={chatListData}
         keyExtractor={(item) => item.id}
@@ -35,8 +37,9 @@ const ChatList = () => {
             <Text style={styles.time}>{item.time}</Text>
           </TouchableOpacity>
         )}
+        contentContainerStyle={{ paddingBottom: 10 }}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["home-bg"],
-    padding: 10,
   },
   chatItem: {
     padding: 15,

@@ -46,8 +46,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         },
       });
 
-      console.log("📌 찜하기 API 응답:", res);
-
       if (res?.interest_idx) {
         setIsFavorite((prev) => !prev);
       } else {
