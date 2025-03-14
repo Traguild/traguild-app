@@ -1,7 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useCallback, useLayoutEffect, useRef, useState, useMemo } from "react";
+import React, {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { BottomSheetModal, BottomSheetBackdrop, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import {
+  BottomSheetModal,
+  BottomSheetBackdrop,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -56,7 +66,8 @@ const MyPage = () => {
     }
 
     const img_url = `https://traguild.kro.kr/api/userInfo/userImg/${user_idx}?timestamp=${new Date().getTime()}`;
-    if (img_url != image) {
+
+    if (img_url != image && res.user_img != "") {
       setImage(img_url);
     }
 
@@ -171,7 +182,12 @@ const MyPage = () => {
         index={1}
         snapPoints={snapPoints}
         backdropComponent={(props) => (
-          <BottomSheetBackdrop {...props} disappearsOnIndex={-1} opacity={0.5} pressBehavior="close" />
+          <BottomSheetBackdrop
+            {...props}
+            disappearsOnIndex={-1}
+            opacity={0.5}
+            pressBehavior="close"
+          />
         )}
         onDismiss={() => setSelectedApplicant(null)}
         backgroundStyle={styles.modalBackground}
@@ -180,19 +196,24 @@ const MyPage = () => {
           <View style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>지원자 정보</Text>
-              <TouchableOpacity onPress={() => bottomSheetRef.current?.dismiss()}>
+              <TouchableOpacity
+                onPress={() => bottomSheetRef.current?.dismiss()}
+              >
                 <Feather name="x" size={24} color={theme["default-btn"]} />
               </TouchableOpacity>
             </View>
 
             <Text style={styles.modalText}>
-              <Text style={styles.boldText}>의뢰:</Text> {selectedApplicant.request_title}
+              <Text style={styles.boldText}>의뢰:</Text>{" "}
+              {selectedApplicant.request_title}
             </Text>
             <Text style={styles.modalText}>
-              <Text style={styles.boldText}>지원자:</Text> {selectedApplicant.user_nickname}
+              <Text style={styles.boldText}>지원자:</Text>{" "}
+              {selectedApplicant.user_nickname}
             </Text>
             <Text style={styles.modalText}>
-              <Text style={styles.boldText}>소개:</Text> {selectedApplicant.applicant_intro}
+              <Text style={styles.boldText}>소개:</Text>{" "}
+              {selectedApplicant.applicant_intro}
             </Text>
 
             <View style={styles.modalButtons}>
@@ -379,3 +400,4 @@ const styles = StyleSheet.create({
 });
 
 export default defaultLayout(MyPage);
+
