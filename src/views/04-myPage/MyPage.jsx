@@ -138,7 +138,7 @@ const MyPage = () => {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.myCreditBox}>
+          {/* <View style={styles.myCreditBox}>
             <View style={{ flexDirection: "row" }}>
               <FontAwesome5 name="coins" size={22} color="#f7b801" />
               <Text style={styles.myCredit}>
@@ -151,7 +151,7 @@ const MyPage = () => {
               text="충전하기"
               onPress={chargeCredit}
             />
-          </View>
+          </View> */}
 
           <View style={styles.requestBox}>
             {[
@@ -400,4 +400,3 @@ const styles = StyleSheet.create({
 });
 
 export default defaultLayout(MyPage);
-
