@@ -82,7 +82,10 @@ const AppNavigator = () => {
         <Stack.Screen
           name="ChatDetail"
           component={ChatDetail}
-          options={{ headerShown: true }}
+          options={({ route }) => ({
+            headerShown: true,
+            title: `${route.params.chatData.name}님과의 대화`,
+          })}
         />
         <Stack.Screen
           name="Favorite"

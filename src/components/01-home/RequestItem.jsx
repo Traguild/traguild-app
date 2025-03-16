@@ -89,6 +89,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
+              size={24}
               color="red"
             />
           </TouchableOpacity>
