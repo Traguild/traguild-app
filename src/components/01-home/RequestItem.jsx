@@ -6,30 +6,52 @@ import {
   Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+
+// IMPORT CONFIGS
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API } from "config/fetch.config";
+
+// IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { FontAwesome5, Ionicons } from "react-native-vector-icons";
 import { getTitle, getCost, getKorDate } from "resources/js/common";
 import { Feather } from "@expo/vector-icons";
+
+// IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
 const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
 
-  const [isFavorite, setIsFavorite] = useState(item.is_favorite || false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [userIdx, setUserIdx] = useState(null);
 
   useEffect(() => {
-    const fetchUserIdx = async () => {
+    const fetchUserIdxAndFavorites = async () => {
       const idx = await AsyncStorage.getItem("user_idx");
       setUserIdx(idx);
+
+      if (idx) {
+        try {
+          const interestRes = await API.POST({
+            url: "/interestRequest/all",
+            data: { user_idx: idx },
+          });
+
+          if (Array.isArray(interestRes)) {
+            const favoriteIds = interestRes.map((fav) => fav.request_idx);
+            setIsFavorite(favoriteIds.includes(item.request_idx));
+          }
+        } catch (error) {
+          console.error("❌ 관심 의뢰 가져오기 실패:", error);
+        }
+      }
     };
 
-    fetchUserIdx();
-  }, []);
+    fetchUserIdxAndFavorites();
+  }, [item.request_idx]);
 
   const toggleFavorite = async () => {
     if (!userIdx) {
@@ -56,7 +78,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
     }
   };
 
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -68,7 +89,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
             <Ionicons
               name={isFavorite ? "heart" : "heart-outline"}
-              size={24}
               color="red"
             />
           </TouchableOpacity>

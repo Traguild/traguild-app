@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  TouchableOpacity,
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from "react-native";
@@ -56,17 +55,11 @@ const FavoriteList = ({ navigation }) => {
           return;
         }
 
-        const requestIdxList = [...new Set(interestRes.map((item) => item.request_idx))];
-
-        if (requestIdxList.length === 0) {
-          setFavorites([]);
-          setIsLoading(false);
-          return;
-        }
+        const interestRequestIdxList = interestRes.map((item) => item.request_idx);
 
         const requestRes = await API.POST({
           url: "/requestInfo/all",
-          data: { request_idx_list: requestIdxList },
+          data: {},
         });
 
         if (!Array.isArray(requestRes) || requestRes.length === 0) {
@@ -76,7 +69,7 @@ const FavoriteList = ({ navigation }) => {
         }
 
         const favoriteItems = requestRes
-          .filter((item) => item.user_idx !== storedUserIdx)
+          .filter((item) => interestRequestIdxList.includes(item.request_idx))
           .map((item) => ({
             ...item,
             is_favorite: true,
@@ -84,7 +77,7 @@ const FavoriteList = ({ navigation }) => {
 
         setFavorites(favoriteItems);
       } catch (error) {
-        console.error("찜한 의뢰 가져오기 오류:", error);
+        console.error("❌ 찜한 의뢰 가져오기 오류:", error);
       } finally {
         setIsLoading(false);
       }
