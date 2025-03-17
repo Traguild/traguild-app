@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 
 // IMPORT CONFIGS
@@ -42,7 +36,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
             data: {
               user_idx: idx,
               page,
-              limit: LIMIT
+              limit: LIMIT,
             },
           });
 
@@ -128,7 +122,9 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         <Image
           source={
             item.request_img
-              ? { uri: `${thumbImgUri}${item.request_idx}` }
+              ? {
+                  uri: `${thumbImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                }
               : defaultImg.logo
           }
           style={styles.itemImg}
