@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -17,11 +17,13 @@ import { io } from "socket.io-client";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const socket = io("https://traguild.kro.kr:8282");
+const socket = io("ws://traguild.kro.kr:8282");
 
 const ChatDetail = () => {
   const route = useRoute();
+  const USER_IDX = useRef(null);
   const { chatData } = route.params;
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -36,13 +38,16 @@ const ChatDetail = () => {
     return () => {
       socket.off("chatting");
     };
-  }, [chatData.chat_room_idx]);
+  }, []);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (inputText.trim().length === 0) return;
 
+    USER_IDX.current = await AsyncStorage.getItem("user_idx");
+    const user_idx = USER_IDX.current;
+
     const newMessage = {
-      id: "Me",
+      id: user_idx,
       msg: inputText,
       room: chatData.chat_room_idx,
       time: new Date().toLocaleTimeString("ko-KR", {
@@ -53,7 +58,6 @@ const ChatDetail = () => {
     };
 
     socket.emit("chatting", newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setInputText("");
   };
 
@@ -72,7 +76,9 @@ const ChatDetail = () => {
               <View
                 style={[
                   styles.messageContainer,
-                  item.id === "Me" ? styles.myMessage : styles.otherMessage,
+                  item.id == USER_IDX.current
+                    ? styles.myMessage
+                    : styles.otherMessage,
                 ]}
               >
                 <Text style={styles.messageText}>{item.msg}</Text>
