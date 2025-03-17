@@ -19,6 +19,7 @@ import { isEmail } from "resources/js/common";
 import Button from "components/common/Button";
 import Label from "components/common/Label";
 import Input from "components/common/Input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUp = ({ navigation }) => {
   const toast = useToast();
@@ -66,6 +67,8 @@ const SignUp = ({ navigation }) => {
     });
 
     if (res) {
+      await AsyncStorage.setItem("user_idx", res.user_idx.toString());
+
       toast.show(`${user_nickname}님 환영합니다!`);
       navGo.re("AppTabNavigator");
     } else {
