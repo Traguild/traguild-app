@@ -6,11 +6,16 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import defaultLayout from "layouts/hoc/defaultLayout";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // 더미 채팅 목록 데이터
 const chatListData = [
@@ -26,19 +31,49 @@ const chatListData = [
 ];
 
 const ChatList = () => {
+  const USER_IDX = useRef(null);
+  const [userInfo, setUserInfo] = useState({});
+
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        await getUserInfo();
+      };
+      getData();
+    }, [getUserInfo])
+  );
+
+  const getUserInfo = async () => {
+    USER_IDX.current = await AsyncStorage.getItem("user_idx");
+    const user_idx = USER_IDX.current;
+
+    const res = await API.POST({
+      url: "/chatList/mine",
+      data: { user_idx },
+    });
+
+    if (JSON.stringify(res) !== JSON.stringify(userInfo)) {
+      setUserInfo(res);
+    }
+
+    console.log(res);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
-        data={chatListData}
-        keyExtractor={(item) => item.id}
+        data={userInfo}
+        keyExtractor={(item) => item.chat_room_idx}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.chatItem}
             onPress={() => navGo.to("ChatDetail", { chatData: item })}
           >
-            <Text style={styles.chatName}>{item.name}</Text>
-            <Text style={styles.lastMessage}>{item.lastMessage}</Text>
-            <Text style={styles.time}>{item.time}</Text>
+            <Text style={styles.chatName}>{item.user_nickname}</Text>
+            <Text style={styles.lastMessage}>{item.chat_detail}</Text>
+            <Text style={styles.time}>
+              {String(item?.send_time ?? "").split("T")[0] ?? ""}
+            </Text>
           </TouchableOpacity>
         )}
         contentContainerStyle={{ paddingBottom: 10 }}

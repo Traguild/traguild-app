@@ -84,7 +84,7 @@ const AppNavigator = () => {
           component={ChatDetail}
           options={({ route }) => ({
             headerShown: true,
-            title: `${route.params.chatData.name}님과의 대화`,
+            title: `${route.params.chatData.user_nickname}님과의 대화`,
           })}
         />
         <Stack.Screen
