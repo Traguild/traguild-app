@@ -69,7 +69,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           },
         });
         const intIdx = interestRes?.[0]?.interest_idx;
-        console.log(intIdx);
 
         const res = await API.DEL({
           url: "/interestRequest/delete",
@@ -78,7 +77,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
 
         if (res) {
           setinterestIdx(false);
-          console.log("🗑 관심 의뢰 삭제 완료:", item.interest_idx);
         } else {
           console.error("찜 해제 실패:", res);
         }
