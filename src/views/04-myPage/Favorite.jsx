@@ -18,6 +18,8 @@ import { theme } from "resources/theme/common";
 // IMPORT COMPONENTS
 import RequestItem from "components/01-home/RequestItem";
 
+const LIMIT = 10;
+
 const FavoriteList = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,7 +30,8 @@ const FavoriteList = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const [favorites, setFavorites] = useState([]);
+  let page = 1;
+  const [interest, setinterest] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeMenuId, setActiveMenuId] = useState(null);
   const [userIdx, setUserIdx] = useState(null);
@@ -37,25 +40,30 @@ const FavoriteList = ({ navigation }) => {
     const fetchFavorites = async () => {
       setIsLoading(true);
       try {
-        const storedUserIdx = await AsyncStorage.getItem("user_idx");
-        if (!storedUserIdx) {
+        const idx = await AsyncStorage.getItem("user_idx");
+        if (!idx) {
           setIsLoading(false);
           return;
         }
-        setUserIdx(storedUserIdx);
+        setUserIdx(idx);
 
         const interestRes = await API.POST({
-          url: "/interestRequest/all",
-          data: { user_idx: storedUserIdx },
+          url: "/interestRequest/fetch",
+          data: {
+            user_idx: idx,
+            page,
+            limit: LIMIT
+          },
         });
 
         if (!Array.isArray(interestRes) || interestRes.length === 0) {
-          setFavorites([]);
+          setinterest([]);
           setIsLoading(false);
           return;
         }
 
         const interestRequestIdxList = interestRes.map((item) => item.request_idx);
+        console.log("필터링된 request_idx 목록: ", interestRequestIdxList);
 
         const requestRes = await API.POST({
           url: "/requestInfo/all",
@@ -63,19 +71,19 @@ const FavoriteList = ({ navigation }) => {
         });
 
         if (!Array.isArray(requestRes) || requestRes.length === 0) {
-          setFavorites([]);
+          setinterest([]);
           setIsLoading(false);
           return;
         }
 
-        const favoriteItems = requestRes
+        const interestItems = requestRes
           .filter((item) => interestRequestIdxList.includes(item.request_idx))
           .map((item) => ({
             ...item,
-            is_favorite: true,
           }));
+        console.log("필터링된 찜한 의뢰 목록:", interestItems);
 
-        setFavorites(favoriteItems);
+        setinterest(interestItems);
       } catch (error) {
         console.error("❌ 찜한 의뢰 가져오기 오류:", error);
       } finally {
@@ -102,7 +110,7 @@ const FavoriteList = ({ navigation }) => {
           </View>
         ) : (
           <FlatList
-            data={favorites}
+            data={interest}
             renderItem={({ item }) => (
               <RequestItem
                 item={item}

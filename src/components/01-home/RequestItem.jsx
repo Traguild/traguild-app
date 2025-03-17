@@ -21,11 +21,13 @@ import { Feather } from "@expo/vector-icons";
 // IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 
+let LIMIT = 10;
+
 const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
-
-  const [isFavorite, setIsFavorite] = useState(false);
+  let page = 1;
+  const [interestIdx, setinterestIdx] = useState(false);
   const [userIdx, setUserIdx] = useState(null);
 
   useEffect(() => {
@@ -36,16 +38,20 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
       if (idx) {
         try {
           const interestRes = await API.POST({
-            url: "/interestRequest/all",
-            data: { user_idx: idx },
+            url: "/interestRequest/fetch",
+            data: {
+              user_idx: idx,
+              page,
+              limit: LIMIT
+            },
           });
 
           if (Array.isArray(interestRes)) {
-            const favoriteIds = interestRes.map((fav) => fav.request_idx);
-            setIsFavorite(favoriteIds.includes(item.request_idx));
+            const favoriteIds = interestRes.map((item) => item.request_idx);
+            setinterestIdx(favoriteIds.includes(item.request_idx));
           }
         } catch (error) {
-          console.error("❌ 관심 의뢰 가져오기 실패:", error);
+          console.error("찜한 의뢰 가져오기 실패:", error);
         }
       }
     };
@@ -55,26 +61,51 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
 
   const toggleFavorite = async () => {
     if (!userIdx) {
-      console.error("❌ 사용자 ID가 없습니다.");
+      console.error("사용자 ID가 없습니다.");
       return;
     }
 
     try {
-      const res = await API.PUT({
-        url: "/interestRequest",
-        data: {
-          user_idx: userIdx,
-          request_idx: item.request_idx,
-        },
-      });
+      if (interestIdx) {
+        const interestRes = await API.POST({
+          url: "/interestRequest/exactly",
+          data: {
+            user_idx: userIdx,
+            request_idx: item.request_idx,
+          },
+        });
+        const intIdx = interestRes?.[0]?.interest_idx;
+        console.log(intIdx);
 
-      if (res?.interest_idx) {
-        setIsFavorite((prev) => !prev);
+        const res = await API.DEL({
+          url: "/interestRequest/delete",
+          data: { interest_idx: intIdx },
+        });
+
+        if (res) {
+          setinterestIdx(false);
+          console.log("🗑 관심 의뢰 삭제 완료:", item.interest_idx);
+        } else {
+          console.error("찜 해제 실패:", res);
+        }
       } else {
-        console.error("❌ 찜하기 실패: 응답 데이터가 예상과 다릅니다.", res);
+        const res = await API.PUT({
+          url: "/interestRequest",
+          data: {
+            user_idx: userIdx,
+            request_idx: item.request_idx,
+          },
+        });
+
+        if (res?.interest_idx) {
+          setinterestIdx(true);
+          console.log("✅ 관심 의뢰 추가 완료:", item.request_idx);
+        } else {
+          console.error("❌ 찜하기 실패:", res);
+        }
       }
     } catch (error) {
-      console.error("❌ 찜하기 요청 실패:", error);
+      console.error("❌ 찜하기/삭제 요청 실패:", error);
     }
   };
 
@@ -88,7 +119,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
         {!isOwner && (
           <TouchableOpacity onPress={toggleFavorite} style={styles.heartButton}>
             <Ionicons
-              name={isFavorite ? "heart" : "heart-outline"}
+              name={interestIdx ? "heart" : "heart-outline"}
               size={24}
               color="red"
             />
