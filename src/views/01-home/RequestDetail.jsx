@@ -52,7 +52,8 @@ const RequestDetail = ({ navigation, route }) => {
         url: "/userInfo",
         data: { user_idx: item.user_idx },
       });
-      if (res.user_img != "") res.user_img = `${userImgUri}${item.user_idx}`;
+      if (res.user_img != "")
+        res.user_img = `${userImgUri}${item.user_idx}?timestamp=${new Date().getTime()}`;
 
       setPostUserInfo(res);
     };
@@ -93,7 +94,9 @@ const RequestDetail = ({ navigation, route }) => {
             <Image
               source={
                 item.request_img
-                  ? { uri: `${requestImgUri}${item.request_idx}` }
+                  ? {
+                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                    }
                   : defaultImg.logo
               }
               style={{
@@ -207,4 +210,3 @@ const styles = StyleSheet.create({
 });
 
 export default RequestDetail;
-
