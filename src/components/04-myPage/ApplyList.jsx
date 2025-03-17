@@ -44,6 +44,7 @@ const ApplyList = ({ onSelectApplicant }) => {
     request_title,
     request_idx,
     user_idx,
+    user_nickname,
     applicant_state,
   }) => {
     const host_user_idx = await AsyncStorage.getItem("user_idx");
@@ -89,6 +90,11 @@ const ApplyList = ({ onSelectApplicant }) => {
             user_idx: host_user_idx,
           },
         });
+
+        chat_data.user_nickname = user_nickname;
+        chat_data.user_idx = user_idx;
+
+        navGo.to("ChatDetail", { chatData: chat_data });
       }
 
       const getApplyList = async () => {

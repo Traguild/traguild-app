@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
@@ -12,8 +12,11 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { io } from "socket.io-client";
+
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -28,6 +31,15 @@ const ChatDetail = () => {
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
 
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        await getMsgData();
+      };
+      getData();
+    }, [getMsgData])
+  );
+
   useEffect(() => {
     socket.emit("enter_room", { room: chatData.chat_room_idx });
 
@@ -40,24 +52,46 @@ const ChatDetail = () => {
     };
   }, []);
 
+  const getMsgData = async () => {
+    USER_IDX.current = await AsyncStorage.getItem("user_idx");
+
+    let res = await API.POST({
+      url: "/chatMessage/room",
+      data: { chat_room_idx: chatData.chat_room_idx },
+    });
+
+    for (let i = 0; i < res.length; i++) {
+      res[i].id = parseInt(res[i].user_idx);
+      res[i].msg = res[i].chat_detail;
+      res[i].room = res[i].chat_room_idx;
+      res[i].time = res[i].send_time;
+    }
+
+    setMessages(res);
+  };
+
   const sendMessage = async () => {
     if (inputText.trim().length === 0) return;
-
-    USER_IDX.current = await AsyncStorage.getItem("user_idx");
     const user_idx = USER_IDX.current;
 
     const newMessage = {
       id: user_idx,
       msg: inputText,
       room: chatData.chat_room_idx,
-      time: new Date().toLocaleTimeString("ko-KR", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      }),
+      time: new Date().toLocaleTimeString(),
     };
 
     socket.emit("chatting", newMessage);
+
+    await API.PUT({
+      url: "/chatMessage",
+      data: {
+        chat_room_idx: newMessage.room,
+        user_idx: newMessage.id,
+        chat_detail: newMessage.msg,
+      },
+    });
+
     setInputText("");
   };
 
