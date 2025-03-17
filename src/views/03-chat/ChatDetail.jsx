@@ -22,9 +22,9 @@ import { API } from "config/fetch.config";
 import { theme } from "resources/theme/common";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const socket = io("ws://traguild.kro.kr:8282");
-
 const ChatDetail = () => {
+  const flatListRef = useRef(null);
+  const socket = useRef(io("ws://traguild.kro.kr:8282")).current;
   const route = useRoute();
   const USER_IDX = useRef(null);
   const { chatData } = route.params;
@@ -33,11 +33,10 @@ const ChatDetail = () => {
 
   useFocusEffect(
     useCallback(() => {
-      const getData = async () => {
+      (async () => {
         await getMsgData();
-      };
-      getData();
-    }, [getMsgData])
+      })();
+    }, [])
   );
 
   useEffect(() => {
@@ -52,7 +51,7 @@ const ChatDetail = () => {
     };
   }, []);
 
-  const getMsgData = async () => {
+  const getMsgData = useCallback(async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
 
     let res = await API.POST({
@@ -64,11 +63,11 @@ const ChatDetail = () => {
       res[i].id = parseInt(res[i].user_idx);
       res[i].msg = res[i].chat_detail;
       res[i].room = res[i].chat_room_idx;
-      res[i].time = res[i].send_time;
+      res[i].time = res[i].send_time.split("T")[1].slice(0, 5);
     }
 
     setMessages(res);
-  };
+  }, [chatData.chat_room_idx]);
 
   const sendMessage = async () => {
     if (inputText.trim().length === 0) return;
@@ -78,7 +77,13 @@ const ChatDetail = () => {
       id: user_idx,
       msg: inputText,
       room: chatData.chat_room_idx,
-      time: new Date().toLocaleTimeString(),
+      time: new Date()
+        .toLocaleTimeString("ko-KR", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+        .split(" ")[0],
     };
 
     socket.emit("chatting", newMessage);
@@ -93,17 +98,24 @@ const ChatDetail = () => {
     });
 
     setInputText("");
+    handleScrollToEnd();
+  };
+
+  const handleScrollToEnd = () => {
+    flatListRef.current.scrollToEnd({ animated: true });
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
         <KeyboardAvoidingView
           style={styles.chatContainer}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
         >
           <FlatList
+            style={{ width: "100%" }}
+            ref={flatListRef}
             data={messages}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
@@ -138,8 +150,8 @@ const ChatDetail = () => {
             </TouchableOpacity>
           </View>
         </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -163,7 +175,6 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 15,
     marginVertical: 5,
-    maxWidth: "75%",
   },
   myMessage: {
     alignSelf: "flex-end",
