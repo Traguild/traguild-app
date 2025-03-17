@@ -211,10 +211,12 @@ const MyPage = () => {
               <Text style={styles.boldText}>지원자:</Text>{" "}
               {selectedApplicant.user_nickname}
             </Text>
-            <Text style={styles.modalText}>
-              <Text style={styles.boldText}>소개:</Text>{" "}
-              {selectedApplicant.applicant_intro}
-            </Text>
+            <View style={{ height: 180 }}>
+              <Text style={{ ...styles.modalText, height: 180 }}>
+                <Text style={styles.boldText}>소개:</Text>{" "}
+                {selectedApplicant.applicant_intro}
+              </Text>
+            </View>
 
             <View style={styles.modalButtons}>
               <TouchableOpacity style={[styles.button, styles.approveButton]}>
@@ -283,7 +285,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   modalBackground: {
-    backgroundColor: theme["default-bg"],
+    backgroundColor: "white",
     borderColor: "white",
     borderWidth: 5,
   },
