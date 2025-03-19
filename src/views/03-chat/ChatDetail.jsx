@@ -24,7 +24,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatDetail = () => {
   const flatListRef = useRef(null);
-  const socket = useRef(io("ws://traguild.kro.kr:8282")).current;
+  const socket = useRef(
+    io("wss://traguild.kro.kr", { path: "/socket.io" })
+  ).current;
   const route = useRoute();
   const USER_IDX = useRef(null);
   const { chatData } = route.params;
