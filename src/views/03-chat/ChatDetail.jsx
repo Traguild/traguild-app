@@ -68,6 +68,8 @@ const ChatDetail = () => {
       res[i].time = res[i].send_time.split("T")[1].slice(0, 5);
     }
 
+    res.reverse();
+
     setMessages(res);
   }, [chatData.chat_room_idx]);
 
@@ -104,19 +106,20 @@ const ChatDetail = () => {
   };
 
   const handleScrollToEnd = () => {
-    flatListRef.current.scrollToEnd({ animated: true });
+    flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView
         style={styles.chatContainer}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
+        behavior={Platform.OS === "ios" ? "padding" : "padding"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
       >
         <FlatList
           style={{ width: "100%" }}
           ref={flatListRef}
+          inverted={true}
           data={messages}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
@@ -147,6 +150,7 @@ const ChatDetail = () => {
             onChangeText={setInputText}
             placeholder="메시지를 입력하세요..."
             placeholderTextColor={theme["default-border"]}
+            onPress={handleScrollToEnd}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
             <Text style={styles.sendButtonText}>전송</Text>
@@ -197,8 +201,8 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   inputContainer: {
+    height: 70,
     flexDirection: "row",
-    alignItems: "center",
     padding: 10,
     borderTopWidth: 1,
     borderColor: theme["default-border"],
@@ -208,19 +212,22 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 15,
+    height: "80%",
     backgroundColor: theme["input-field"],
-    fontSize: 16,
+    fontSize: 14,
   },
   sendButton: {
     marginLeft: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 15,
+    height: "75%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 24,
+    borderRadius: 14,
     backgroundColor: theme["default-btn"],
   },
   sendButtonText: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: 500,
     fontSize: 16,
   },
 });
