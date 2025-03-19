@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { io } from "socket.io-client";
+import { useToast } from "react-native-toast-notifications";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -23,6 +24,7 @@ import { theme } from "resources/theme/common";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatDetail = () => {
+  const toast = useToast();
   const flatListRef = useRef(null);
   const socket = useRef(
     io("wss://traguild.kro.kr", { path: "/socket.io" })
@@ -44,9 +46,18 @@ const ChatDetail = () => {
   useEffect(() => {
     socket.emit("enter_room", { room: chatData.chat_room_idx });
 
-    socket.on("chatting", (data) => {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
+    try {
+      socket.on("chatting", (data) => {
+        setMessages((prevMessages) => [...prevMessages, data]);
+      });
+    } catch (error) {
+      toast.show("메시지를 불러오는 중 오류가 발생했습니다.", {
+        type: "error",
+      });
+      toast.show(error, {
+        type: "error",
+      });
+    }
 
     return () => {
       socket.off("chatting");
