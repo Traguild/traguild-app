@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 /* IMPORT RESOURCES */
 import { theme } from "resources/theme/common";

@@ -4,9 +4,10 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import * as Location from "expo-location";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -44,6 +45,10 @@ const SignUp = ({ navigation }) => {
     });
   });
 
+  useEffect(() => {
+    fetchLocation();
+  }, []);
+
   const handleSignUp = async () => {
     if (!isEmail(user_email)) {
       toast.show("유효하지 않은 이메일 형식입니다.");
@@ -77,6 +82,30 @@ const SignUp = ({ navigation }) => {
     console.log("회원가입 응답:", res);
   };
 
+  const [ok, setOk] = useState(true);
+  const fetchLocation = async () => {
+    try {
+      const { granted } = await Location.requestForegroundPermissionsAsync();
+      if (!granted) {
+        setOk(false);
+        return;
+      }
+
+      const {
+        coords: { latitude, longitude },
+      } = await Location.getLastKnownPositionAsync();
+      const location = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+
+      const city = `${location[0].region} ${location[0].city} ${location[0].district}`;
+      setUserRegion(city);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAwareScrollView style={{ backgroundColor: theme["default-bg"] }}>
@@ -95,6 +124,7 @@ const SignUp = ({ navigation }) => {
               style={{ width: "100%" }}
               value={user_region}
               onChangeText={(text) => setUserRegion(text)}
+              readonly={true}
             />
           </View>
           <View style={styles.inputContainer}>
