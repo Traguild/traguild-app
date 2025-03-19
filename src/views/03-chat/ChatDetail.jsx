@@ -108,52 +108,52 @@ const ChatDetail = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <KeyboardAvoidingView
-          style={styles.chatContainer}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
+    <View style={styles.container}>
+      <KeyboardAvoidingView
+        style={styles.chatContainer}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
+      >
+        <FlatList
+          style={{ width: "100%" }}
+          ref={flatListRef}
+          data={messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={[
+                styles.messageContainer,
+                item.id == USER_IDX.current
+                  ? styles.myMessage
+                  : styles.otherMessage,
+              ]}
+            >
+              <Text style={styles.messageText}>{item.msg}</Text>
+              <Text style={styles.messageTime}>{item.time}</Text>
+            </View>
+          )}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-end",
+            padding: 10,
+          }}
         >
-          <FlatList
-            style={{ width: "100%" }}
-            ref={flatListRef}
-            data={messages}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  styles.messageContainer,
-                  item.id == USER_IDX.current
-                    ? styles.myMessage
-                    : styles.otherMessage,
-                ]}
-              >
-                <Text style={styles.messageText}>{item.msg}</Text>
-                <Text style={styles.messageTime}>{item.time}</Text>
-              </View>
-            )}
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "flex-end",
-              padding: 10,
-            }}
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} />
+        </FlatList>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="메시지를 입력하세요..."
+            placeholderTextColor={theme["default-border"]}
           />
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.textInput}
-              value={inputText}
-              onChangeText={setInputText}
-              placeholder="메시지를 입력하세요..."
-              placeholderTextColor={theme["default-border"]}
-            />
-            <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-              <Text style={styles.sendButtonText}>전송</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </View>
-    </TouchableWithoutFeedback>
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Text style={styles.sendButtonText}>전송</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
