@@ -27,7 +27,11 @@ const ChatDetail = () => {
   const toast = useToast();
   const flatListRef = useRef(null);
   const socket = useRef(
-    io("wss://traguild.kro.kr", { path: "/socket.io" })
+    io(
+      "https://traguild.kro.kr",
+      { path: "/socket.io" },
+      { transports: ["websocket"] }
+    )
   ).current;
   const route = useRoute();
   const USER_IDX = useRef(null);
@@ -46,18 +50,9 @@ const ChatDetail = () => {
   useEffect(() => {
     socket.emit("enter_room", { room: chatData.chat_room_idx });
 
-    try {
-      socket.on("chatting", (data) => {
-        setMessages((prevMessages) => [...prevMessages, data]);
-      });
-    } catch (error) {
-      toast.show("메시지를 불러오는 중 오류가 발생했습니다.", {
-        type: "error",
-      });
-      toast.show(error, {
-        type: "error",
-      });
-    }
+    socket.on("chatting", (data) => {
+      setMessages((prevMessages) => [data, ...prevMessages]);
+    });
 
     return () => {
       socket.off("chatting");
