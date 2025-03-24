@@ -52,7 +52,7 @@ const FavoriteList = ({ navigation }) => {
           data: {
             user_idx: idx,
             page,
-            limit: LIMIT
+            limit: LIMIT,
           },
         });
 
@@ -62,8 +62,9 @@ const FavoriteList = ({ navigation }) => {
           return;
         }
 
-        const interestRequestIdxList = interestRes.map((item) => item.request_idx);
-        console.log("필터링된 request_idx 목록: ", interestRequestIdxList);
+        const interestRequestIdxList = interestRes.map(
+          (item) => item.request_idx
+        );
 
         const requestRes = await API.POST({
           url: "/requestInfo/all",
@@ -81,7 +82,6 @@ const FavoriteList = ({ navigation }) => {
           .map((item) => ({
             ...item,
           }));
-        console.log("필터링된 찜한 의뢰 목록:", interestItems);
 
         setinterest(interestItems);
       } catch (error) {
@@ -106,7 +106,9 @@ const FavoriteList = ({ navigation }) => {
         {isLoading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={theme["default-btn"]} />
-            <Text style={styles.loadingText}>데이터를 불러오는 중입니다...</Text>
+            <Text style={styles.loadingText}>
+              데이터를 불러오는 중입니다...
+            </Text>
           </View>
         ) : (
           <FlatList
@@ -117,7 +119,9 @@ const FavoriteList = ({ navigation }) => {
                 isOwner={item.user_idx === userIdx}
                 isMenuVisible={activeMenuId === item.request_idx}
                 onToggleMenu={() =>
-                  setActiveMenuId(activeMenuId === item.request_idx ? null : item.request_idx)
+                  setActiveMenuId(
+                    activeMenuId === item.request_idx ? null : item.request_idx
+                  )
                 }
               />
             )}

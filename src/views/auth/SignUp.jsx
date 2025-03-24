@@ -79,7 +79,6 @@ const SignUp = ({ navigation }) => {
     } else {
       toast.show("다시 시도해주세요.");
     }
-    console.log("회원가입 응답:", res);
   };
 
   const [ok, setOk] = useState(true);
@@ -102,7 +101,7 @@ const SignUp = ({ navigation }) => {
       const city = `${location[0].region} ${location[0].city} ${location[0].district}`;
       setUserRegion(city);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   };
 

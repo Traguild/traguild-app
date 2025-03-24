@@ -91,7 +91,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
 
         if (res?.interest_idx) {
           setinterestIdx(true);
-          console.log("✅ 관심 의뢰 추가 완료:", item.request_idx);
         } else {
           console.error("❌ 찜하기 실패:", res);
         }
