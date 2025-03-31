@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
@@ -75,15 +75,9 @@ const Home = () => {
     }
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      const getData = async () => {
-        console.log("getData");
-        await getList();
-      };
-      getData();
-    }, [getList])
-  );
+  useEffect(() => {
+    getList();
+  }, []);
 
   return (
     <View style={styles.container}>

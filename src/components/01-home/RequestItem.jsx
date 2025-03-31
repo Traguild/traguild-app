@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // IMPORT CONFIGS
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,6 +14,7 @@ import { Feather } from "@expo/vector-icons";
 
 // IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
+import { useFocusEffect } from "@react-navigation/native";
 
 let LIMIT = 10;
 
@@ -24,34 +25,35 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
   const [interestIdx, setinterestIdx] = useState(false);
   const [userIdx, setUserIdx] = useState(null);
 
-  useEffect(() => {
-    const fetchUserIdxAndFavorites = async () => {
-      const idx = await AsyncStorage.getItem("user_idx");
-      setUserIdx(idx);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserIdxAndFavorites = async () => {
+        const idx = await AsyncStorage.getItem("user_idx");
+        setUserIdx(idx);
 
-      if (idx) {
-        try {
-          const interestRes = await API.POST({
-            url: "/interestRequest/fetch",
-            data: {
-              user_idx: idx,
-              page,
-              limit: LIMIT,
-            },
-          });
+        if (idx) {
+          try {
+            const interestRes = await API.POST({
+              url: "/interestRequest/fetch",
+              data: {
+                user_idx: idx,
+                page,
+                limit: LIMIT,
+              },
+            });
 
-          if (Array.isArray(interestRes)) {
-            const favoriteIds = interestRes.map((item) => item.request_idx);
-            setinterestIdx(favoriteIds.includes(item.request_idx));
+            if (Array.isArray(interestRes)) {
+              const favoriteIds = interestRes.map((item) => item.request_idx);
+              setinterestIdx(favoriteIds.includes(item.request_idx));
+            }
+          } catch (error) {
+            console.error("찜한 의뢰 가져오기 실패:", error);
           }
-        } catch (error) {
-          console.error("찜한 의뢰 가져오기 실패:", error);
         }
-      }
-    };
-
-    fetchUserIdxAndFavorites();
-  }, [item.request_idx]);
+      };
+      fetchUserIdxAndFavorites();
+    }, [])
+  );
 
   const toggleFavorite = async () => {
     if (!userIdx) {
