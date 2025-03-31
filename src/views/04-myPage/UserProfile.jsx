@@ -32,14 +32,14 @@ const UserProfile = () => {
                     },
                 });
                 const res1 = await API.POST({
-                    url: "/requestInfo/howManyAccept",
+                    url: "/requestApplicant/getFinished",
                     data: {
                         user_idx
                     },
                 });
 
                 const res2 = await API.POST({
-                    url: "/requestApplicant/getFinished",
+                    url: "/requestInfo/howManyAccept",
                     data: {
                         user_idx: user_idx,
                     },
@@ -74,14 +74,14 @@ const UserProfile = () => {
                 <View style={styles.sectionBox}>
                     <Text style={styles.sectionTitle}>완료한 의뢰 ({profile.completedRequests.length})</Text>
                     {profile.completedRequests.map((item) => (
-                        <Text key={item.id} style={styles.itemText}>- {item.applicant_intro}</Text>
+                        <Text key={item.id} style={styles.itemText}>- {item.request_title}</Text>
                     ))}
                 </View>
 
                 <View style={styles.sectionBox}>
                     <Text style={styles.sectionTitle}>의뢰한 요청 ({profile.postedRequests.length})</Text>
                     {profile.postedRequests.map((item) => (
-                        <Text key={item.id} style={styles.itemText}>- {item.request_title}</Text>
+                        <Text key={item.id} style={styles.itemText}>- {item.applicant_intro}</Text>
                     ))}
                 </View>
 

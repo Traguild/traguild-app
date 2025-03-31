@@ -209,7 +209,17 @@ const MyPage = () => {
             </Text>
             <Text style={styles.modalText}>
               <Text style={styles.boldText}>지원자:</Text>{" "}
-              {selectedApplicant.user_nickname}
+              <TouchableOpacity
+                onPress={() =>
+                  navGo.to("UserProfile", {
+                    user_idx: selectedApplicant.user_idx,
+                    user_nickname: selectedApplicant.user_nickname,
+                  })
+                }
+              >
+                {selectedApplicant.user_nickname}
+              </TouchableOpacity>
+
             </Text>
             <View style={{ height: 180 }}>
               <Text style={{ ...styles.modalText, height: 180 }}>
