@@ -41,7 +41,7 @@ const MyPage = () => {
   const [image, setImage] = useState(null);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "60%"], []);
+  const snapPoints = useMemo(() => ["60%"], []);
 
   useFocusEffect(
     useCallback(() => {
@@ -179,7 +179,7 @@ const MyPage = () => {
       )}
       <BottomSheetModal
         ref={bottomSheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         backdropComponent={(props) => (
           <BottomSheetBackdrop
@@ -207,20 +207,19 @@ const MyPage = () => {
               <Text style={styles.boldText}>의뢰:</Text>{" "}
               {selectedApplicant.request_title}
             </Text>
-            <Text style={styles.modalText}>
-              <Text style={styles.boldText}>지원자:</Text>{" "}
-              <TouchableOpacity
-                onPress={() =>
-                  navGo.to("UserProfile", {
-                    user_idx: selectedApplicant.user_idx,
-                    user_nickname: selectedApplicant.user_nickname,
-                  })
-                }
-              >
+            <TouchableOpacity
+              onPress={() =>
+                navGo.to("UserProfile", {
+                  user_idx: selectedApplicant.user_idx,
+                  user_nickname: selectedApplicant.user_nickname,
+                })
+              }
+            >
+              <Text style={styles.modalText}>
+                <Text style={styles.boldText}>지원자:</Text>{" "}
                 {selectedApplicant.user_nickname}
-              </TouchableOpacity>
-
-            </Text>
+              </Text>
+            </TouchableOpacity>
             <View style={{ height: 180 }}>
               <Text style={{ ...styles.modalText, height: 180 }}>
                 <Text style={styles.boldText}>소개:</Text>{" "}
