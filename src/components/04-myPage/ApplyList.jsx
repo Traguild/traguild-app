@@ -138,9 +138,19 @@ const ApplyList = ({ onSelectApplicant }) => {
     >
       <View style={styles.itemContent}>
         <Text style={styles.title}>의뢰: {item.request_title}</Text>
-        <Text style={styles.subtitle}>
-          {item?.user_nickname ?? "알 수 없음"}
-        </Text>
+        <TouchableOpacity
+          onPress={() =>
+            navGo.to("UserProfile", {
+              user_idx: item.user_idx,
+              user_nickname: item.user_nickname
+            })
+          }
+        >
+          <Text style={styles.subtitle}>
+            {item?.user_nickname ?? "알 수 없음"}
+          </Text>
+        </TouchableOpacity>
+
         <Text style={styles.applyIntro}>
           {getContents(item.applicant_intro, 25)}
         </Text>

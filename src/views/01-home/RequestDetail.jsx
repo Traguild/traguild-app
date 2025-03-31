@@ -95,8 +95,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                    }
+                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                  }
                   : defaultImg.logo
               }
               style={{
@@ -120,10 +120,19 @@ const RequestDetail = ({ navigation, route }) => {
         <View
           style={{ ...styles.footerContainer, height: layout().height * 0.1 }}
         >
-          <View style={styles.footerProfiles}>
+          <TouchableOpacity
+            style={styles.footerProfiles}
+            activeOpacity={0.8}
+            onPress={() =>
+              navGo.to("UserProfile", {
+                user_idx: postUserInfo?.user_idx,
+                user_nickname: postUserInfo?.user_nickname,
+              })
+            }
+          >
             <Image
               source={
-                postUserInfo.user_img != ""
+                postUserInfo.user_img !== ""
                   ? { uri: postUserInfo.user_img }
                   : defaultImg.logo
               }
@@ -143,7 +152,7 @@ const RequestDetail = ({ navigation, route }) => {
               size={16}
               style={{ marginBottom: 25 }}
             />
-          </View>
+          </TouchableOpacity>
           {item.request_state === "완료" ? (
             <Button type="light" text="지원마감" bgColor="gray" disabled />
           ) : (

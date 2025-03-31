@@ -14,6 +14,7 @@ import Favorite from "views/04-myPage/Favorite";
 import QuestList from "views/04-myPage/QuestList";
 import ProfileEdit from "views/04-myPage/ProfileEdit";
 import ChatDetail from "views/03-chat/ChatDetail";
+import UserProfile from "views/04-myPage/UserProfile";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -102,6 +103,15 @@ const AppNavigator = () => {
           component={ProfileEdit}
           options={{ headerShown: true }}
         />
+        <Stack.Screen
+          name="UserProfile"
+          component={UserProfile}
+          options={({ route }) => ({
+            headerShown: true,
+            title: `${route.params.user_nickname}님의 프로필`,
+          })}
+        />
+
       </Stack.Navigator>
     );
   } else {
