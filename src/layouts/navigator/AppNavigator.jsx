@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Main from "views/Main";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
+import Join from "views/auth/Join";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
 import Favorite from "views/04-myPage/Favorite";
@@ -32,7 +33,7 @@ const AppNavigator = () => {
   useEffect(() => {
     const checkLoginStatus = async () => {
       const user_idx = await AsyncStorage.getItem("user_idx");
-      setIsLogined(!!user_idx);
+      setIsLogined(user_idx);
       setIsLoading(false);
     };
     checkLoginStatus();
@@ -66,6 +67,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="Join"
+          component={Join}
           options={{ headerShown: true }}
         />
         <Stack.Screen name="AppTabNavigator" component={AppTabNavigator} />
@@ -111,7 +117,6 @@ const AppNavigator = () => {
             title: `${route.params.user_nickname}님의 프로필`,
           })}
         />
-
       </Stack.Navigator>
     );
   } else {

@@ -27,6 +27,18 @@ const Button = ({
         </Text>
       </TouchableOpacity>
     );
+  } else if (type == "mini") {
+    return (
+      <TouchableOpacity
+        style={{ ...styles.miniBtn, backgroundColor: bgColor, ...style }}
+        activeOpacity={0.75}
+        {...props}
+      >
+        <Text style={{ ...styles.miniBtnText, color: fontColor, ...textStyle }}>
+          {text}
+        </Text>
+      </TouchableOpacity>
+    );
   }
 
   return (
@@ -66,6 +78,17 @@ const styles = StyleSheet.create({
   },
   lightBtnText: {
     fontSize: 18,
+    fontWeight: "500",
+  },
+
+  miniBtn: {
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  miniBtnText: {
+    fontSize: 10,
     fontWeight: "500",
   },
 });

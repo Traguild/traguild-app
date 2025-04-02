@@ -47,9 +47,8 @@ const ImagePicker = ({
       resizedImage.type = "image/jpeg";
       resizedImage.fileName = "image.jpg";
 
-      await onOk(resizedImage);
+      onOk(resizedImage);
       setImage(resizedImage.uri);
-      return null;
     }
   };
 
