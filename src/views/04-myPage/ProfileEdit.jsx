@@ -27,10 +27,6 @@ const ProfileEdit = ({ navigation, route }) => {
   const [user_nickname, setNickname] = useState(
     userInfo?.user_nickname ?? "알 수 없음"
   );
-  const [user_email, setEmail] = useState(userInfo?.user_email ?? "");
-  const [user_pw, setPassword] = useState("");
-  const [new_user_pw, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,26 +46,12 @@ const ProfileEdit = ({ navigation, route }) => {
     /* Validation */
     if (!user_nickname) return toast.show("닉네임을 입력하세요");
     else if (!user_region) return toast.show("지역을 입력하세요");
-    else if (user_pw || new_user_pw || confirmPassword) {
-      if (!user_pw) return toast.show("현재 비밀번호를 입력하세요");
-      else if (!new_user_pw) return toast.show("새로운 비밀번호를 입력하세요");
-      else if (!confirmPassword)
-        return toast.show("새로운 비밀번호를 한번 더 입력하세요");
-      else if (new_user_pw !== confirmPassword)
-        return toast.show("새로운 비밀번호가 일치하지 않습니다");
-    }
 
     const updatedData = {
       user_idx: userInfo?.user_idx,
       user_nickname,
       user_region,
-      user_email,
     };
-
-    if (user_pw && new_user_pw) {
-      updatedData.user_pw = user_pw;
-      updatedData.new_user_pw = new_user_pw;
-    }
 
     try {
       const res = await API.POST({
@@ -78,9 +60,6 @@ const ProfileEdit = ({ navigation, route }) => {
       });
 
       if (res?.message) {
-        setPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
         return toast.show(res.message);
       } else if (res) {
         toast.show("저장되었습니다", { type: "success" });
@@ -99,15 +78,6 @@ const ProfileEdit = ({ navigation, route }) => {
       <View style={styles.container}>
         <KeyboardAwareScrollView>
           <View style={styles.inputContainer}>
-            <Label style={{ alignSelf: "flex-start" }} text="이름" />
-            <Input
-              style={{ width: "100%" }}
-              value={userInfo?.user_name ?? "알 수 없음"}
-              onChangeText={(text) => setName(text)}
-              readonly
-            />
-          </View>
-          <View style={styles.inputContainer}>
             <Label style={{ alignSelf: "flex-start" }} text="닉네임" />
             <Input
               style={{ width: "100%" }}
@@ -124,53 +94,6 @@ const ProfileEdit = ({ navigation, route }) => {
               value={user_region}
               onChangeText={(text) => setRegion(text)}
               placeholder="지역을 입력하세요"
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <Label style={{ alignSelf: "flex-start" }} text="이메일" />
-            <Input
-              style={{ width: "100%" }}
-              value={userInfo?.user_email ?? "알 수 없음"}
-              onChangeText={(text) => setEmail(text)}
-              placeholder="이메일을 입력하세요"
-              keyboardType="email-address"
-              readonly
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Label style={{ alignSelf: "flex-start" }} text="현재 비밀번호 " />
-            <Input
-              style={{ width: "100%" }}
-              value={user_pw}
-              onChangeText={(text) => setPassword(text)}
-              placeholder="현재 비밀번호를 입력하세요"
-              secureTextEntry={true}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Label
-              style={{ alignSelf: "flex-start" }}
-              text="새로운 비밀번호 "
-            />
-            <Input
-              style={{ width: "100%" }}
-              value={new_user_pw}
-              onChangeText={(text) => setNewPassword(text)}
-              placeholder="새 비밀번호를 입력하세요"
-              secureTextEntry={true}
-            />
-          </View>
-
-          <View style={styles.inputContainer}>
-            <Label style={{ alignSelf: "flex-start" }} text="비밀번호 확인 " />
-            <Input
-              style={{ width: "100%" }}
-              value={confirmPassword}
-              onChangeText={(text) => setConfirmPassword(text)}
-              placeholder="비밀번호를 다시 입력하세요"
-              secureTextEntry={true}
             />
           </View>
           <Button
