@@ -18,20 +18,20 @@ const Main = () => {
       </View>
 
       <View style={styles.buttons}>
-        {/* <Button
+        <Button
           text="가입하기"
           bgColor="white"
           fontColor="black"
           style={{ marginBottom: 10 }}
           onPress={() => navGo.to("SignUp")}
         />
-        <Button text="로그인" onPress={() => navGo.to("SignIn")} /> */}
+        <Button text="로그인" onPress={() => navGo.to("SignIn")} />
         <Button
           text="시작하기"
           style={{ marginTop: 125 }}
           onPress={() => navGo.to("Join")}
         />
-        {/* <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} /> */}
+        <Button text="로그인" onPress={() => navGo.re("AppTabNavigator")} />
       </View>
     </View>
   );

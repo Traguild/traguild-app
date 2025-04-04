@@ -16,6 +16,9 @@ import { API } from "config/fetch.config";
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 
+// IMPORT COMPONENTS
+import MyManner from "components/04-myPage/MyManner";
+
 const UserProfile = () => {
     const route = useRoute();
     const { user_idx } = route.params;
@@ -44,12 +47,20 @@ const UserProfile = () => {
                         user_idx: user_idx,
                     },
                 });
+                const res3 = await API.POST({
+                    url: "/requestInfo/onlymine",
+                    data: {
+                        user_idx: user_idx,
+                        page: 1,
+                        limit: 10
+                    },
+                });
 
                 const fetchedProfile = {
                     user_nickname: res.user_nickname,
                     user_rate: res.user_rate,
                     completedRequests: res1 || [],
-                    postedRequests: res2 || [],
+                    postedRequests: res3 || [],
                     responseRate: res.responseRate || 0,
                 };
 
@@ -69,30 +80,27 @@ const UserProfile = () => {
             <ScrollView contentContainerStyle={styles.innerContainer}>
                 <Text style={styles.nickname}>
                     {profile.user_nickname}
+                    <MyManner rate={profile.user_rate ?? 50} descript={true} size={20} style={{ marginLeft: 10, marginTop: 10 }} />
                 </Text>
+
 
                 <View style={styles.sectionBox}>
                     <Text style={styles.sectionTitle}>완료한 의뢰 ({profile.completedRequests.length})</Text>
                     {profile.completedRequests.map((item) => (
-                        <Text key={item.id} style={styles.itemText}>- {item.request_title}</Text>
+                        <Text key={item.request_idx} style={styles.itemText}>- {item.request_title}</Text>
                     ))}
                 </View>
 
                 <View style={styles.sectionBox}>
-                    <Text style={styles.sectionTitle}>의뢰한 요청 ({profile.postedRequests.length})</Text>
+                    <Text style={styles.sectionTitle}>등록한 의뢰 ({profile.postedRequests.length})</Text>
                     {profile.postedRequests.map((item) => (
-                        <Text key={item.id} style={styles.itemText}>- {item.applicant_intro}</Text>
+                        <Text key={item.request_idx} style={styles.itemText}>- {item.request_title}</Text>
                     ))}
                 </View>
 
                 <View style={styles.sectionBox}>
                     <Text style={styles.sectionTitle}>응답률</Text>
                     <Text style={styles.metricText}>{profile.responseRate}%</Text>
-                </View>
-
-                <View style={styles.sectionBox}>
-                    <Text style={styles.sectionTitle}>평가도</Text>
-                    <Text style={styles.metricText}>{profile.user_rate} / 100</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
