@@ -1,11 +1,11 @@
 import {
+  Animated,
   Modal,
   Platform,
   SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -14,9 +14,10 @@ import React, { useState } from "react";
 import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const SearchFilterModal = ({ filterState, visibleState }) => {
+const SearchFilterModal = ({ filterState, visibleState, resizebox, scale }) => {
   const { filter, setFilter } = filterState;
   const { visible, setVisible } = visibleState;
+
   const options = [
     {
       label: "모두",
@@ -67,10 +68,23 @@ const SearchFilterModal = ({ filterState, visibleState }) => {
       <SafeAreaView
         style={{ flex: 1 }}
         onTouchEnd={() => {
-          setVisible(false);
+          resizebox(0);
         }}
       >
-        <View style={styles.container}>
+        <Animated.View
+          style={[
+            styles.container,
+            {
+              opacity: scale.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, 1],
+              }),
+            },
+            {
+              transform: [{ scale }],
+            },
+          ]}
+        >
           {options.map((op, idx) => (
             <TouchableOpacity
               activeOpacity={0.6}
@@ -96,7 +110,7 @@ const SearchFilterModal = ({ filterState, visibleState }) => {
               ) : null}
             </TouchableOpacity>
           ))}
-        </View>
+        </Animated.View>
       </SafeAreaView>
     </Modal>
   );

@@ -5,8 +5,10 @@ import {
   TextInput,
   Touchable,
   TouchableOpacity,
+  Easing,
+  Animated,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import SearchFilterModal from "components/01-home/SearchFilterModal";
 
@@ -17,8 +19,20 @@ import { FontAwesome6 } from "@expo/vector-icons";
 
 const Layout = ({ children }) => {
   const HEIGHT = layout().height;
+
+  const scale = useRef(new Animated.Value(0)).current;
   const [filter, setFilter] = useState("모두");
   const [visible, setVisible] = useState(false);
+
+  const resizebox = (to) => {
+    to === 1 && setVisible(true);
+    Animated.timing(scale, {
+      toValue: to,
+      useNativeDriver: true,
+      duration: 200,
+      easing: Easing.linear,
+    }).start(() => to === 0 && setVisible(false));
+  };
 
   return (
     <View style={styles.container}>
@@ -41,7 +55,7 @@ const Layout = ({ children }) => {
             style={{ width: "24%" }}
             activeOpacity={1}
             onPress={() => {
-              setVisible(true);
+              resizebox(1);
             }}
           >
             <TextInput
@@ -49,7 +63,7 @@ const Layout = ({ children }) => {
               value={filter}
               editable={false}
               onPress={() => {
-                setVisible(true);
+                resizebox(1);
               }}
             />
           </TouchableOpacity>
@@ -76,6 +90,8 @@ const Layout = ({ children }) => {
         <SearchFilterModal
           filterState={{ filter, setFilter }}
           visibleState={{ visible, setVisible }}
+          resizebox={resizebox}
+          scale={scale}
         />
       </View>
     </View>
