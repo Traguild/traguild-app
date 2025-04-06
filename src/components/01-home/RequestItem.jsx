@@ -185,11 +185,11 @@ const styles = StyleSheet.create({
   },
   listItem: {
     backgroundColor: theme["home-bg"],
-    borderColor: theme["home-border"],
-    borderTopWidth: 1,
+    // borderColor: theme["home-border"],
+    // borderTopWidth: 1,
     width: "100%",
     flexDirection: "row",
-    paddingVertical: 13,
+    paddingVertical: 12,
   },
   itemImg: {
     width: 100,

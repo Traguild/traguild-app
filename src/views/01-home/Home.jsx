@@ -19,7 +19,7 @@ import { theme } from "resources/theme/common";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 // IMPORT LAYOUTS
-import defaultLayout from "layouts/hoc/defaultLayout";
+import homeLayout from "layouts/hoc/homeLayout";
 
 // IMPORT COMPONENTS
 import RequestItem from "components/01-home/RequestItem";
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default defaultLayout(Home);
+export default homeLayout(Home);
