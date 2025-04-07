@@ -54,14 +54,7 @@ const ChatList = () => {
             style={styles.chatItem}
             onPress={() => navGo.to("ChatDetail", { chatData: item })}
           >
-            <TouchableOpacity
-              onPress={() => navGo.to("UserProfile", {
-                user_idx: item.user_idx,
-                user_nickname: item.user_nickname,
-              })}
-            >
-              <Text style={styles.chatName}>{item.user_nickname}</Text>
-            </TouchableOpacity>
+            <Text style={styles.chatName}>{item.user_nickname}</Text>
             <Text style={styles.lastMessage}>{item.chat_detail}</Text>
             <Text style={styles.time}>
               {String(item?.send_time ?? "").split("T")[0] ?? ""}
