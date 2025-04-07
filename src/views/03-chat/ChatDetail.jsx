@@ -43,7 +43,7 @@ const ChatDetail = () => {
   const [requestInfo, setRequestInfo] = useState(null);
 
   useEffect(() => {
-    const mockData = {
+    const DummyData = {
       request_idx: 1,
       request_img: null,
       request_title: "테스트 의뢰 제목입니다",
@@ -51,7 +51,24 @@ const ChatDetail = () => {
       request_state: "모집",
     };
 
-    setRequestInfo(mockData);
+    setRequestInfo(DummyData);
+
+    if (chatData?.request_idx) {
+      const fetchRequest = async () => {
+        try {
+          const res = await API.POST({
+            url: "/requestInfo",
+            data: { request_idx: chatData.request_idx },
+          });
+
+          //setRequestInfo(data);
+        } catch (error) {
+          console.error("❌ 의뢰 정보 가져오기 실패:", error);
+        }
+      };
+      fetchRequest();
+    }
+    //chatData?.request_idx
   }, []);
 
   useFocusEffect(
