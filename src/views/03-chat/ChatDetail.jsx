@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  Image,
   View,
   Text,
   TextInput,
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
@@ -21,23 +21,38 @@ import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
+import { defaultImg } from "resources/img/defaultImg";
+import { getTitle, getCost } from "resources/js/common";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RequestState from "components/01-home/RequestState";
 
 const ChatDetail = () => {
   const toast = useToast();
   const flatListRef = useRef(null);
   const socket = useRef(
-    io(
-      "https://traguild.kro.kr",
-      { path: "/socket.io" },
-      { transports: ["websocket"] }
-    )
+    io("https://traguild.kro.kr", {
+      path: "/socket.io",
+      transports: ["websocket"],
+    })
   ).current;
   const route = useRoute();
   const USER_IDX = useRef(null);
   const { chatData } = route.params;
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [requestInfo, setRequestInfo] = useState(null);
+
+  useEffect(() => {
+    const mockData = {
+      request_idx: 1,
+      request_img: null,
+      request_title: "테스트 의뢰 제목입니다",
+      request_cost: 15000,
+      request_state: "모집",
+    };
+
+    setRequestInfo(mockData);
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -117,6 +132,46 @@ const ChatDetail = () => {
 
   return (
     <View style={styles.container}>
+      {requestInfo && (
+        <View style={styles.headerBox}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
+            style={styles.headerContentBox}
+          >
+            <Image
+              source={
+                requestInfo.request_img
+                  ? {
+                    uri: `https://traguild.kro.kr/api/requestInfo/getImage/${requestInfo.request_idx}`,
+                  }
+                  : require("resources/img/defaultImg").logo
+              }
+              style={styles.headerImg}
+            />
+            <View style={styles.headerContent}>
+              <Text style={styles.headerTitle}>
+                {getTitle(requestInfo.request_title, 16)}
+              </Text>
+              <Text style={styles.headerCost}>
+                {getCost(requestInfo.request_cost)} 원
+              </Text>
+            </View>
+            <View style={styles.headerRight}>
+              <RequestState text={requestInfo.request_state} />
+              {requestInfo.request_state !== "완료" && (
+                <TouchableOpacity
+                  style={styles.approveButton}
+                  onPress={() => toast.show("승인 기능")}
+                >
+                  <Text style={styles.approveText}>승인</Text>
+                </TouchableOpacity>
+              )}
+            </View>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <KeyboardAvoidingView
         style={styles.chatContainer}
         behavior={Platform.OS === "ios" ? "padding" : "padding"}
@@ -172,16 +227,54 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme["home-bg"],
   },
-  chatContainer: {
+  headerBox: {
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: theme["default-border"],
+    backgroundColor: "#fff",
+  },
+  headerContentBox: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerImg: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    marginRight: 12,
+  },
+  headerContent: {
     flex: 1,
   },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold",
-    textAlign: "center",
-    paddingVertical: 10,
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 5,
+  },
+  headerCost: {
+    fontSize: 14,
+    color: "gray",
+  },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  approveButton: {
+    paddingHorizontal: 14,
+    paddingVertical: 6,
     backgroundColor: theme["default-btn"],
+    borderRadius: 6,
+  },
+  approveText: {
     color: "white",
+    fontWeight: "600",
+    fontSize: 14,
+  },
+  chatContainer: {
+    flex: 1,
+    marginTop: 4,
   },
   messageContainer: {
     padding: 12,
@@ -233,7 +326,7 @@ const styles = StyleSheet.create({
   },
   sendButtonText: {
     color: "white",
-    fontWeight: 500,
+    fontWeight: "500",
     fontSize: 16,
   },
 });
