@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ImageBackground, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Pressable,
+  TouchableOpacity,
+} from "react-native";
 import { useToast } from "react-native-toast-notifications";
 // import * as ImagePicker from "expo-image-picker";
 
@@ -15,41 +21,26 @@ import Label from "components/common/Label";
 import Input from "components/common/Input";
 import TextField from "components/common/TextField";
 import ImagePicker from "components/common/ImagePicker";
+import SelectCategory from "components/01-home/SelectCategory";
 
-const WriteForm = ({ onSubmit }) => {
-  const toast = useToast();
-  const [reqeust_img, setImage] = useState(null);
-  const [request_title, setTitle] = useState("");
-  const [request_content, setContent] = useState("");
-  const [request_cost, setCost] = useState("");
-
-  const handleSubmit = () => {
-    if (!request_title || !request_content || !request_cost) {
-      toast.show("모든 필드를 입력해주세요.", { type: "warning" });
-      return;
-    }
-
-    const formData = new FormData();
-    if (reqeust_img) {
-      formData.append("image", {
-        uri: reqeust_img.uri,
-        type: reqeust_img.type,
-        name: reqeust_img.fileName,
-      });
-    }
-    formData.append("request_title", request_title);
-    formData.append("request_content", request_content);
-    formData.append("request_cost", request_cost);
-
-    onSubmit(formData);
-  };
+const WriteForm = ({ states }) => {
+  const [visible, setVisible] = useState(false);
+  const [reqeust_img, setImage] = states[0];
+  const [request_title, setTitle] = states[1];
+  const [request_category, setCategory] = states[2];
+  const [request_content, setContent] = states[3];
+  const [request_cost, setCost] = states[4];
 
   const handleImagePicker = async (resizedImage) => {
     setImage(resizedImage);
   };
 
   return (
-    <View style={{ ...styles.container, height: layout().height }}>
+    <View style={styles.container}>
+      <SelectCategory
+        categoryState={states[2]}
+        visibleState={[visible, setVisible]}
+      />
       <ImagePicker
         style={{ width: layout().width, height: layout().width }}
         onOk={handleImagePicker}
@@ -71,6 +62,20 @@ const WriteForm = ({ onSubmit }) => {
           onChangeText={(text) => setTitle(text)}
           maxLength={20}
         />
+      </View>
+      <View style={styles.inputContainer}>
+        <Label text="분류" />
+        <TouchableOpacity activeOpacity={1} onPress={() => setVisible(true)}>
+          <Input
+            style={{ width: "100%" }}
+            placeholder="선택"
+            value={request_category}
+            onChangeText={(text) => setCategory(text)}
+            maxLength={20}
+            editable={false}
+            onPress={() => setVisible(true)}
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.inputContainer}>
         <Label text="가격" />
@@ -97,13 +102,13 @@ const WriteForm = ({ onSubmit }) => {
           onChangeText={(text) => setContent(text)}
         />
       </View>
-      <View style={styles.inputContainer}>
+      {/* <View style={styles.inputContainer}>
         <Button
           style={{ marginTop: 15, marginBottom: 15 }}
           text="작성하기"
           onPress={handleSubmit}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

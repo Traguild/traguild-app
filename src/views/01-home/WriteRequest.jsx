@@ -4,8 +4,10 @@ import {
   View,
   StyleSheet,
   ScrollView,
+  Text,
+  Platform,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -13,12 +15,28 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
+import { layout } from "resources/theme/layout";
 
 // IMPORT COMPONENTS
+import Button from "components/common/Button";
 import WriteForm from "components/01-home/WriteForm";
 
 const WriteRequest = ({ navigation }) => {
   const toast = useToast();
+
+  const [reqeust_img, setImage] = useState(null);
+  const [request_title, setTitle] = useState("");
+  const [request_category, setCategory] = useState("");
+  const [request_content, setContent] = useState("");
+  const [request_cost, setCost] = useState("");
+
+  const stateList = [
+    [reqeust_img, setImage],
+    [request_title, setTitle],
+    [request_category, setCategory],
+    [request_content, setContent],
+    [request_cost, setCost],
+  ];
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,6 +48,33 @@ const WriteRequest = ({ navigation }) => {
       headerTintColor: theme["light-btn"],
     });
   }, [navigation]);
+
+  const handleSubmit = () => {
+    if (
+      !request_title ||
+      !request_content ||
+      !request_cost ||
+      !request_category
+    ) {
+      toast.show("모든 필드를 입력해주세요.", { type: "warning" });
+      return;
+    }
+
+    const formData = new FormData();
+    if (reqeust_img) {
+      formData.append("image", {
+        uri: reqeust_img.uri,
+        type: reqeust_img.type,
+        name: reqeust_img.fileName,
+      });
+    }
+    formData.append("request_title", request_title);
+    formData.append("request_content", request_content);
+    formData.append("request_cost", request_cost);
+    formData.append("request_category", request_category);
+
+    handlePostRequest(formData);
+  };
 
   const handlePostRequest = async (formData) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
@@ -55,15 +100,28 @@ const WriteRequest = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.container}>
-        <KeyboardAwareScrollView>
-          <ScrollView contentContainerStyle={styles.scrollContainer}>
-            <WriteForm onSubmit={handlePostRequest} />
-          </ScrollView>
-        </KeyboardAwareScrollView>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView>
+        <View
+          style={{
+            height: layout().height * 0.9,
+          }}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView>
+              <WriteForm states={stateList} />
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </View>
+      </KeyboardAwareScrollView>
+      <View style={[styles.inputContainer]}>
+        <Button
+          style={{ marginTop: 15, marginBottom: 15 }}
+          text="작성하기"
+          onPress={handleSubmit}
+        />
       </View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 
@@ -72,9 +130,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: theme["default-bg"],
   },
-  scrollContainer: {
-    flexGrow: 1,
-    alignItems: "center",
+
+  inputContainer: {
+    width: "100%",
+    marginBottom: 10,
+    paddingHorizontal: 20,
   },
 });
 
