@@ -72,6 +72,7 @@ const ApplyList = ({ onSelectApplicant }) => {
         const chat_data = await API.PUT({
           url: "/chatRoom",
           data: {
+            request_idx,
             chat_room_name: request_title,
           },
         });
@@ -143,7 +144,7 @@ const ApplyList = ({ onSelectApplicant }) => {
           onPress={() =>
             navGo.to("UserProfile", {
               user_idx: item.user_idx,
-              user_nickname: item.user_nickname
+              user_nickname: item.user_nickname,
             })
           }
         >
