@@ -21,6 +21,7 @@ const Layout = ({ children }) => {
   const HEIGHT = layout().height;
 
   const scale = useRef(new Animated.Value(0)).current;
+  const [keyword, setKeyword] = useState("");
   const [filter, setFilter] = useState("모두");
   const [visible, setVisible] = useState(false);
 
@@ -71,6 +72,17 @@ const Layout = ({ children }) => {
             style={styles.headerSearchBox}
             maxLength={18}
             placeholder="터치해서 검색"
+            returnKeyType="search"
+            value={keyword}
+            onChangeText={(text) => {
+              setKeyword(text);
+            }}
+            onSubmitEditing={() => {
+              navGo.to("SearchResults", {
+                keyword: keyword,
+                filter: filter,
+              });
+            }}
           />
           <FontAwesome6
             name="magnifying-glass"

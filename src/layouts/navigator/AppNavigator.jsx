@@ -11,6 +11,7 @@ import SignUp from "views/auth/SignUp";
 import Join from "views/auth/Join";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
+import SearchResults from "views/01-home/SearchResults";
 import Favorite from "views/04-myPage/Favorite";
 import QuestList from "views/04-myPage/QuestList";
 import ProfileEdit from "views/04-myPage/ProfileEdit";
@@ -116,6 +117,11 @@ const AppNavigator = () => {
             headerShown: true,
             title: `${route.params.user_nickname}님의 프로필`,
           })}
+        />
+        <Stack.Screen
+          name="SearchResults"
+          component={SearchResults}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     );
