@@ -117,26 +117,36 @@ const MyPage = () => {
         <View style={styles.loadingWrap}></View>
       ) : (
         <View style={styles.container}>
-          <View style={styles.profileBox}>
-            <ImagePicker
-              style={styles.profilePic}
-              source={image}
-              onOk={uploadImage}
-            />
-            <View style={styles.profileTop}>
-              <Text style={styles.profileName}>
-                {userInfo?.user_nickname ?? "알 수 없음"}
-              </Text>
-              <MyManner rate={userInfo?.user_rate ?? 50} />
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => {
+              navGo.to("UserProfile", {
+                user_idx: USER_IDX.current,
+                user_nickname: userInfo?.user_nickname,
+              });
+            }}
+          >
+            <View style={styles.profileBox}>
+              <ImagePicker
+                style={styles.profilePic}
+                source={image}
+                onOk={uploadImage}
+              />
+              <View style={styles.profileTop}>
+                <Text style={styles.profileName}>
+                  {userInfo?.user_nickname ?? "알 수 없음"}
+                </Text>
+                <MyManner rate={userInfo?.user_rate ?? 50} />
+              </View>
+              <TouchableOpacity
+                style={styles.signOutBtn}
+                activeOpacity={0.7}
+                onPress={signOut}
+              >
+                <Text style={styles.signOutText}>로그아웃</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={styles.signOutBtn}
-              activeOpacity={0.7}
-              onPress={signOut}
-            >
-              <Text style={styles.signOutText}>로그아웃</Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableOpacity>
 
           {/* <View style={styles.myCreditBox}>
             <View style={{ flexDirection: "row" }}>
