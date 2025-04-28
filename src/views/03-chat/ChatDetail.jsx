@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Image,
   View,
   Text,
   TextInput,
@@ -9,22 +8,16 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { io } from "socket.io-client";
 import { useToast } from "react-native-toast-notifications";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
-
-// IMPORT RESOURCES
 import { theme } from "resources/theme/common";
-import { defaultImg } from "resources/img/defaultImg";
-import { getTitle, getCost } from "resources/js/common";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import RequestState from "components/01-home/RequestState";
+import ChatHeader from "components/03-chat/ChatHeader";
 
 const ChatDetail = () => {
   const toast = useToast();
@@ -35,52 +28,82 @@ const ChatDetail = () => {
       transports: ["websocket"],
     })
   ).current;
+
   const route = useRoute();
-  const USER_IDX = useRef(null);
   const { chatData } = route.params;
+  const chatRoomIdx = chatData?.chat_room_idx;
+  const USER_IDX = useRef(null);
+
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [requestInfo, setRequestInfo] = useState(null);
 
-  useEffect(() => {
-    const DummyData = {
-      request_idx: 1,
-      request_img: null,
-      request_title: "테스트 의뢰 제목입니다",
-      request_cost: 15000,
-      request_state: "모집",
-    };
+  // 💬 채팅방 정보와 requestInfo 불러오기
+  const fetchRoomAndRequestInfo = async () => {
+    try {
+      const roomRes = await API.POST({
+        url: "/chatRoom",
+        data: { chat_room_idx: chatRoomIdx },
+      });
 
-    setRequestInfo(DummyData);
+      const requestIdx = roomRes?.[0]?.request_idx;
 
-    if (chatData?.request_idx) {
-      const fetchRequest = async () => {
-        try {
-          const res = await API.POST({
-            url: "/requestInfo",
-            data: { request_idx: chatData.request_idx },
-          });
+      if (requestIdx) {
+        const requestRes = await API.POST({
+          url: "/requestInfo",
+          data: { request_idx: requestIdx },
+        });
 
-          //setRequestInfo(data);
-        } catch (error) {
-          console.error("❌ 의뢰 정보 가져오기 실패:", error);
+        if (Array.isArray(requestRes) && requestRes.length > 0) {
+          setRequestInfo(requestRes[0]);
+        } else {
+          console.error("요청 정보 없음");
         }
-      };
-      fetchRequest();
+      } else {
+        console.error("chatRoom에서 request_idx를 못 가져옴");
+      }
+    } catch (error) {
+      console.error("방 정보 및 요청 정보 가져오기 실패", error);
     }
-    //chatData?.request_idx
-  }, []);
+  };
+
+  const getMsgData = useCallback(async () => {
+    USER_IDX.current = await AsyncStorage.getItem("user_idx");
+
+    try {
+      const res = await API.POST({
+        url: "/chatMessage/room",
+        data: { chat_room_idx: chatRoomIdx },
+      });
+
+      if (Array.isArray(res)) {
+        const parsed = res.map((msg) => ({
+          id: parseInt(msg.user_idx),
+          msg: msg.chat_detail,
+          room: msg.chat_room_idx,
+          time: msg.send_time?.split("T")[1]?.slice(0, 5) || "00:00",
+        }));
+
+        parsed.reverse();
+        setMessages(parsed);
+      } else {
+        setMessages([]);
+      }
+    } catch (error) {
+      console.error("채팅 데이터 가져오기 실패:", error);
+      setMessages([]);
+    }
+  }, [chatRoomIdx]);
 
   useFocusEffect(
     useCallback(() => {
-      (async () => {
-        await getMsgData();
-      })();
-    }, [])
+      fetchRoomAndRequestInfo();
+      getMsgData();
+    }, [getMsgData])
   );
 
   useEffect(() => {
-    socket.emit("enter_room", { room: chatData.chat_room_idx });
+    socket.emit("enter_room", { room: chatRoomIdx });
 
     socket.on("chatting", (data) => {
       setMessages((prevMessages) => [data, ...prevMessages]);
@@ -89,42 +112,18 @@ const ChatDetail = () => {
     return () => {
       socket.off("chatting");
     };
-  }, []);
-
-  const getMsgData = useCallback(async () => {
-    USER_IDX.current = await AsyncStorage.getItem("user_idx");
-
-    let res = await API.POST({
-      url: "/chatMessage/room",
-      data: { chat_room_idx: chatData.chat_room_idx },
-    });
-
-    for (let i = 0; i < res.length; i++) {
-      res[i].id = parseInt(res[i].user_idx);
-      res[i].msg = res[i].chat_detail;
-      res[i].room = res[i].chat_room_idx;
-      res[i].time = res[i].send_time.split("T")[1].slice(0, 5);
-    }
-
-    res.reverse();
-
-    setMessages(res);
-  }, [chatData.chat_room_idx]);
+  }, [chatRoomIdx]);
 
   const sendMessage = async () => {
     if (inputText.trim().length === 0) return;
-    const user_idx = USER_IDX.current;
 
+    const user_idx = USER_IDX.current;
     const newMessage = {
       id: user_idx,
       msg: inputText,
-      room: chatData.chat_room_idx,
+      room: chatRoomIdx,
       time: new Date()
-        .toLocaleTimeString("ko-KR", {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        })
+        .toLocaleTimeString("ko-KR", { hour12: false, hour: "2-digit", minute: "2-digit" })
         .split(" ")[0],
     };
 
@@ -144,69 +143,40 @@ const ChatDetail = () => {
   };
 
   const handleScrollToEnd = () => {
-    flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
     <View style={styles.container}>
       {requestInfo && (
-        <View style={styles.headerBox}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
-            style={styles.headerContentBox}
-          >
-            <Image
-              source={
-                requestInfo.request_img
-                  ? {
-                    uri: `https://traguild.kro.kr/api/requestInfo/getImage/${requestInfo.request_idx}`,
-                  }
-                  : require("resources/img/defaultImg").logo
-              }
-              style={styles.headerImg}
-            />
-            <View style={styles.headerContent}>
-              <Text style={styles.headerTitle}>
-                {getTitle(requestInfo.request_title, 16)}
-              </Text>
-              <Text style={styles.headerCost}>
-                {getCost(requestInfo.request_cost)} 원
-              </Text>
-            </View>
-            <View style={styles.headerRight}>
-              <RequestState text={requestInfo.request_state} />
-              {requestInfo.request_state !== "완료" && (
-                <TouchableOpacity
-                  style={styles.approveButton}
-                  onPress={() => toast.show("승인 기능")}
-                >
-                  <Text style={styles.approveText}>승인</Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </TouchableOpacity>
-        </View>
+        <ChatHeader
+          requestInfo={requestInfo}
+          onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
+          onApprove={() => {
+            setRequestInfo((prev) => ({ ...prev, request_state: "진행중" }));
+          }}
+          onComplete={() => {
+            setRequestInfo((prev) => ({ ...prev, request_state: "완료" }));
+          }}
+        />
       )}
 
       <KeyboardAvoidingView
         style={styles.chatContainer}
-        behavior={Platform.OS === "ios" ? "padding" : "padding"}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
       >
         <FlatList
-          style={{ width: "100%" }}
           ref={flatListRef}
-          inverted={true}
+          style={{ width: "100%" }}
+          inverted
           data={messages}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
             <View
               style={[
                 styles.messageContainer,
-                item.id == USER_IDX.current
-                  ? styles.myMessage
-                  : styles.otherMessage,
+                item.id == USER_IDX.current ? styles.myMessage : styles.otherMessage,
               ]}
             >
               <Text style={styles.messageText}>{item.msg}</Text>
@@ -218,9 +188,7 @@ const ChatDetail = () => {
             justifyContent: "flex-end",
             padding: 10,
           }}
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} />
-        </FlatList>
+        />
         <View style={styles.inputContainer}>
           <TextInput
             style={styles.textInput}
@@ -228,7 +196,7 @@ const ChatDetail = () => {
             onChangeText={setInputText}
             placeholder="메시지를 입력하세요..."
             placeholderTextColor={theme["default-border"]}
-            onPress={handleScrollToEnd}
+            onFocus={handleScrollToEnd}
           />
           <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
             <Text style={styles.sendButtonText}>전송</Text>
@@ -243,51 +211,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["home-bg"],
-  },
-  headerBox: {
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: theme["default-border"],
-    backgroundColor: "#fff",
-  },
-  headerContentBox: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  headerImg: {
-    width: 60,
-    height: 60,
-    borderRadius: 10,
-    marginRight: 12,
-  },
-  headerContent: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 5,
-  },
-  headerCost: {
-    fontSize: 14,
-    color: "gray",
-  },
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
-  },
-  approveButton: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    backgroundColor: theme["default-btn"],
-    borderRadius: 6,
-  },
-  approveText: {
-    color: "white",
-    fontWeight: "600",
-    fontSize: 14,
   },
   chatContainer: {
     flex: 1,

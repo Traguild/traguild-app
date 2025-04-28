@@ -48,27 +48,30 @@ const ApplyList = ({ onSelectApplicant }) => {
     applicant_state,
   }) => {
     const host_user_idx = await AsyncStorage.getItem("user_idx");
-    const res = await API.POST({
-      url: "/requestApplicant/update",
-      data: { request_idx, user_idx, applicant_state },
-    });
+    // TODO - 임시 주석
+    const res = true;
+    // const res = await API.POST({
+    //   url: "/requestApplicant/update",
+    //   data: { request_idx, user_idx, applicant_state },
+    // });
 
     if (res) {
       if (applicant_state === "승인") {
-        await API.POST({
-          url: "/requestApplicant/rejectAll",
-          data: { request_idx, applicant_state: "반려" },
-        });
-        await API.POST({
-          url: "/requestInfo/update",
-          data: {
-            request_idx,
-            request_state: "완료",
-            applicant_idx: user_idx,
-          },
-        });
+        // TODO - 임시 주석
+        // await API.POST({
+        //   url: "/requestApplicant/rejectAll",
+        //   data: { request_idx, applicant_state: "반려" },
+        // });
+        // await API.POST({
+        //   url: "/requestInfo/update",
+        //   data: {
+        //     request_idx,
+        //     request_state: "완료",
+        //     applicant_idx: user_idx,
+        //   },
+        // });
 
-        // 채팅방 생성
+        //채팅방 생성
         const chat_data = await API.PUT({
           url: "/chatRoom",
           data: {
@@ -96,7 +99,12 @@ const ApplyList = ({ onSelectApplicant }) => {
         chat_data.user_idx = user_idx;
         chat_data.request_idx = request_idx;
 
-        navGo.to("ChatDetail", { chatData: chat_data });
+        console.log("chat_data:", chat_data);
+        console.log("request_idx:", request_idx);
+
+        navGo.to("ChatDetail", {
+          chatData: chat_data,
+        });
       }
 
       const getApplyList = async () => {
