@@ -19,6 +19,7 @@ import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { layout } from "resources/theme/layout";
 import { getCost } from "resources/js/common";
+import { MaterialIcons } from "@expo/vector-icons";
 
 // IMPORT COMPONENTS
 import ApplyRequest from "views/01-home/ApplyRequest";
@@ -107,11 +108,20 @@ const RequestDetail = ({ navigation, route }) => {
             />
 
             <View style={styles.itemContents}>
-              <RequestState text={item.request_state} />
+              <View style={styles.itemHeaderRow}>
+                <RequestState text={item.request_state} />
+                <TouchableOpacity
+                  style={styles.reportButton}
+                >
+                  <MaterialIcons name="report" size={25} color="#ff5a5f" />
+                </TouchableOpacity>
+              </View>
+
               <Text style={styles.itemTitle}>{item.request_title}</Text>
-              <Text style={styles.itemCost}>
-                {getCost(item.request_cost)} 원
-              </Text>
+              <View style={styles.costAndCategoryRow}>
+                <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
+                <Text style={styles.itemCategory}>{item.request_category}</Text>
+              </View>
               <Text style={styles.itemDescription}>{item.request_content}</Text>
             </View>
           </ScrollView>
@@ -183,17 +193,35 @@ const styles = StyleSheet.create({
   itemCost: {
     fontSize: 18,
     fontWeight: "500",
-    borderColor: theme["default-border"],
-    borderBottomWidth: 0.45,
-
-    marginBottom: 20,
     paddingVertical: 10,
   },
   itemDescription: {
     fontSize: 16,
     lineHeight: 24,
   },
-
+  itemHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  reportButton: {
+    padding: 4,
+  },
+  costAndCategoryRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+    borderBottomWidth: 0.45,
+    borderColor: theme["default-border"],
+    paddingVertical: 10,
+  },
+  itemCategory: {
+    fontSize: 14,
+    color: "#666",
+    fontWeight: "500",
+  },
   footerContainer: {
     borderTopWidth: 0.45,
     borderColor: theme["default-border"],
