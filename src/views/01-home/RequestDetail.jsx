@@ -96,8 +96,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                  }
+                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                    }
                   : defaultImg.logo
               }
               style={{
@@ -110,19 +110,21 @@ const RequestDetail = ({ navigation, route }) => {
             <View style={styles.itemContents}>
               <View style={styles.itemHeaderRow}>
                 <RequestState text={item.request_state} />
-                <TouchableOpacity
-                  style={styles.reportButton}
-                >
+                <TouchableOpacity>
                   <MaterialIcons name="report" size={25} color="#ff5a5f" />
                 </TouchableOpacity>
               </View>
 
               <Text style={styles.itemTitle}>{item.request_title}</Text>
               <View style={styles.costAndCategoryRow}>
-                <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
+                <Text style={styles.itemCost}>
+                  {getCost(item.request_cost)} 원
+                </Text>
                 <Text style={styles.itemCategory}>{item.request_category}</Text>
               </View>
               <Text style={styles.itemDescription}>{item.request_content}</Text>
+
+              {/* TODO: Comments Box */}
             </View>
           </ScrollView>
         </View>
@@ -170,6 +172,28 @@ const RequestDetail = ({ navigation, route }) => {
           )}
         </View>
       </View>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        style={{
+          width: 130,
+          height: 35,
+          backgroundColor: theme["btn-floating"],
+          opacity: 0.8,
+          borderRadius: 50,
+          position: "absolute",
+          bottom: 105,
+          right: 130,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onPress={() => {
+          navGo.to("RequestComment");
+        }}
+      >
+        <Text style={{ color: "white", fontWeight: "500" }}>
+          {"댓글 (1 건)"}
+        </Text>
+      </TouchableOpacity>
     </BottomSheetModalProvider>
   );
 };
@@ -198,15 +222,12 @@ const styles = StyleSheet.create({
   itemDescription: {
     fontSize: 16,
     lineHeight: 24,
+    height: 180,
   },
   itemHeaderRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 10,
-  },
-  reportButton: {
-    padding: 4,
   },
   costAndCategoryRow: {
     flexDirection: "row",
@@ -215,7 +236,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 0.45,
     borderColor: theme["default-border"],
-    paddingVertical: 10,
   },
   itemCategory: {
     fontSize: 14,

@@ -12,6 +12,7 @@ import Join from "views/auth/Join";
 import RequestDetail from "views/01-home/RequestDetail";
 import WriteRequest from "views/01-home/WriteRequest";
 import SearchResults from "views/01-home/SearchResults";
+import RequestComment from "views/01-home/RequestComment";
 import Favorite from "views/04-myPage/Favorite";
 import QuestList from "views/04-myPage/QuestList";
 import ProfileEdit from "views/04-myPage/ProfileEdit";
@@ -85,6 +86,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="WriteRequest"
           component={WriteRequest}
+          options={{ headerShown: true }}
+        />
+        <Stack.Screen
+          name="RequestComment"
+          component={RequestComment}
           options={{ headerShown: true }}
         />
         <Stack.Screen
