@@ -135,7 +135,6 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
               {getTitle(item.request_title, 18)}
             </Text>
           </View>
-          <Text style={styles.categoryText}>{item.request_category}</Text>
           <View style={styles.regionBox}>
             <FontAwesome5
               style={styles.region}
@@ -191,11 +190,6 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     paddingVertical: 12,
-  },
-  categoryText: {
-    fontSize: 12,
-    color: "#666",
-    marginBottom: 2,
   },
   itemImg: {
     width: 100,
