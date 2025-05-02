@@ -2062,6 +2062,11 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
+"@tosspayments/tosspayments-sdk@^2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@tosspayments/tosspayments-sdk/-/tosspayments-sdk-2.3.4.tgz#f3d0fc3893d680ec93dba5ca80243097d29f666d"
+  integrity sha512-YypRXqS+9XtQew5TQBa21Ww8Z7QH+fOkuedfH/BaomsCqBv3qS4wMNCSYrq8pxQ7NBOOuPDw0DLvY7Bg5FWNmQ==
+
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz"
