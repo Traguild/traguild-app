@@ -1,36 +1,13 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React from "react";
 import { View, ActivityIndicator, StyleSheet, Alert } from "react-native";
 import { WebView } from "react-native-webview";
-import { Asset } from "expo-asset";
-
-import { theme } from "resources/theme/common";
 
 export default function PaymentScreen({ navigation, route }) {
-  const [htmlUri, setHtmlUri] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const asset = Asset.fromModule(
-        require("resources/html/tossPayment.html")
-      );
-      await asset.downloadAsync();
-      setHtmlUri(asset.localUri);
-    })();
-  }, []);
-
-  if (!htmlUri) {
-    return (
-      <View style={styles.loader}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <WebView
         originWhitelist={["*"]}
-        source={{ uri: htmlUri }}
+        source={{ uri: "https://pay-traguild.vercel.app/" }}
         javaScriptEnabled
         allowFileAccess
         allowFileAccessFromFileURLs
@@ -51,6 +28,5 @@ export default function PaymentScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  loader: { flex: 1, justifyContent: "center", alignItems: "center" },
+  container: { flex: 1, width: "100%" },
 });
