@@ -80,7 +80,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <View
+      {/* <View
         style={{
           width: "100%",
           height: 70,
@@ -90,7 +90,7 @@ const Home = () => {
         }}
       >
         <Text>{"광고"}</Text>
-      </View>
+      </View> */}
       <FlatList
         style={{ width: "100%" }}
         data={requestData}
