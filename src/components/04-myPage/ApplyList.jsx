@@ -49,11 +49,11 @@ const ApplyList = ({ onSelectApplicant }) => {
   }) => {
     const host_user_idx = await AsyncStorage.getItem("user_idx");
     // TODO - 임시 주석
-    const res = true;
-    // const res = await API.POST({
-    //   url: "/requestApplicant/update",
-    //   data: { request_idx, user_idx, applicant_state },
-    // });
+    // const res = true;
+    const res = await API.POST({
+      url: "/requestApplicant/update",
+      data: { request_idx, user_idx, applicant_state },
+    });
 
     if (res) {
       if (applicant_state === "승인") {

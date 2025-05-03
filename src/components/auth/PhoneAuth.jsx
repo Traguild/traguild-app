@@ -68,6 +68,21 @@ const PhoneAuth = ({ setStep, handleNext }) => {
           data: { user_id: user_id.replaceAll("-", ""), code: auth_code },
         });
 
+        console.log(res);
+
+        if (!(res?.valid ?? true)) {
+          toast.show("인증번호가 일치하지 않습니다.");
+          return;
+        } else if ((res?.is_available ?? null) == 0) {
+          toast.show("이용이 제한된 사용자입니다.");
+          return;
+        } else if (
+          (res?.message ?? "").indexOf("VerificationCheck was not found") != -1
+        ) {
+          toast.show("인증 시간이 만료되었습니다.");
+          return;
+        }
+
         if (!(res?.user_nickname ?? null)) {
           handleNext(res.user_idx);
         } else {
@@ -78,7 +93,7 @@ const PhoneAuth = ({ setStep, handleNext }) => {
       } catch (error) {
         console.error(error);
 
-        toast.show("인증번호가 일치하지 않습니다.");
+        toast.show("예기치 못한 오류가 발생했습니다.");
       }
     }
   };
