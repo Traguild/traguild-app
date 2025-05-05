@@ -10,52 +10,39 @@ on:
 jobs:
   eas-ci:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
+      - name: 🏗 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🏗 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: yarn
 
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v4
+      - name: 🛠 Setup Expo + EAS
+        uses: expo/expo-github-action@v8
         with:
-          path: |
-            ~/.yarn
-            .yarn/cache
-            node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Install Dependencies (Yarn)
+      - name: 📦 Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Install EAS CLI
-        run: yarn global add eas-cli
-
-      - name: Authenticate with Expo
-        run: eas whoami || eas login --token ${{ secrets.EXPO_TOKEN }}
-
-      - name: EAS Update on main
+      - name: 🚀 EAS Update on main
         if: github.ref == 'refs/heads/main'
         run: eas update --auto
 
-      - name: EAS Build on release/*
-        if: startsWith(github.ref, 'refs/heads/release/')
-        run: eas build --platform all --non-interactive
-
-      - name: EAS Build on tag
+      - name: 🏗 EAS Build on tag
         if: startsWith(github.ref, 'refs/tags/v')
         run: eas build --platform android --non-interactive
 
-      - name: EAS Update on tag
+      - name: 🔄 EAS Update on tag
         if: startsWith(github.ref, 'refs/tags/v')
         run: eas update
 
-      - name: Discord Notify on tag
+      - name: 📢 Discord Notify on tag
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
           curl -X POST -H "Content-Type: application/json" \
