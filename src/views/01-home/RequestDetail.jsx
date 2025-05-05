@@ -96,8 +96,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                    }
+                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                  }
                   : defaultImg.logo
               }
               style={{
@@ -187,7 +187,7 @@ const RequestDetail = ({ navigation, route }) => {
           alignItems: "center",
         }}
         onPress={() => {
-          navGo.to("RequestComment");
+          navGo.to("RequestComment", { request_idx: item.request_idx });
         }}
       >
         <Text style={{ color: "white", fontWeight: "500" }}>
