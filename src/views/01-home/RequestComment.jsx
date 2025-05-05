@@ -75,6 +75,9 @@ const RequestComment = ({ navigation, route }) => {
             <Text>{item.comment}</Text>
           </View>
         )}
+        contentContainerStyle={{
+          padding: 10,
+        }}
       />
 
       {/* <KeyboardAwareScrollView> */}
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: theme["default-border"],
-    paddingBottom: 8,
+    padding: 10,
   },
   user: {
     fontWeight: "bold",
