@@ -12,6 +12,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const RequestComment = ({ navigation, route }) => {
   const { request_idx } = route.params;
@@ -20,14 +21,9 @@ const RequestComment = ({ navigation, route }) => {
   const [userId, setUserId] = useState("");
   const [userNick, setUserNick] = useState("알 수 없음");
 
-
   useEffect(() => {
     navigation.setOptions({
-      headerBackTitleVisible: false,
-      headerBackTitle: null,
-      title: null,
-      headerStyle: { backgroundColor: "transparent" },
-      headerTransparent: true,
+      title: "댓글",
       headerTintColor: theme["default-btn"],
     });
 
@@ -62,15 +58,12 @@ const RequestComment = ({ navigation, route }) => {
       comment: newComment.trim(),
     };
 
-    setComments(prev => [...prev, newItem]);
+    setComments((prev) => [...prev, newItem]);
     setNewComment("");
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <View style={styles.container}>
       <FlatList
         data={comments}
         keyExtractor={(item) => item.comment_idx.toString()}
@@ -82,9 +75,9 @@ const RequestComment = ({ navigation, route }) => {
             <Text>{item.comment}</Text>
           </View>
         )}
-        contentContainerStyle={{ paddingTop: 100, paddingHorizontal: 16, paddingBottom: 10 }}
       />
 
+      {/* <KeyboardAwareScrollView> */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
@@ -97,7 +90,8 @@ const RequestComment = ({ navigation, route }) => {
           <Text style={{ color: "#fff" }}>등록</Text>
         </TouchableOpacity>
       </View>
-    </KeyboardAvoidingView>
+      {/* </KeyboardAwareScrollView> */}
+    </View>
   );
 };
 
