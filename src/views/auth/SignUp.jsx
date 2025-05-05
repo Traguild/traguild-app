@@ -99,7 +99,7 @@ const SignUp = ({ navigation }) => {
       });
 
       const city = `${location[0]?.region ?? ""} ${location[0]?.city ?? ""} ${location[0]?.district ?? ""}`;
-      setUserRegion(city);
+      setUserRegion(city.replace("null", ""));
     } catch (e) {
       console.error(e);
     }
