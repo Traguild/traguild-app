@@ -1,0 +1,57 @@
+name: EAS Automation
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  eas-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Authenticate with Expo
+        run: eas whoami || eas login --token ${{ secrets.EXPO_TOKEN }}
+
+      - name: EAS Update on main
+        if: github.ref == 'refs/heads/main'
+        run: eas update --auto
+
+      - name: EAS Build on release/*
+        if: startsWith(github.ref, 'refs/heads/release/')
+        run: eas build --platform all --non-interactive
+
+      - name: EAS Build on tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: eas build --platform android --non-interactive
+        
+      - name: EAS Update on tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: eas update
+        
+      - name: Discord Notify on tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d '{
+                "username": "EAS Bot",
+                "avatar_url": "https://i.imgur.com/4M34hi2.png",
+                "content": "**✅ New EAS Build Triggered!**\n📦 Tag: `${{ github.ref_name }}`\n📁 Repo: `${{ github.repository }}`\n🌿 Branch: `${{ github.ref }}`"
+              }' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
+        
