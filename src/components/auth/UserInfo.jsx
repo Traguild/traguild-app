@@ -88,7 +88,7 @@ const UserInfo = ({ setStep, user_idx }) => {
         longitude,
       });
 
-      const city = `${location[0].region} ${location[0].city} ${location[0].district}`;
+      const city = `${location[0]?.region ?? ""} ${location[0]?.city ?? ""} ${location[0]?.district ?? ""}`;
       setUserRegion(city);
     } catch (e) {
       console.error(e);
