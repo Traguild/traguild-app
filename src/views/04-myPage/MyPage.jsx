@@ -150,7 +150,7 @@ const MyPage = () => {
 
           <View style={styles.myCreditBox}>
             <View style={{ flexDirection: "row" }}>
-              <FontAwesome5 name="coins" size={22} color="#f7b801" />
+              <FontAwesome5 name="coins" size={22} color="#E0A541" />
               <Text style={styles.myCredit}>
                 {getCost(userInfo?.user_credit ?? 0)} 코인
               </Text>
@@ -161,7 +161,7 @@ const MyPage = () => {
               text="충전하기"
               // onPress={chargeCredit}
               onPress={() => {
-                navGo.to("Payments");
+                navGo.to("SelectCredit");
               }}
             />
           </View>

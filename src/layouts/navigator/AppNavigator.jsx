@@ -18,6 +18,7 @@ import QuestList from "views/04-myPage/QuestList";
 import ProfileEdit from "views/04-myPage/ProfileEdit";
 import ChatDetail from "views/03-chat/ChatDetail";
 import UserProfile from "views/04-myPage/UserProfile";
+import SelectCredit from "views/pg/SelectCredit";
 import Payments from "views/pg/Payments";
 
 // IMPORT RESOURCES
@@ -131,11 +132,15 @@ const AppNavigator = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name="SelectCredit"
+          component={SelectCredit}
+          options={{ headerShown: true, title: "충전하기" }}
+        />
+        <Stack.Screen
           name="Payments"
           component={Payments}
           options={({ route }) => ({
-            headerShown: true,
-            title: `결제하기`,
+            headerShown: false,
           })}
         />
       </Stack.Navigator>
