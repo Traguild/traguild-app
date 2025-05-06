@@ -148,9 +148,9 @@ const MyPage = () => {
             </View>
           </TouchableOpacity>
 
-          {/* <View style={styles.myCreditBox}>
+          <View style={styles.myCreditBox}>
             <View style={{ flexDirection: "row" }}>
-              <FontAwesome5 name="coins" size={22} color="#f7b801" />
+              <FontAwesome5 name="coins" size={22} color="#E0A541" />
               <Text style={styles.myCredit}>
                 {getCost(userInfo?.user_credit ?? 0)} 코인
               </Text>
@@ -159,9 +159,12 @@ const MyPage = () => {
               type="light"
               textStyle={{ fontSize: 16 }}
               text="충전하기"
-              onPress={chargeCredit}
+              // onPress={chargeCredit}
+              onPress={() => {
+                navGo.to("SelectCredit");
+              }}
             />
-          </View> */}
+          </View>
 
           <View style={styles.requestBox}>
             {[
