@@ -6,14 +6,17 @@ import {
     TouchableOpacity,
     StyleSheet,
 } from "react-native";
+
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
 
 // IMPORT RESOURCES
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { theme } from "resources/theme/common";
+import { useToast } from "react-native-toast-notifications";
 
 const UserRate = ({ visible, onClose, targetUserIdx }) => {
+    const toast = useToast();
     const handleRate = async (delta) => {
         try {
             const userInfo = await API.POST({
@@ -28,20 +31,23 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
 
             const updatedRate = userInfo.user_rate + delta;
 
-            const res = await API.PUT({
+            const res = await API.POST({
                 url: "/userInfo/update",
                 data: {
                     user_idx: targetUserIdx,
                     user_rate: updatedRate,
-                    is_agree_privacy: true
+                    is_agree_privacy: true,
                 },
             });
 
-            if (!res?.success) {
-                console.warn("평가 처리에 실패했습니다.");
+            if (res) {
+                toast.show("평가가 완료되었습니다.", { type: "success" });
+            } else {
+                toast.show("평가 처리에 실패했습니다.", { type: "danger" });
             }
         } catch (error) {
             console.error("평가 API 오류:", error);
+            toast.show("알 수 없는 오류가 발생했습니다.", { type: "danger" });
         } finally {
             onClose();
         }

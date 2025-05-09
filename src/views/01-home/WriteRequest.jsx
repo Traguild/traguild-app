@@ -88,7 +88,7 @@ const WriteRequest = ({ navigation }) => {
 
     formData.append("user_idx", user_idx);
     formData.append("request_region", user_region);
-
+    //작업 장소
     await API.PUT({
       type: "multipart",
       url: "/requestInfo",
