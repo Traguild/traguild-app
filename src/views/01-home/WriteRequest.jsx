@@ -88,15 +88,21 @@ const WriteRequest = ({ navigation }) => {
 
     formData.append("user_idx", user_idx);
     formData.append("request_region", user_region);
-    //작업 장소
-    await API.PUT({
+
+    const result = await API.PUT({
       type: "multipart",
       url: "/requestInfo",
       data: formData,
     });
 
-    toast.show("작성되었습니다.");
-    navigation.goBack();
+    if (result.status === "OK") {
+      toast.show("작성되었습니다.");
+      navigation.goBack();
+    } else if (result.status === "FAIL") {
+      toast.show(result.msg || "요청에 실패했습니다.", { type: "danger" });
+    } else {
+      toast.show("알 수 없는 오류가 발생했습니다.", { type: "danger" });
+    }
   };
 
   return (
