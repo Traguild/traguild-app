@@ -47,7 +47,7 @@ const ChatHeader = ({
   const isApplicant =
     parseInt(currentUserIdx) === parseInt(RequestInfo.applicant_idx);
   const requestState = RequestInfo.request_state ?? "모집";
-  const requestDate = RequestInfo.request_date;
+  const requestDate = RequestInfo.reserved_start_time;
 
   const handleConfirmApplicant = () => setShowDatePicker(true);
 
