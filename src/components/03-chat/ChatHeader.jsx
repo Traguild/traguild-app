@@ -65,14 +65,14 @@ const ChatHeader = ({
         url: "/requestInfo/update",
         data: {
           request_idx: RequestInfo.request_idx,
-          request_date: formattedDate,
+          reserved_start_time: formattedDate,
           request_state: "진행중",
         },
       });
 
       setRequestInfo((prev) => ({
         ...prev,
-        request_date: formattedDate,
+        reserved_start_time: formattedDate,
         request_state: "진행중",
       }));
 
