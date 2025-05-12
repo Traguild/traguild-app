@@ -36,7 +36,6 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
                 data: {
                     user_idx: targetUserIdx,
                     user_rate: updatedRate,
-                    is_agree_privacy: true,
                 },
             });
 
