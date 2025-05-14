@@ -36,7 +36,7 @@ const Home = () => {
     const user_idx = await AsyncStorage.getItem("user_idx");
     const res = await API.POST({
       url: "/requestInfo/fetch",
-      data: { user_idx, page, limit: LIMIT },
+      data: { user_idx: -1, page, limit: LIMIT },
     });
 
     if (res?.message) res = [];
