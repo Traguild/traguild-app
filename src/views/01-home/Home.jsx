@@ -28,12 +28,14 @@ const LIMIT = 10;
 const Home = () => {
   let page = 1;
   let prevData = 0;
+  const [userIdx, setUserIdx] = useState(-1);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [requestData, setRequestData] = useState([]);
 
   const getList = async (reset = false) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
+    setUserIdx(user_idx);
     const res = await API.POST({
       url: "/requestInfo/fetch",
       data: { user_idx: -1, page, limit: LIMIT },
