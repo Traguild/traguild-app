@@ -139,14 +139,16 @@ const ChatHeader = ({
               </TouchableOpacity>
             )}
 
-            {isRequester && showApproveButton && requestState === "진행중" && (
-              <TouchableOpacity
-                style={styles.actionButton}
-                onPress={handleComplete}
-              >
-                <Text style={styles.actionButtonText}>의뢰 완료</Text>
-              </TouchableOpacity>
-            )}
+            {(isRequester || isApplicant) &&
+              showApproveButton &&
+              requestState === "진행중" && (
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={handleComplete}
+                >
+                  <Text style={styles.actionButtonText}>의뢰 완료</Text>
+                </TouchableOpacity>
+              )}
           </View>
 
           <View style={styles.costRow}>
@@ -173,7 +175,11 @@ const ChatHeader = ({
       <UserRate
         visible={showRateModal}
         onClose={() => setShowRateModal(false)}
-        targetUserIdx={RequestInfo?.applicant_idx}
+        targetUserIdx={
+          isRequester
+            ? RequestInfo?.applicant_idx
+            : RequestInfo?.user_idx
+        }
       />
     </View>
   );
