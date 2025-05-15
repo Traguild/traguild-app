@@ -89,7 +89,7 @@ const AppTabNavigator = () => {
       <Tab.Screen
         name="Maps"
         component={Maps}
-        options={{ headerShown: false, title: "내 주변" }}
+        options={{ headerShown: true, title: "내 주변" }}
       />
       <Tab.Screen
         name="Chat"

@@ -6,7 +6,13 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import defaultLayout from "layouts/hoc/defaultLayout";
 
 // IMPORT CONFIGS
@@ -17,9 +23,23 @@ import { theme } from "resources/theme/common";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ChatList = () => {
+const ChatList = ({ navigation }) => {
   const USER_IDX = useRef(null);
   const [userInfo, setUserInfo] = useState({});
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: "내 채팅",
+      headerTintColor: theme["default-btn"],
+      headerStyle: {
+        backgroundColor: theme["default-bg"],
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+    });
+  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {

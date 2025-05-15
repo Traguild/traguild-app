@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
@@ -8,12 +8,26 @@ import defaultLayout from "layouts/hoc/defaultLayout";
 
 import RequestMarker from "components/05-maps/RequestMarker";
 
-const Maps = () => {
+// IMPORT RESOURCES
+import { theme } from "resources/theme/common";
+
+const Maps = ({ navigation }) => {
   const [location, setLocation] = useState(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      title: "내 주변 의뢰 찾기",
+      headerTintColor: theme["default-btn"],
+      headerStyle: {
+        backgroundColor: theme["default-bg"],
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+    });
     fetchLocation();
-  }, []);
+  }, [navigation]);
 
   const fetchLocation = async () => {
     try {
@@ -55,7 +69,7 @@ const Maps = () => {
   );
 };
 
-export default defaultLayout(Maps);
+export default Maps;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
