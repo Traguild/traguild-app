@@ -36,7 +36,7 @@ const Home = () => {
     const user_idx = await AsyncStorage.getItem("user_idx");
     const res = await API.POST({
       url: "/requestInfo/fetch",
-      data: { user_idx, page, limit: LIMIT },
+      data: { user_idx: -1, page, limit: LIMIT },
     });
 
     if (res?.message) res = [];
@@ -44,11 +44,11 @@ const Home = () => {
       const newData = reset
         ? res
         : res.filter(
-            (item) =>
-              !prev.some(
-                (prevItem) => prevItem.request_idx === item.request_idx
-              )
-          );
+          (item) =>
+            !prev.some(
+              (prevItem) => prevItem.request_idx === item.request_idx
+            )
+        );
 
       prevData = newData.length;
       if (prevData === LIMIT) page++;
