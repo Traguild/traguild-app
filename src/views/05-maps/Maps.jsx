@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 
+// IMPORT HOOKS
+import { useLocation } from "hooks/useLocation";
+
 //IMPORT LAYOUTS
 import defaultLayout from "layouts/hoc/defaultLayout";
 
@@ -12,7 +15,7 @@ import RequestMarker from "components/05-maps/RequestMarker";
 import { theme } from "resources/theme/common";
 
 const Maps = ({ navigation }) => {
-  const [location, setLocation] = useState(null);
+  const location = useLocation();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -26,23 +29,7 @@ const Maps = ({ navigation }) => {
         shadowOpacity: 0,
       },
     });
-    fetchLocation();
   }, [navigation]);
-
-  const fetchLocation = async () => {
-    try {
-      const { granted } = await Location.requestForegroundPermissionsAsync();
-      if (!granted) return;
-
-      const pos = await Location.getLastKnownPositionAsync();
-      if (!pos) return;
-
-      const { latitude, longitude } = pos.coords;
-      setLocation({ latitude, longitude });
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   return (
     <View style={styles.container}>
