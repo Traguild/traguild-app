@@ -6,6 +6,7 @@ import {
   ScrollView,
   Text,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
@@ -117,19 +118,22 @@ const WriteRequest = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
-        <View
-          style={{
-            height: layout().height * 0.9,
-          }}
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ScrollView>
-              <WriteForm states={stateList} />
-            </ScrollView>
-          </TouchableWithoutFeedback>
-        </View>
-      </KeyboardAwareScrollView>
+      {/* <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{ flex: 1 }}
+      > */}
+      <View
+        style={{
+          height: layout().height * 0.9,
+        }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView>
+            <WriteForm states={stateList} />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </View>
+      {/* </KeyboardAvoidingView> */}
       <View style={[styles.inputContainer]}>
         <Button
           style={{ marginTop: 15, marginBottom: 15 }}

@@ -123,7 +123,11 @@ const ChatDetail = () => {
       msg: inputText,
       room: chatRoomIdx,
       time: new Date()
-        .toLocaleTimeString("ko-KR", { hour12: false, hour: "2-digit", minute: "2-digit" })
+        .toLocaleTimeString("ko-KR", {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+        })
         .split(" ")[0],
     };
 
@@ -161,48 +165,44 @@ const ChatDetail = () => {
         />
       )}
 
-      <KeyboardAvoidingView
-        style={styles.chatContainer}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 85 : 60}
-      >
-        <FlatList
-          ref={flatListRef}
-          style={{ width: "100%" }}
-          inverted
-          data={messages}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                styles.messageContainer,
-                item.id == USER_IDX.current ? styles.myMessage : styles.otherMessage,
-              ]}
-            >
-              <Text style={styles.messageText}>{item.msg}</Text>
-              <Text style={styles.messageTime}>{item.time}</Text>
-            </View>
-          )}
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "flex-end",
-            padding: 10,
-          }}
+      <FlatList
+        ref={flatListRef}
+        style={{ width: "100%" }}
+        inverted
+        data={messages}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View
+            style={[
+              styles.messageContainer,
+              item.id == USER_IDX.current
+                ? styles.myMessage
+                : styles.otherMessage,
+            ]}
+          >
+            <Text style={styles.messageText}>{item.msg}</Text>
+            <Text style={styles.messageTime}>{item.time}</Text>
+          </View>
+        )}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "flex-end",
+          padding: 10,
+        }}
+      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="메시지를 입력하세요..."
+          placeholderTextColor={theme["default-border"]}
+          onFocus={handleScrollToEnd}
         />
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            value={inputText}
-            onChangeText={setInputText}
-            placeholder="메시지를 입력하세요..."
-            placeholderTextColor={theme["default-border"]}
-            onFocus={handleScrollToEnd}
-          />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <Text style={styles.sendButtonText}>전송</Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
+        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+          <Text style={styles.sendButtonText}>전송</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
