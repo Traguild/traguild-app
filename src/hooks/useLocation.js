@@ -15,7 +15,12 @@ export const useLocation = () => {
         if (!pos) return;
 
         const { latitude, longitude } = pos.coords;
-        setLocation({ latitude, longitude });
+        const location = await Location.reverseGeocodeAsync({
+          latitude,
+          longitude,
+        });
+        const city = `${location[0]?.region ?? ""} ${location[0]?.city ?? ""} ${location[0]?.district ?? ""}`;
+        setLocation({ latitude, longitude, city });
       } catch (e) {
         console.error(e);
       }
