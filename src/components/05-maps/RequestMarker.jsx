@@ -1,17 +1,23 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Marker } from "react-native-maps";
 
 // IMPORT RESOURCES
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 
-const RequestMarker = ({ latitude, longitude }) => {
+// IMPORT CONFIGS
+import { API } from "config/fetch.config";
+
+const RequestMarker = ({ latitude, longitude, getRequestNearBy }) => {
   return (
     <Marker
       coordinate={{
         latitude: latitude,
         longitude: longitude,
+      }}
+      onPress={() => {
+        getRequestNearBy({ latitude, longitude });
       }}
     >
       <View style={styles.markerWrapper}>
