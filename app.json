@@ -20,12 +20,16 @@
     },
     "android": {
       "package": "com.arc.travelerguild",
+      "config": {
+        "googleMapsApiKey": "AIzaSyAVChXTdt5j3pqjZvZNoXYE0a6fFnEpyNY"
+      },
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#d2c1a0"
       },
-      "usesCleartextTraffic": true
+      "usesCleartextTraffic": true,
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"

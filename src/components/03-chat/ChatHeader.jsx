@@ -30,19 +30,24 @@ const ChatHeader = ({
   const [currentUserIdx, setCurrentUserIdx] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showRateModal, setShowRateModal] = useState(false);
+  const [RequestInfo, setRequestInfo] = useState(requestInfo);
 
   useEffect(() => {
     AsyncStorage.getItem("user_idx").then((id) => setCurrentUserIdx(id));
   }, []);
 
-  if (!requestInfo) return null;
+  useEffect(() => {
+    setRequestInfo(requestInfo);
+  }, [requestInfo]);
+
+  if (!RequestInfo) return null;
 
   const isRequester =
-    parseInt(currentUserIdx) === parseInt(requestInfo.user_idx);
+    parseInt(currentUserIdx) === parseInt(RequestInfo.user_idx);
   const isApplicant =
-    parseInt(currentUserIdx) === parseInt(requestInfo.applicant_idx);
-  const requestState = requestInfo.request_state ?? "모집";
-  const requestDate = requestInfo.request_date;
+    parseInt(currentUserIdx) === parseInt(RequestInfo.applicant_idx);
+  const requestState = RequestInfo.request_state ?? "모집";
+  const requestDate = RequestInfo.reserved_start_time;
 
   const handleConfirmApplicant = () => setShowDatePicker(true);
 
@@ -59,11 +64,18 @@ const ChatHeader = ({
       await API.POST({
         url: "/requestInfo/update",
         data: {
-          request_idx: requestInfo.request_idx,
-          request_date: formattedDate,
+          request_idx: RequestInfo.request_idx,
+          reserved_start_time: formattedDate,
           request_state: "진행중",
         },
       });
+
+      setRequestInfo((prev) => ({
+        ...prev,
+        reserved_start_time: formattedDate,
+        request_state: "진행중",
+      }));
+
       if (onApprove) onApprove("진행중");
     } catch (error) {
       console.error("날짜 저장 실패", error);
@@ -72,13 +84,19 @@ const ChatHeader = ({
 
   const handleComplete = async () => {
     try {
-      await API.PUT({
+      await API.POST({
         url: "/requestInfo/update",
         data: {
-          request_idx: requestInfo.request_idx,
+          request_idx: RequestInfo.request_idx,
           request_state: "완료",
         },
       });
+
+      setRequestInfo((prev) => ({
+        ...prev,
+        request_state: "완료",
+      }));
+
       if (onComplete) onComplete("완료");
       setShowRateModal(true);
     } catch (error) {
@@ -95,10 +113,10 @@ const ChatHeader = ({
       >
         <Image
           source={
-            requestInfo.request_img
+            RequestInfo.request_img
               ? {
-                  uri: `https://traguild.kro.kr/api/requestInfo/getImage/${requestInfo.request_idx}`,
-                }
+                uri: `https://traguild.kro.kr/api/requestInfo/getImage/${RequestInfo.request_idx}`,
+              }
               : defaultImg.logo
           }
           style={styles.headerImg}
@@ -106,36 +124,41 @@ const ChatHeader = ({
 
         <View style={styles.headerContent}>
           <RequestState text={requestState} />
-          <Text style={styles.headerTitle}>
-            {getTitle(requestInfo.request_title ?? "제목 없음", 16)}
-          </Text>
-          <Text style={styles.headerCost}>
-            {getCost(requestInfo.request_cost ?? 0)} 원
-          </Text>
-        </View>
 
-        <View style={styles.headerRight}>
-          {isRequester && showApproveButton && requestState === "모집" && (
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={handleConfirmApplicant}
-            >
-              <Text style={styles.actionButtonText}>지원자 확정</Text>
-            </TouchableOpacity>
-          )}
+          <View style={styles.titleRow}>
+            <Text style={styles.headerTitle}>
+              {getTitle(RequestInfo.request_title ?? "제목 없음", 16)}
+            </Text>
 
-          {isRequester && showApproveButton && requestState === "진행중" && (
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={handleComplete}
-            >
-              <Text style={styles.actionButtonText}>의뢰 완료</Text>
-            </TouchableOpacity>
-          )}
+            {isRequester && showApproveButton && requestState === "모집" && (
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={handleConfirmApplicant}
+              >
+                <Text style={styles.actionButtonText}>지원자 확정</Text>
+              </TouchableOpacity>
+            )}
 
-          {isApplicant && requestState === "진행중" && requestDate && (
-            <Text style={styles.dateText}>예약일: {requestDate}</Text>
-          )}
+            {(isRequester || isApplicant) &&
+              showApproveButton &&
+              requestState === "진행중" && (
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={handleComplete}
+                >
+                  <Text style={styles.actionButtonText}>의뢰 완료</Text>
+                </TouchableOpacity>
+              )}
+          </View>
+
+          <View style={styles.costRow}>
+            <Text style={styles.headerCost}>
+              {getCost(RequestInfo.request_cost ?? 0)} 원
+            </Text>
+            {requestDate && (
+              <Text style={styles.dateText}>예약일: {requestDate}</Text>
+            )}
+          </View>
         </View>
       </TouchableOpacity>
 
@@ -152,7 +175,11 @@ const ChatHeader = ({
       <UserRate
         visible={showRateModal}
         onClose={() => setShowRateModal(false)}
-        targetUserIdx={requestInfo?.applicant_idx}
+        targetUserIdx={
+          isRequester
+            ? RequestInfo?.applicant_idx
+            : RequestInfo?.user_idx
+        }
       />
     </View>
   );
@@ -179,22 +206,31 @@ const styles = StyleSheet.create({
   headerContent: {
     flex: 1,
   },
+  titleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  costRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   headerTitle: {
     fontSize: 16,
     fontWeight: "600",
-    marginBottom: 5,
   },
   headerCost: {
     fontSize: 14,
     color: "gray",
   },
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 10,
+  dateText: {
+    fontSize: 13,
+    color: theme["default-text"],
   },
   actionButton: {
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     paddingVertical: 6,
     backgroundColor: theme["default-btn"],
     borderRadius: 6,
@@ -203,10 +239,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
     fontSize: 14,
-  },
-  dateText: {
-    fontSize: 14,
-    color: theme["default-text"],
   },
 });
 

@@ -10,6 +10,7 @@ module.exports = function (api) {
           root: ["./src"],
           alias: {
             components: "./src/components",
+            hooks: "./src/hooks",
             layouts: "./src/layouts",
             resources: "./src/resources",
             views: "./src/views",

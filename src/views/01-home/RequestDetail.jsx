@@ -20,6 +20,7 @@ import { theme } from "resources/theme/common";
 import { layout } from "resources/theme/layout";
 import { getCost } from "resources/js/common";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "react-native-vector-icons";
 
 // IMPORT COMPONENTS
 import ApplyRequest from "views/01-home/ApplyRequest";
@@ -110,12 +111,32 @@ const RequestDetail = ({ navigation, route }) => {
             <View style={styles.itemContents}>
               <View style={styles.itemHeaderRow}>
                 <RequestState text={item.request_state} />
-                <TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navGo.to("Report", {
+                      report_user_idx: USER_IDX.current,
+                      reported_user_idx: postUserInfo?.user_idx,
+                      reported_request_idx: item.request_idx,
+                    });
+                  }}
+                >
                   <MaterialIcons name="report" size={25} color="#ff5a5f" />
                 </TouchableOpacity>
               </View>
 
               <Text style={styles.itemTitle}>{item.request_title}</Text>
+
+              <View style={styles.regionBox}>
+                <FontAwesome5
+                  name="map-marker-alt"
+                  size={14}
+                  color="black"
+                  style={{ marginRight: 6 }}
+                />
+                <Text style={styles.regionText}>{item.request_region}</Text>
+              </View>
+
               <View style={styles.costAndCategoryRow}>
                 <Text style={styles.itemCost}>
                   {getCost(item.request_cost)} 원
@@ -191,7 +212,7 @@ const RequestDetail = ({ navigation, route }) => {
         }}
       >
         <Text style={{ color: "white", fontWeight: "500" }}>
-          {"댓글 (1 건)"}
+          {"댓글로 이동"}
         </Text>
       </TouchableOpacity>
     </BottomSheetModalProvider>
@@ -255,6 +276,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
+  },
+  regionBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  regionText: {
+    fontSize: 14,
+    color: "#444",
+    fontWeight: "500",
   },
   profileImg: {
     width: 60,

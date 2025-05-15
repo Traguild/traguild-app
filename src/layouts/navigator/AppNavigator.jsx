@@ -20,6 +20,7 @@ import ChatDetail from "views/03-chat/ChatDetail";
 import UserProfile from "views/04-myPage/UserProfile";
 import SelectCredit from "views/pg/SelectCredit";
 import Payments from "views/pg/Payments";
+import Report from "views/common/Report";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -130,6 +131,11 @@ const AppNavigator = () => {
           name="SearchResults"
           component={SearchResults}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Report"
+          component={Report}
+          options={{ headerShown: true }}
         />
         <Stack.Screen
           name="SelectCredit"
