@@ -96,12 +96,20 @@ const WriteRequest = ({ navigation }) => {
     });
 
     if (result.status === "OK") {
-      toast.show("작성되었습니다.");
+      const creditRes = await API.POST({
+        url: "/userInfo/",
+        data: { user_idx },
+      });
+
+      const remainingCredit = creditRes?.user_credit ?? "알 수 없음";
+
+      toast.show(`작성되었습니다. 남은 코인: ${remainingCredit}`, {
+        type: "success",
+      });
+
       navigation.goBack();
     } else if (result.status === "FAIL") {
-      toast.show("소지한 코인이 부족합니다." || "요청에 실패했습니다.", {
-        type: "danger",
-      });
+      toast.show(result.msg || "소지한 코인이 부족합니다.", { type: "danger" });
     } else {
       toast.show("알 수 없는 오류가 발생했습니다.", { type: "danger" });
     }

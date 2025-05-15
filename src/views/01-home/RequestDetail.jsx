@@ -20,6 +20,7 @@ import { theme } from "resources/theme/common";
 import { layout } from "resources/theme/layout";
 import { getCost } from "resources/js/common";
 import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "react-native-vector-icons";
 
 // IMPORT COMPONENTS
 import ApplyRequest from "views/01-home/ApplyRequest";
@@ -96,8 +97,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                    }
+                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                  }
                   : defaultImg.logo
               }
               style={{
@@ -125,6 +126,17 @@ const RequestDetail = ({ navigation, route }) => {
               </View>
 
               <Text style={styles.itemTitle}>{item.request_title}</Text>
+
+              <View style={styles.regionBox}>
+                <FontAwesome5
+                  name="map-marker-alt"
+                  size={14}
+                  color="black"
+                  style={{ marginRight: 6 }}
+                />
+                <Text style={styles.regionText}>{item.request_region}</Text>
+              </View>
+
               <View style={styles.costAndCategoryRow}>
                 <Text style={styles.itemCost}>
                   {getCost(item.request_cost)} 원
@@ -264,6 +276,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 15,
+  },
+  regionBox: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  regionText: {
+    fontSize: 14,
+    color: "#444",
+    fontWeight: "500",
   },
   profileImg: {
     width: 60,
