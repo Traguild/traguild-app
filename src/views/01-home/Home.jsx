@@ -46,11 +46,11 @@ const Home = () => {
       const newData = reset
         ? res
         : res.filter(
-            (item) =>
-              !prev.some(
-                (prevItem) => prevItem.request_idx === item.request_idx
-              )
-          );
+          (item) =>
+            !prev.some(
+              (prevItem) => prevItem.request_idx === item.request_idx
+            )
+        );
 
       prevData = newData.length;
       if (prevData === LIMIT) page++;

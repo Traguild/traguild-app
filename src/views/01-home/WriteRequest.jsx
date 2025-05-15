@@ -6,6 +6,7 @@ import {
   ScrollView,
   Text,
   Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
@@ -96,12 +97,20 @@ const WriteRequest = ({ navigation }) => {
     });
 
     if (result.status === "OK") {
-      toast.show("작성되었습니다.");
+      const creditRes = await API.POST({
+        url: "/userInfo/",
+        data: { user_idx },
+      });
+
+      const remainingCredit = creditRes?.user_credit ?? "알 수 없음";
+
+      toast.show(`작성되었습니다. 남은 코인: ${remainingCredit}`, {
+        type: "success",
+      });
+
       navigation.goBack();
     } else if (result.status === "FAIL") {
-      toast.show("소지한 코인이 부족합니다." || "요청에 실패했습니다.", {
-        type: "danger",
-      });
+      toast.show(result.msg || "소지한 코인이 부족합니다.", { type: "danger" });
     } else {
       toast.show("알 수 없는 오류가 발생했습니다.", { type: "danger" });
     }
@@ -109,19 +118,22 @@ const WriteRequest = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAwareScrollView>
-        <View
-          style={{
-            height: layout().height * 0.9,
-          }}
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <ScrollView>
-              <WriteForm states={stateList} />
-            </ScrollView>
-          </TouchableWithoutFeedback>
-        </View>
-      </KeyboardAwareScrollView>
+      {/* <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{ flex: 1 }}
+      > */}
+      <View
+        style={{
+          height: layout().height * 0.9,
+        }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView>
+            <WriteForm states={stateList} />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </View>
+      {/* </KeyboardAvoidingView> */}
       <View style={[styles.inputContainer]}>
         <Button
           style={{ marginTop: 15, marginBottom: 15 }}

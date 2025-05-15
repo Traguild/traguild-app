@@ -124,32 +124,33 @@ const RequestComment = ({ navigation, route }) => {
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : null}
     >
-      <FlatList
-        data={comments}
-        keyExtractor={(item) => item.comment_idx.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.commentBox}>
-            <Text style={styles.user}>{item.user_nick}</Text>
-            <Text>{item.comment}</Text>
-          </View>
-        )}
-        contentContainerStyle={{ padding: 10 }}
-      />
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={newComment}
-          onChangeText={setNewComment}
-          placeholder="댓글을 입력하세요"
-          placeholderTextColor={theme["default-border"]}
+      <View style={styles.container}>
+        <FlatList
+          data={comments}
+          keyExtractor={(item) => item.comment_idx.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.commentBox}>
+              <Text style={styles.user}>{item.user_nick}</Text>
+              <Text>{item.comment}</Text>
+            </View>
+          )}
+          contentContainerStyle={{ padding: 10 }}
         />
-        <TouchableOpacity onPress={addComment} style={styles.sendButton}>
-          <Text style={{ color: "#fff" }}>등록</Text>
-        </TouchableOpacity>
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={newComment}
+            onChangeText={setNewComment}
+            placeholder="댓글을 입력하세요"
+            placeholderTextColor={theme["default-border"]}
+          />
+          <TouchableOpacity onPress={addComment} style={styles.sendButton}>
+            <Text style={{ color: "#fff" }}>등록</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
@@ -178,6 +179,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: theme["default-border"],
     backgroundColor: "#fff",
+    marginBottom: 10,
   },
   input: {
     flex: 1,

@@ -24,19 +24,26 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
                 data: { user_idx: targetUserIdx },
             });
 
-            if (!userInfo || typeof userInfo.user_rate !== "number") {
+            if (!userInfo || typeof userInfo.user_like !== "number" || typeof userInfo.user_dislike !== "number") {
                 console.warn("사용자 정보를 가져올 수 없습니다.");
                 return;
             }
 
-            const updatedRate = userInfo.user_rate + delta;
+            const updatedData = {
+                user_idx: targetUserIdx,
+                user_like: userInfo.user_like,
+                user_dislike: userInfo.user_dislike,
+            };
+
+            if (delta === 1) {
+                updatedData.user_like += 1;
+            } else if (delta === -1) {
+                updatedData.user_dislike += 1;
+            }
 
             const res = await API.POST({
                 url: "/userInfo/update",
-                data: {
-                    user_idx: targetUserIdx,
-                    user_rate: updatedRate,
-                },
+                data: updatedData,
             });
 
             if (res) {
