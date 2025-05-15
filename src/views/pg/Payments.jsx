@@ -84,7 +84,7 @@ export default function PaymentScreen({ navigation, route }) {
           const msg = JSON.parse(nativeEvent.data);
           if (msg.type === "success") {
             API.POST({
-              url: "/userInfo/update",
+              url: "/userInfo/updateForCredit",
               data: {
                 user_idx: USER_IDX.current,
                 user_credit: credits,

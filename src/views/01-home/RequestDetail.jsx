@@ -96,8 +96,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                  }
+                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                    }
                   : defaultImg.logo
               }
               style={{
@@ -110,7 +110,16 @@ const RequestDetail = ({ navigation, route }) => {
             <View style={styles.itemContents}>
               <View style={styles.itemHeaderRow}>
                 <RequestState text={item.request_state} />
-                <TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => {
+                    navGo.to("Report", {
+                      report_user_idx: USER_IDX.current,
+                      reported_user_idx: postUserInfo?.user_idx,
+                      reported_request_idx: item.request_idx,
+                    });
+                  }}
+                >
                   <MaterialIcons name="report" size={25} color="#ff5a5f" />
                 </TouchableOpacity>
               </View>
@@ -191,7 +200,7 @@ const RequestDetail = ({ navigation, route }) => {
         }}
       >
         <Text style={{ color: "white", fontWeight: "500" }}>
-          {"댓글 (1 건)"}
+          {"댓글로 이동"}
         </Text>
       </TouchableOpacity>
     </BottomSheetModalProvider>
