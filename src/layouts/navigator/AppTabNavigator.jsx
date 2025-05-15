@@ -14,6 +14,7 @@ import Home from "views/01-home/Home";
 import Community from "views/02-community/Community";
 import Chat from "views/03-chat/Chat";
 import MyPage from "views/04-myPage/MyPage";
+import Maps from "views/05-maps/Maps";
 
 const ICON_SIZE = 24;
 
@@ -30,12 +31,14 @@ const AppTabNavigator = () => {
   const icons = {
     Home: (focused, props) => getIcon("home", focused, props),
     Community: (focused, props) => getIcon("newspaper", focused, props),
+    Maps: (focused, props) => getIcon("location", focused, props),
     Chat: (focused, props) => getIcon("chatbubbles", focused, props),
     MyPage: (focused, props) => getIcon("person", focused, props),
   };
   const titles = {
     Home: "홈",
     Community: "커뮤니티",
+    Maps: "내 주변",
     Chat: "채팅",
     MyPage: "내 정보",
   };
@@ -83,6 +86,11 @@ const AppTabNavigator = () => {
         options={{ headerShown: false, title: "커뮤니티" }}
       /> */}
 
+      <Tab.Screen
+        name="Maps"
+        component={Maps}
+        options={{ headerShown: true, title: "내 주변" }}
+      />
       <Tab.Screen
         name="Chat"
         component={Chat}
