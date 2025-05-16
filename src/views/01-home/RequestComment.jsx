@@ -14,9 +14,13 @@ import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
 import { useToast } from "react-native-toast-notifications";
 
+import { FontAwesome5 } from "@expo/vector-icons";
+
 const RequestComment = ({ navigation, route }) => {
   const toast = useToast();
   const { request_idx } = route.params;
+
+  const [enabled, setEnabled] = useState(false);
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -123,8 +127,12 @@ const RequestComment = ({ navigation, route }) => {
 
   return (
     <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === "ios" ? "padding" : null}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
+      enabled={enabled}
+      onFocus={() => setEnabled(true)}
+      onBlur={() => setEnabled(false)}
     >
       <View style={styles.container}>
         <FlatList
@@ -134,6 +142,29 @@ const RequestComment = ({ navigation, route }) => {
             <View style={styles.commentBox}>
               <Text style={styles.user}>{item.user_nick}</Text>
               <Text>{item.comment}</Text>
+            </View>
+          )}
+          ListEmptyComponent={() => (
+            <View
+              style={{
+                marginTop: 250,
+                padding: 20,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <FontAwesome5 name="comment-slash" size={120} color="lightgray" />
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: "lightgray",
+                  marginTop: 10,
+                  fontSize: 16,
+                  fontWeight: "600",
+                }}
+              >
+                댓글이 없습니다.
+              </Text>
             </View>
           )}
           contentContainerStyle={{ padding: 10 }}

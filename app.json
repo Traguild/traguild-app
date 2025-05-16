@@ -28,8 +28,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#d2c1a0"
       },
-      "usesCleartextTraffic": true,
-      "softwareKeyboardLayoutMode": "pan"
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
