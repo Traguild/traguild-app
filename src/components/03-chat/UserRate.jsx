@@ -24,15 +24,10 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
                 data: { user_idx: targetUserIdx },
             });
 
-            if (!userInfo || typeof userInfo.user_like !== "number" || typeof userInfo.user_dislike !== "number") {
-                console.warn("사용자 정보를 가져올 수 없습니다.");
-                return;
-            }
-
             const updatedData = {
                 user_idx: targetUserIdx,
-                user_like: userInfo.user_like,
-                user_dislike: userInfo.user_dislike,
+                user_like: userInfo.user_like ?? 0,
+                user_dislike: userInfo.user_dislike ?? 0,
             };
 
             if (delta === 1) {
