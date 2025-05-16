@@ -99,9 +99,6 @@ const ApplyList = ({ onSelectApplicant }) => {
         chat_data.user_idx = user_idx;
         chat_data.request_idx = request_idx;
 
-        console.log("chat_data:", chat_data);
-        console.log("request_idx:", request_idx);
-
         navGo.to("ChatDetail", {
           chatData: chat_data,
         });
