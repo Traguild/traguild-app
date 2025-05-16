@@ -35,14 +35,6 @@ const ApplyForm = ({ info, setChildApplyIntro }) => {
           />
         </View>
         <View>
-          <Label text={"이메일"} />
-          <Input
-            style={{ width: "100%" }}
-            value={info?.user_email ?? ""}
-            readonly={true}
-          />
-        </View>
-        <View>
           <Label text={"소개"} />
           <TextField
             style={{ width: "100%", height: 130 }}
