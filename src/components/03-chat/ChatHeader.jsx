@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -31,6 +31,7 @@ const ChatHeader = ({
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showRateModal, setShowRateModal] = useState(false);
   const [RequestInfo, setRequestInfo] = useState(requestInfo);
+  const [requestDate, setRequestDate] = useState(null);
 
   useEffect(() => {
     AsyncStorage.getItem("user_idx").then((id) => setCurrentUserIdx(id));
@@ -38,6 +39,7 @@ const ChatHeader = ({
 
   useEffect(() => {
     setRequestInfo(requestInfo);
+    setRequestDate(requestInfo?.reserved_start_time);
   }, [requestInfo]);
 
   if (!RequestInfo) return null;
@@ -47,7 +49,13 @@ const ChatHeader = ({
   const isApplicant =
     parseInt(currentUserIdx) === parseInt(RequestInfo.applicant_idx);
   const requestState = RequestInfo.request_state ?? "모집";
-  const requestDate = RequestInfo.reserved_start_time;
+
+  const targetUserIdx = useMemo(() => {
+    if (!RequestInfo) return null;
+    if (isRequester) return RequestInfo?.applicant_idx;
+    if (isApplicant) return RequestInfo?.user_idx;
+    return null;
+  }, [RequestInfo, isRequester, isApplicant]);
 
   const handleConfirmApplicant = () => setShowDatePicker(true);
 
@@ -75,6 +83,7 @@ const ChatHeader = ({
         reserved_start_time: formattedDate,
         request_state: "진행중",
       }));
+      setRequestDate(formattedDate);
 
       if (onApprove) onApprove("진행중");
     } catch (error) {
@@ -172,15 +181,13 @@ const ChatHeader = ({
         />
       )}
 
-      <UserRate
-        visible={showRateModal}
-        onClose={() => setShowRateModal(false)}
-        targetUserIdx={
-          isRequester
-            ? RequestInfo?.applicant_idx
-            : RequestInfo?.user_idx
-        }
-      />
+      {showRateModal && targetUserIdx && (
+        <UserRate
+          visible={showRateModal}
+          onClose={() => setShowRateModal(false)}
+          targetUserIdx={targetUserIdx}
+        />
+      )}
     </View>
   );
 };
