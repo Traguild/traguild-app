@@ -35,6 +35,7 @@ const ChatDetail = () => {
   const USER_IDX = useRef(null);
 
   const [messages, setMessages] = useState([]);
+  const [enabled, setEnabled] = useState(false);
   const [inputText, setInputText] = useState("");
   const [requestInfo, setRequestInfo] = useState(null);
 
@@ -151,59 +152,68 @@ const ChatDetail = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {requestInfo && (
-        <ChatHeader
-          requestInfo={requestInfo}
-          onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
-          onApprove={() => {
-            setRequestInfo((prev) => ({ ...prev, request_state: "진행중" }));
-          }}
-          onComplete={() => {
-            setRequestInfo((prev) => ({ ...prev, request_state: "완료" }));
-          }}
-        />
-      )}
-
-      <FlatList
-        ref={flatListRef}
-        style={{ width: "100%" }}
-        inverted
-        data={messages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              styles.messageContainer,
-              item.id == USER_IDX.current
-                ? styles.myMessage
-                : styles.otherMessage,
-            ]}
-          >
-            <Text style={styles.messageText}>{item.msg}</Text>
-            <Text style={styles.messageTime}>{item.time}</Text>
-          </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1, backgroundColor: theme["input-field"] }}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 90}
+      enabled={enabled}
+      onFocus={() => setEnabled(true)}
+      onBlur={() => setEnabled(false)}
+    >
+      <View style={styles.container}>
+        {requestInfo && (
+          <ChatHeader
+            requestInfo={requestInfo}
+            onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
+            onApprove={() => {
+              setRequestInfo((prev) => ({ ...prev, request_state: "진행중" }));
+            }}
+            onComplete={() => {
+              setRequestInfo((prev) => ({ ...prev, request_state: "완료" }));
+            }}
+          />
         )}
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: "flex-end",
-          padding: 10,
-        }}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={inputText}
-          onChangeText={setInputText}
-          placeholder="메시지를 입력하세요..."
-          placeholderTextColor={theme["default-border"]}
-          onFocus={handleScrollToEnd}
+
+        <FlatList
+          ref={flatListRef}
+          style={{ width: "100%" }}
+          inverted
+          data={messages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View
+              style={[
+                styles.messageContainer,
+                item.id == USER_IDX.current
+                  ? styles.myMessage
+                  : styles.otherMessage,
+              ]}
+            >
+              <Text style={styles.messageText}>{item.msg}</Text>
+              <Text style={styles.messageTime}>{item.time}</Text>
+            </View>
+          )}
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-end",
+            padding: 10,
+          }}
         />
-        <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-          <Text style={styles.sendButtonText}>전송</Text>
-        </TouchableOpacity>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.textInput}
+            value={inputText}
+            onChangeText={setInputText}
+            placeholder="메시지를 입력하세요..."
+            placeholderTextColor={theme["default-border"]}
+            onFocus={handleScrollToEnd}
+          />
+          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+            <Text style={styles.sendButtonText}>전송</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -211,10 +221,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme["home-bg"],
-  },
-  chatContainer: {
-    flex: 1,
-    marginTop: 4,
   },
   messageContainer: {
     padding: 12,
@@ -251,13 +257,13 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 15,
-    height: "80%",
+    height: 50,
     backgroundColor: theme["input-field"],
     fontSize: 14,
   },
   sendButton: {
     marginLeft: 10,
-    height: "75%",
+    height: 45,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,

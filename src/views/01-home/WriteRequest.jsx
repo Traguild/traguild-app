@@ -8,7 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { use, useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -17,6 +17,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
 import { layout } from "resources/theme/layout";
+import { useLocation } from "src/hooks/useLocation";
 
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
@@ -24,6 +25,8 @@ import WriteForm from "components/01-home/WriteForm";
 
 const WriteRequest = ({ navigation }) => {
   const toast = useToast();
+  const location = useLocation();
+  console.log(location);
 
   const [reqeust_img, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
@@ -89,6 +92,8 @@ const WriteRequest = ({ navigation }) => {
 
     formData.append("user_idx", user_idx);
     formData.append("request_region", user_region);
+    formData.append("latitude", location.latitude);
+    formData.append("longitude", location.longitude);
 
     const result = await API.PUT({
       type: "multipart",
