@@ -4,12 +4,13 @@ import { defaultImg } from "resources/img/defaultImg";
 
 const ChatListItem = ({ item, section, collapsed }) => {
   if (collapsed[section.title]) return null;
+
   return (
     // <Swipeable renderRightActions={() => renderRightActions(item.chatRoomId)}>
     <TouchableOpacity
       style={styles.chatItem}
       activeOpacity={0.6}
-      onPress={() => navGo.to("ChatDetail", { chatData: item })}
+      onPress={() => navGo.to("ChatDetail", { chatData: item, section })}
     >
       <View
         style={{

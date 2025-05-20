@@ -30,7 +30,7 @@ const ChatDetail = () => {
   ).current;
 
   const route = useRoute();
-  const { chatData } = route.params;
+  const { chatData, section } = route.params;
   const chatRoomIdx = chatData?.chat_room_idx;
   const USER_IDX = useRef(null);
 
@@ -200,17 +200,39 @@ const ChatDetail = () => {
           }}
         />
         <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textInput}
-            value={inputText}
-            onChangeText={setInputText}
-            placeholder="메시지를 입력하세요..."
-            placeholderTextColor={theme["default-border"]}
-            onFocus={handleScrollToEnd}
-          />
-          <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
-            <Text style={styles.sendButtonText}>전송</Text>
-          </TouchableOpacity>
+          {section.title == "취소" || section.title == "완료" ? (
+            <View
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: theme["default-btn"],
+                  fontSize: 14,
+                  fontWeight: "500",
+                }}
+              >
+                요청이 {section.title}된 채팅방입니다.
+              </Text>
+            </View>
+          ) : (
+            <>
+              <TextInput
+                style={styles.textInput}
+                value={inputText}
+                onChangeText={setInputText}
+                placeholder="메시지를 입력하세요..."
+                placeholderTextColor={theme["default-border"]}
+                onFocus={handleScrollToEnd}
+              />
+              <TouchableOpacity style={styles.sendButton} onPress={sendMessage}>
+                <Text style={styles.sendButtonText}>전송</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </KeyboardAvoidingView>
