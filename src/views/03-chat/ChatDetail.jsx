@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   myMessage: {
     alignSelf: "flex-end",
-    backgroundColor: theme["request-proceed"],
+    backgroundColor: theme["request-apply"],
   },
   otherMessage: {
     alignSelf: "flex-start",

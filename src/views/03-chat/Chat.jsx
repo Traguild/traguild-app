@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   SectionList,
   Image,
+  Alert,
 } from "react-native";
 import React, {
   useCallback,
@@ -90,15 +91,6 @@ const ChatList = ({ navigation }) => {
     취소: true,
   });
 
-  const renderRightActions = (chatRoomId) => (
-    <TouchableOpacity
-      onPress={() => handleLeave(chatRoomId)}
-      style={styles.swipeButton}
-    >
-      <Text style={styles.swipeText}>나가기</Text>
-    </TouchableOpacity>
-  );
-
   const renderSectionHeader = ({ section: { title } }) => (
     <TouchableOpacity
       onPress={() =>
@@ -131,13 +123,36 @@ const ChatList = ({ navigation }) => {
     }
   };
 
+  const handleLeave = (item) => {
+    Alert.alert(
+      `[${item.request_title}] ${item.user_nickname}님과의 채팅방`,
+      "정말 나가시겠습니까?",
+      [
+        { text: "취소", style: "cancel" },
+        {
+          text: "확인",
+          onPress: () => {
+            setGrouped((prev) =>
+              prev.filter((c) => c.chat_room_idx !== item.chat_room_idx)
+            );
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
         sections={grouped}
         keyExtractor={(item) => item.chat_room_idx}
         renderItem={({ item, section }) => (
-          <ChatListItem item={item} section={section} collapsed={collapsed} />
+          <ChatListItem
+            item={item}
+            section={section}
+            collapsed={collapsed}
+            handleLeave={handleLeave}
+          />
         )}
         renderSectionHeader={renderSectionHeader}
         stickySectionHeadersEnabled={false}

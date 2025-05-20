@@ -1,63 +1,80 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import { defaultImg } from "resources/img/defaultImg";
+import { Swipeable } from "react-native-gesture-handler";
 
-const ChatListItem = ({ item, section, collapsed }) => {
+const ChatListItem = ({ item, section, collapsed, handleLeave }) => {
   if (collapsed[section.title]) return null;
 
-  return (
-    // <Swipeable renderRightActions={() => renderRightActions(item.chatRoomId)}>
+  const renderRightActions = (item) => (
     <TouchableOpacity
-      style={styles.chatItem}
-      activeOpacity={0.6}
-      onPress={() => navGo.to("ChatDetail", { chatData: item, section })}
+      onPress={() => handleLeave(item)}
+      style={styles.swipeButton}
     >
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
+      <Text style={styles.swipeText}>나가기</Text>
+    </TouchableOpacity>
+  );
+
+  return (
+    <Swipeable renderRightActions={() => renderRightActions(item)}>
+      <TouchableOpacity
+        style={styles.chatItem}
+        activeOpacity={0.6}
+        onPress={() => navGo.to("ChatDetail", { chatData: item, section })}
       >
         <View
           style={{
+            flex: 1,
             flexDirection: "row",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
-          <Image
-            source={
-              item.request_img
-                ? {
-                    uri: `https://traguild.kro.kr/api/requestInfo/getImage/${item.request_idx}`,
-                  }
-                : defaultImg.logo
-            }
+          <View
             style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              marginRight: 10,
+              flexDirection: "row",
+              alignItems: "center",
             }}
-          />
+          >
+            <Image
+              source={
+                item.request_img
+                  ? {
+                      uri: `https://traguild.kro.kr/api/requestInfo/getImage/${item.request_idx}`,
+                    }
+                  : defaultImg.logo
+              }
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                marginRight: 10,
+              }}
+            />
+            <View>
+              <Text style={styles.chatTitle}>
+                {item.request_title} | {item.user_nickname}
+              </Text>
+              {item?.chat_detail && (
+                <Text style={styles.chatMsg}>{item?.chat_detail ?? ""}</Text>
+              )}
+            </View>
+          </View>
           <View>
-            <Text style={styles.chatTitle}>
-              {item.request_title} | {item.user_nickname}
+            <Text style={styles.chatTimeStamp}>
+              {(item?.send_time ?? "").substr(0, 10)}
             </Text>
-            {item?.chat_detail && (
-              <Text style={styles.chatMsg}>{item?.chat_detail ?? ""}</Text>
-            )}
           </View>
         </View>
-        <View>
-          <Text style={styles.chatTimeStamp}>
-            {(item?.send_time ?? "").substr(0, 10)}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-    // </Swipeable>
+      </TouchableOpacity>
+    </Swipeable>
   );
 };
 
@@ -86,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   swipeButton: {
-    backgroundColor: "red",
+    backgroundColor: "#f05650",
     justifyContent: "center",
     alignItems: "center",
     width: 80,
