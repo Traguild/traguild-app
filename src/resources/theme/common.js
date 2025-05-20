@@ -11,6 +11,7 @@ export const theme = {
   "request-detail": "#ffe6a7",
   "request-proceed": "#dda15e",
   "request-reject": "#f05650",
+  "request-cancel": "#999",
   "request-done": "#a7c957",
 
   "apply-title": "#6C4E31",

@@ -8,7 +8,8 @@ const RequestState = ({ text, style }) => {
   const stateBg = {
     완료: theme["request-done"],
     모집: theme["request-proceed"],
-    진행중: theme["request-proceed"]
+    진행중: theme["request-proceed"],
+    취소: theme["request-cancel"],
   };
 
   return (
