@@ -56,34 +56,37 @@ const FavoriteList = ({ navigation }) => {
           },
         });
 
-        if (!Array.isArray(interestRes) || interestRes.length === 0) {
-          setinterest([]);
-          setIsLoading(false);
-          return;
-        }
+        // console.log("찜한 의뢰 목록:", interestRes);
 
-        const interestRequestIdxList = interestRes.map(
-          (item) => item.request_idx
-        );
+        // if (!Array.isArray(interestRes) || interestRes.length === 0) {
+        //   setinterest([]);
+        //   setIsLoading(false);
+        //   return;
+        // }
 
-        const requestRes = await API.POST({
-          url: "/requestInfo/all",
-          data: {},
-        });
+        // const interestRequestIdxList = interestRes.map(
+        //   (item) => item.request_idx
+        // );
 
-        if (!Array.isArray(requestRes) || requestRes.length === 0) {
-          setinterest([]);
-          setIsLoading(false);
-          return;
-        }
+        // const requestRes = await API.POST({
+        //   url: "/requestInfo/all",
+        //   data: {},
+        // });
 
-        const interestItems = requestRes
-          .filter((item) => interestRequestIdxList.includes(item.request_idx))
-          .map((item) => ({
-            ...item,
-          }));
+        // if (!Array.isArray(requestRes) || requestRes.length === 0) {
+        //   setinterest([]);
+        //   setIsLoading(false);
+        //   return;
+        // }
 
-        setinterest(interestItems);
+        // const interestItems = requestRes
+        //   .filter((item) => interestRequestIdxList.includes(item.request_idx))
+        //   .map((item) => ({
+        //     ...item,
+        //   }));
+
+        setinterest(interestRes);
+        // console.log("찜한 의뢰 목록:", interestItems);
       } catch (error) {
         console.error("❌ 찜한 의뢰 가져오기 오류:", error);
       } finally {
