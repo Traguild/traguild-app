@@ -46,6 +46,18 @@
     "updates": {
       "url": "https://u.expo.dev/552f3f67-cb00-4345-8a02-605d74a4b6a0"
     },
-    "owner": "arc_o"
+    "owner": "arc_o",
+    "plugins": [
+      [
+        "react-native-maps",
+        {
+          "config": {
+            "googleMaps": {
+              "apiKey": "AIzaSyAVChXTdt5j3pqjZvZNoXYE0a6fFnEpyNY"
+            }
+          }
+        }
+      ]
+    ]
   }
 }
