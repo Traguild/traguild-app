@@ -10,7 +10,7 @@ export const theme = {
 
   "request-detail": "#ffe6a7",
   "request-apply": "#dda15e",
-  "request-proceed": "#AB886D",
+  "request-proceed": "#cc6633",
   "request-reject": "#f05650",
   "request-cancel": "#999",
   "request-done": "#a7c957",
