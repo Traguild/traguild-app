@@ -65,7 +65,7 @@ const Maps = ({ navigation }) => {
   return (
     <BottomSheetModalProvider>
       <View style={styles.container}>
-        {location ? (
+        {location?.latitude && location?.longitude ? (
           <>
             <MapView
               style={styles.map}
