@@ -97,8 +97,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                  }
+                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                    }
                   : defaultImg.logo
               }
               style={{
@@ -186,10 +186,10 @@ const RequestDetail = ({ navigation, route }) => {
               style={{ marginBottom: 25 }}
             />
           </TouchableOpacity>
-          {item.request_state === "완료" ? (
-            <Button type="light" text="지원마감" bgColor="gray" disabled />
-          ) : (
+          {item.request_state === "모집" ? (
             <Button type="light" text="지원하기" onPress={handleApply} />
+          ) : (
+            <Button type="light" text="지원마감" bgColor="gray" disabled />
           )}
         </View>
       </View>

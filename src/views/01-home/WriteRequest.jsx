@@ -26,7 +26,6 @@ import WriteForm from "components/01-home/WriteForm";
 const WriteRequest = ({ navigation }) => {
   const toast = useToast();
   const location = useLocation();
-  console.log(location);
 
   const [reqeust_img, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
@@ -123,28 +122,24 @@ const WriteRequest = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1 }}
-      > */}
       <View
         style={{
           height: layout().height * 0.9,
         }}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
-            <WriteForm states={stateList} />
-          </ScrollView>
-        </TouchableWithoutFeedback>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView>
+              <WriteForm states={stateList} />
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
-      {/* </KeyboardAvoidingView> */}
       <View style={[styles.inputContainer]}>
-        <Button
-          style={{ marginTop: 15, marginBottom: 15 }}
-          text="작성하기"
-          onPress={handleSubmit}
-        />
+        <Button style={{}} text="작성하기" onPress={handleSubmit} />
       </View>
     </View>
   );
@@ -152,14 +147,15 @@ const WriteRequest = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: "100%",
     backgroundColor: theme["default-bg"],
   },
 
   inputContainer: {
     width: "100%",
-    marginBottom: 10,
     paddingHorizontal: 20,
+    marginTop: 10,
   },
 });
 
