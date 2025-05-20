@@ -19,6 +19,8 @@ import InfoSheet from "components/05-maps/InfoSheet";
 
 const Maps = ({ navigation }) => {
   const location = useLocation();
+
+  const [isUpdate, setIsUpdate] = useState(true);
   const [request, setRequest] = useState([]);
   const [requestData, setRequestData] = useState([]);
 
@@ -29,6 +31,7 @@ const Maps = ({ navigation }) => {
       data: { latitude, longitude },
     });
     setRequestData(res);
+    setIsUpdate(true);
   };
 
   useEffect(() => {
@@ -52,23 +55,11 @@ const Maps = ({ navigation }) => {
 
   const getRequestLocation = async () => {
     const res = await API.POST({ url: "/requestInfo/all" });
-    setRequest(adjustOverlappingMarkers(res));
-  };
-
-  const adjustOverlappingMarkers = (markers) => {
-    const seen = new Map();
-    return markers.map((marker, idx) => {
-      const key = `${marker.latitude.toFixed(5)}:${marker.longitude.toFixed(5)}`;
-      const count = seen.get(key) || 0;
-      seen.set(key, count + 1);
-      const offset = 0.00005 * count;
-
-      return {
-        ...marker,
-        latitude: marker.latitude + offset,
-        longitude: marker.longitude + offset,
-      };
-    });
+    setRequest(
+      res.filter((item) => {
+        return item.request_state === "모집";
+      })
+    );
   };
 
   return (
@@ -97,7 +88,11 @@ const Maps = ({ navigation }) => {
                 );
               })}
             </MapView>
-            <BottomSheet resize={["10%", "50%"]}>
+            <BottomSheet
+              resize={["10%", "50%"]}
+              isUpdate={isUpdate}
+              setIsUpdate={setIsUpdate}
+            >
               <InfoSheet location={location} requestData={requestData} />
             </BottomSheet>
           </>
