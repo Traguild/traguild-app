@@ -9,7 +9,8 @@ export const theme = {
   "home-border": "#D6C0B3",
 
   "request-detail": "#ffe6a7",
-  "request-proceed": "#dda15e",
+  "request-apply": "#dda15e",
+  "request-proceed": "#AB886D",
   "request-reject": "#f05650",
   "request-cancel": "#999",
   "request-done": "#a7c957",
