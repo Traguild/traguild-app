@@ -68,8 +68,6 @@ const PhoneAuth = ({ setStep, handleNext }) => {
           data: { user_id: user_id.replaceAll("-", ""), code: auth_code },
         });
 
-        console.log(res);
-
         if (!(res?.valid ?? true)) {
           toast.show("인증번호가 일치하지 않습니다.");
           return;

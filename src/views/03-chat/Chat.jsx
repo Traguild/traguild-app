@@ -5,6 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  SectionList,
+  Image,
+  Alert,
 } from "react-native";
 import React, {
   useCallback,
@@ -22,10 +25,14 @@ import { API } from "config/fetch.config";
 import { theme } from "resources/theme/common";
 import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { defaultImg } from "resources/img/defaultImg";
+import RequestState from "components/01-home/RequestState";
+import ChatListItem from "components/03-chat/ChatListItem";
 
 const ChatList = ({ navigation }) => {
   const USER_IDX = useRef(null);
   const [userInfo, setUserInfo] = useState({});
+  const [grouped, setGrouped] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,6 +57,57 @@ const ChatList = ({ navigation }) => {
     }, [getUserInfo])
   );
 
+  const groupByStatus = (data) => {
+    const statusOrder = ["모집", "진행중", "완료", "취소"];
+    return statusOrder.map((status) => ({
+      title: status,
+      data: data.filter((d) => {
+        if (status === "모집") return d.request_state === "모집";
+        else if (status === "진행중") {
+          if (
+            d.request_state === "진행중" &&
+            d.applicant_idx == USER_IDX.current
+          )
+            return d.request_state === "진행중";
+        } else if (status === "완료") {
+          if (d.request_state === "완료" && d.applicant_idx == USER_IDX.current)
+            return d.request_state === "완료";
+        } else if (status === "취소") {
+          if (
+            (d.request_state == "진행중" &&
+              d.applicant_idx != USER_IDX.current) ||
+            (d.request_state == "완료" && d.applicant_idx != USER_IDX.current)
+          )
+            return true;
+        }
+      }),
+    }));
+  };
+
+  const [collapsed, setCollapsed] = useState({
+    모집: false,
+    진행중: false,
+    완료: true,
+    취소: true,
+  });
+
+  const renderSectionHeader = ({ section: { title } }) => (
+    <TouchableOpacity
+      onPress={() =>
+        setCollapsed((prev) => ({ ...prev, [title]: !prev[title] }))
+      }
+      style={styles.sectionHeader}
+      activeOpacity={0.7}
+    >
+      <View>
+        <RequestState text={title} />
+      </View>
+      <Text style={{ color: "gray", fontSize: 10 }}>
+        {collapsed[title] ? "(열기) ▶" : "(닫기) ▽"}
+      </Text>
+    </TouchableOpacity>
+  );
+
   const getUserInfo = async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
     const user_idx = USER_IDX.current;
@@ -61,27 +119,43 @@ const ChatList = ({ navigation }) => {
 
     if (JSON.stringify(res) !== JSON.stringify(userInfo)) {
       setUserInfo(res);
+      setGrouped(groupByStatus(res));
     }
+  };
+
+  const handleLeave = (item) => {
+    Alert.alert(
+      `[${item.request_title}] ${item.user_nickname}님과의 채팅방`,
+      "정말 나가시겠습니까?",
+      [
+        { text: "취소", style: "cancel" },
+        {
+          text: "확인",
+          onPress: () => {
+            setGrouped((prev) =>
+              prev.filter((c) => c.chat_room_idx !== item.chat_room_idx)
+            );
+          },
+        },
+      ]
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={userInfo}
+      <SectionList
+        sections={grouped}
         keyExtractor={(item) => item.chat_room_idx}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.chatItem}
-            onPress={() => navGo.to("ChatDetail", { chatData: item })}
-          >
-            <Text style={styles.chatName}>{item.user_nickname}</Text>
-            <Text style={styles.lastMessage}>{item.chat_detail}</Text>
-            <Text style={styles.time}>
-              {String(item?.send_time ?? "").split("T")[0] ?? ""}
-            </Text>
-          </TouchableOpacity>
+        renderItem={({ item, section }) => (
+          <ChatListItem
+            item={item}
+            section={section}
+            collapsed={collapsed}
+            handleLeave={handleLeave}
+          />
         )}
-        contentContainerStyle={{ paddingBottom: 10 }}
+        renderSectionHeader={renderSectionHeader}
+        stickySectionHeadersEnabled={false}
       />
     </SafeAreaView>
   );
@@ -92,26 +166,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme["home-bg"],
   },
-  chatItem: {
-    padding: 15,
-    borderBottomWidth: 1,
+
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderBottomWidth: 0.5,
     borderBottomColor: theme["home-border"],
   },
-  chatName: {
-    fontSize: 18,
+  sectionTitle: {
     fontWeight: "bold",
-  },
-  lastMessage: {
-    fontSize: 14,
-    color: "#555",
-    marginTop: 5,
-  },
-  time: {
-    fontSize: 12,
-    color: "#aaa",
-    position: "absolute",
-    right: 15,
-    top: 15,
+    fontSize: 16,
   },
 });
 

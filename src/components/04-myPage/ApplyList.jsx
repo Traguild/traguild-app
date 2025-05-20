@@ -8,6 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -99,9 +100,6 @@ const ApplyList = ({ onSelectApplicant }) => {
         chat_data.user_idx = user_idx;
         chat_data.request_idx = request_idx;
 
-        console.log("chat_data:", chat_data);
-        console.log("request_idx:", request_idx);
-
         navGo.to("ChatDetail", {
           chatData: chat_data,
         });
@@ -190,7 +188,17 @@ const ApplyList = ({ onSelectApplicant }) => {
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={styles.container}
       ListEmptyComponent={
-        <Text style={styles.emptyText}>지원자가 없습니다.</Text>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <MaterialIcons
+            style={{ marginTop: 70 }}
+            name="content-paste-off"
+            size={120}
+            color="lightgray"
+          />
+          <Text style={styles.emptyText}>지원자가 없습니다.</Text>
+        </View>
       }
     />
   );
@@ -227,9 +235,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   emptyText: {
-    alignSelf: "center",
     color: "gray",
-    marginTop: 20,
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: "500",
   },
   buttonContainer: {
     flexDirection: "row",

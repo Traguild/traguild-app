@@ -2,7 +2,7 @@
   "expo": {
     "name": "모험가 길드",
     "slug": "traveler-guild",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,15 +21,16 @@
     "android": {
       "package": "com.arc.travelerguild",
       "config": {
-        "googleMapsApiKey": "AIzaSyAVChXTdt5j3pqjZvZNoXYE0a6fFnEpyNY"
+        "googleMaps": {
+          "apiKey": "AIzaSyAVChXTdt5j3pqjZvZNoXYE0a6fFnEpyNY"
+        }
       },
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#d2c1a0"
       },
-      "usesCleartextTraffic": true,
-      "softwareKeyboardLayoutMode": "pan"
+      "usesCleartextTraffic": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

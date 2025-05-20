@@ -8,7 +8,7 @@ import {
   Platform,
   KeyboardAvoidingView,
 } from "react-native";
-import React, { useLayoutEffect, useState } from "react";
+import React, { use, useLayoutEffect, useState } from "react";
 import { useToast } from "react-native-toast-notifications";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -17,6 +17,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
 import { layout } from "resources/theme/layout";
+import { useLocation } from "src/hooks/useLocation";
 
 // IMPORT COMPONENTS
 import Button from "components/common/Button";
@@ -24,6 +25,7 @@ import WriteForm from "components/01-home/WriteForm";
 
 const WriteRequest = ({ navigation }) => {
   const toast = useToast();
+  const location = useLocation();
 
   const [reqeust_img, setImage] = useState(null);
   const [request_title, setTitle] = useState("");
@@ -89,6 +91,8 @@ const WriteRequest = ({ navigation }) => {
 
     formData.append("user_idx", user_idx);
     formData.append("request_region", user_region);
+    formData.append("latitude", location.latitude);
+    formData.append("longitude", location.longitude);
 
     const result = await API.PUT({
       type: "multipart",
@@ -118,28 +122,24 @@ const WriteRequest = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : null}
-        style={{ flex: 1 }}
-      > */}
       <View
         style={{
           height: layout().height * 0.9,
         }}
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView>
-            <WriteForm states={stateList} />
-          </ScrollView>
-        </TouchableWithoutFeedback>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <ScrollView>
+              <WriteForm states={stateList} />
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
-      {/* </KeyboardAvoidingView> */}
       <View style={[styles.inputContainer]}>
-        <Button
-          style={{ marginTop: 15, marginBottom: 15 }}
-          text="작성하기"
-          onPress={handleSubmit}
-        />
+        <Button style={{}} text="작성하기" onPress={handleSubmit} />
       </View>
     </View>
   );
@@ -147,14 +147,15 @@ const WriteRequest = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: "100%",
     backgroundColor: theme["default-bg"],
   },
 
   inputContainer: {
     width: "100%",
-    marginBottom: 10,
     paddingHorizontal: 20,
+    marginTop: 10,
   },
 });
 
