@@ -13,8 +13,8 @@ const RequestMarker = ({ latitude, longitude, getRequestNearBy }) => {
   return (
     <Marker
       coordinate={{
-        latitude: latitude,
-        longitude: longitude,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
       }}
       onPress={() => {
         getRequestNearBy({ latitude, longitude });
