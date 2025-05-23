@@ -59,26 +59,35 @@ const ChatList = ({ navigation }) => {
 
   const groupByStatus = (data) => {
     const statusOrder = ["모집", "진행중", "완료", "취소"];
+    const isProgress = (d) => {
+      return (
+        d.request_state === "진행중" &&
+        (d.applicant_idx == USER_IDX.current ||
+          (d.requested_user_idx == USER_IDX.current &&
+            d.user_idx == d.applicant_idx))
+      );
+    };
+    const isDone = (d) => {
+      return (
+        d.request_state === "완료" &&
+        (d.applicant_idx == USER_IDX.current ||
+          (d.requested_user_idx == USER_IDX.current &&
+            d.user_idx == d.applicant_idx))
+      );
+    };
+
     return statusOrder.map((status) => ({
       title: status,
       data: data.filter((d) => {
         if (status === "모집") return d.request_state === "모집";
         else if (status === "진행중") {
-          if (
-            d.request_state === "진행중" &&
-            d.applicant_idx == USER_IDX.current
-          )
-            return d.request_state === "진행중";
+          if (isProgress(d)) return d.request_state === "진행중";
+          return false;
         } else if (status === "완료") {
-          if (d.request_state === "완료" && d.applicant_idx == USER_IDX.current)
-            return d.request_state === "완료";
+          if (isDone(d)) return d.request_state === "완료";
+          return false;
         } else if (status === "취소") {
-          if (
-            (d.request_state == "진행중" &&
-              d.applicant_idx != USER_IDX.current) ||
-            (d.request_state == "완료" && d.applicant_idx != USER_IDX.current)
-          )
-            return true;
+          if (!(isProgress(d) || isDone(d))) return true;
         }
       }),
     }));
