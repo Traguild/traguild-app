@@ -93,7 +93,7 @@ const UserProfile = () => {
         />
       </Text>
 
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           marginBottom: 25,
@@ -106,7 +106,7 @@ const UserProfile = () => {
             ? "데이터가 부족합니다."
             : `${profile.responseRate}%`}
         </Text>
-      </View>
+      </View> */}
 
       <View style={styles.sectionBox}>
         <View style={styles.titleBox}>
