@@ -47,7 +47,8 @@ const ChatDetail = () => {
         data: { chat_room_idx: chatRoomIdx },
       });
 
-      const requestIdx = roomRes?.[0]?.request_idx;
+      const requestIdx = Array.isArray(roomRes)
+        ? roomRes?.[0]?.request_idx : roomRes?.request_idx;
 
       if (requestIdx) {
         const requestRes = await API.POST({
@@ -165,8 +166,8 @@ const ChatDetail = () => {
           <ChatHeader
             requestInfo={requestInfo}
             onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
-            onApprove={() => {
-              setRequestInfo((prev) => ({ ...prev, request_state: "진행중" }));
+            onApprove={(data) => {
+              setRequestInfo((prev) => ({ ...prev, ...data }));
             }}
             onComplete={() => {
               setRequestInfo((prev) => ({ ...prev, request_state: "완료" }));

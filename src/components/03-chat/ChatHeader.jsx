@@ -10,13 +10,11 @@ import {
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// IMPORT CONFIGS
 import { API } from "config/fetch.config";
 import { defaultImg } from "resources/img/defaultImg";
 import { theme } from "resources/theme/common";
 import { getTitle, getCost } from "resources/js/common";
 
-// IMPORT COMPONENTS
 import RequestState from "components/01-home/RequestState";
 import UserRate from "components/03-chat/UserRate";
 
@@ -31,7 +29,7 @@ const ChatHeader = ({
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showRateModal, setShowRateModal] = useState(false);
   const [RequestInfo, setRequestInfo] = useState(requestInfo);
-  const [requestDate, setRequestDate] = useState(null);
+  const [reservedDate, setReservedDate] = useState(requestInfo?.reserved_start_time);
 
   useEffect(() => {
     AsyncStorage.getItem("user_idx").then((id) => setCurrentUserIdx(id));
@@ -39,7 +37,6 @@ const ChatHeader = ({
 
   useEffect(() => {
     setRequestInfo(requestInfo);
-    setRequestDate(requestInfo?.reserved_start_time);
   }, [requestInfo]);
 
   if (!RequestInfo) return null;
@@ -77,15 +74,12 @@ const ChatHeader = ({
           request_state: "진행중",
         },
       });
+      setReservedDate(formattedDate);
 
-      setRequestInfo((prev) => ({
-        ...prev,
+      if (onApprove) onApprove({
         reserved_start_time: formattedDate,
         request_state: "진행중",
-      }));
-      setRequestDate(formattedDate);
-
-      if (onApprove) onApprove("진행중");
+      });
     } catch (error) {
       console.error("날짜 저장 실패", error);
     }
@@ -150,7 +144,8 @@ const ChatHeader = ({
 
             {(isRequester || isApplicant) &&
               showApproveButton &&
-              requestState === "진행중" && (
+              requestState === "진행중" &&
+              !!RequestInfo.applicant_idx && (
                 <TouchableOpacity
                   style={styles.actionButton}
                   onPress={handleComplete}
@@ -164,8 +159,11 @@ const ChatHeader = ({
             <Text style={styles.headerCost}>
               {getCost(RequestInfo.request_cost ?? 0)} 원
             </Text>
-            {requestDate && (
-              <Text style={styles.dateText}>예약일: {requestDate}</Text>
+
+            {reservedDate && (
+              <Text style={styles.dateText}>
+                예약일: {reservedDate}
+              </Text>
             )}
           </View>
         </View>
@@ -223,6 +221,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 6,
   },
   headerTitle: {
     fontSize: 16,
@@ -235,6 +234,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 13,
     color: theme["default-text"],
+    marginTop: 6,
   },
   actionButton: {
     paddingHorizontal: 12,

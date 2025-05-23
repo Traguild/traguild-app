@@ -49,7 +49,7 @@ const ApplyList = ({ onSelectApplicant }) => {
   }) => {
     const host_user_idx = await AsyncStorage.getItem("user_idx");
     // TODO - 임시 주석
-    // const res = true;
+    //const res = true;
     const res = await API.POST({
       url: "/requestApplicant/update",
       data: { request_idx, user_idx, applicant_state },
@@ -58,18 +58,18 @@ const ApplyList = ({ onSelectApplicant }) => {
     if (res) {
       if (applicant_state === "승인") {
         // TODO - 임시 주석
-        // await API.POST({
-        //   url: "/requestApplicant/rejectAll",
-        //   data: { request_idx, applicant_state: "반려" },
-        // });
-        // await API.POST({
-        //   url: "/requestInfo/update",
-        //   data: {
-        //     request_idx,
-        //     request_state: "완료",
-        //     applicant_idx: user_idx,
-        //   },
-        // });
+        await API.POST({
+          url: "/requestApplicant/rejectAll",
+          data: { request_idx, applicant_state: "반려" },
+        });
+        await API.POST({
+          url: "/requestInfo/update",
+          data: {
+            request_idx,
+            request_state: "모집",
+            applicant_idx: user_idx,
+          },
+        });
 
         //채팅방 생성
         const chat_data = await API.PUT({
@@ -145,18 +145,9 @@ const ApplyList = ({ onSelectApplicant }) => {
     >
       <View style={styles.itemContent}>
         <Text style={styles.title}>의뢰: {item.request_title}</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navGo.to("UserProfile", {
-              user_idx: item.user_idx,
-              user_nickname: item.user_nickname,
-            })
-          }
-        >
-          <Text style={styles.subtitle}>
-            {item?.user_nickname ?? "알 수 없음"}
-          </Text>
-        </TouchableOpacity>
+        <Text style={styles.subtitle}>
+          {item?.user_nickname ?? "알 수 없음"}
+        </Text>
 
         <Text style={styles.applyIntro}>
           {getContents(item.applicant_intro, 25)}
