@@ -59,18 +59,18 @@ const ApplyList = ({ onSelectApplicant }) => {
     if (res) {
       if (applicant_state === "승인") {
         // TODO - 임시 주석
-        await API.POST({
-          url: "/requestApplicant/rejectAll",
-          data: { request_idx, applicant_state: "반려" },
-        });
-        await API.POST({
-          url: "/requestInfo/update",
-          data: {
-            request_idx,
-            request_state: "모집",
-            applicant_idx: user_idx,
-          },
-        });
+        // await API.POST({
+        //   url: "/requestApplicant/rejectAll",
+        //   data: { request_idx, applicant_state: "반려" },
+        // });
+        // await API.POST({
+        //   url: "/requestInfo/update",
+        //   data: {
+        //     request_idx,
+        //     request_state: "모집",
+        //     applicant_idx: user_idx,
+        //   },
+        // });
 
         //채팅방 생성
         const chat_data = await API.PUT({
