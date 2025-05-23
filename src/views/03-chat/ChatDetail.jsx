@@ -48,7 +48,8 @@ const ChatDetail = () => {
       });
 
       const requestIdx = Array.isArray(roomRes)
-        ? roomRes?.[0]?.request_idx : roomRes?.request_idx;
+        ? roomRes?.[0]?.request_idx
+        : roomRes?.request_idx;
 
       if (requestIdx) {
         const requestRes = await API.POST({
@@ -201,7 +202,7 @@ const ChatDetail = () => {
           }}
         />
         <View style={styles.inputContainer}>
-          {section.title == "취소" || section.title == "완료" ? (
+          {section?.title == "취소" || section?.title == "완료" ? (
             <View
               style={{
                 flex: 1,
