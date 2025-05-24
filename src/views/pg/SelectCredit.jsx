@@ -24,6 +24,7 @@ const SelectCredit = ({ navigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
+      headerBackTitle: null,
       headerTitle: "충전하기",
       headerStyle: {
         elevation: 0,
@@ -95,3 +96,4 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+

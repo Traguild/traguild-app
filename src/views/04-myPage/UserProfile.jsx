@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 
 // IMPORT CONFIGS
@@ -21,7 +21,15 @@ import MyManner from "components/04-myPage/MyManner";
 import RequestItem from "components/01-home/RequestItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const UserProfile = () => {
+const UserProfile = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      headerTintColor: theme["default-btn"],
+    });
+  });
+
   const route = useRoute();
   const { user_idx } = route.params;
   const USER_IDX = useRef(null);
@@ -234,3 +242,4 @@ const styles = StyleSheet.create({
 });
 
 export default UserProfile;
+
