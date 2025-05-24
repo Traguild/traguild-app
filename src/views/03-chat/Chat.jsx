@@ -88,8 +88,10 @@ const ChatList = ({ navigation }) => {
         } else if (status === "취소") {
           if (!(isProgress(d) || isDone(d))) isValid = true;
         }
-        if (!headerVisible[status])
-          setHeaderVisible((prev) => ({ ...prev, [status]: isValid }));
+
+        if (isValid) {
+          setHeaderVisible((prev) => ({ ...prev, [status]: prev[status] + 1 }));
+        }
         return isValid;
       }),
     }));
@@ -103,10 +105,10 @@ const ChatList = ({ navigation }) => {
   });
 
   const [headerVisible, setHeaderVisible] = useState({
-    모집: false,
-    진행중: false,
-    완료: false,
-    취소: false,
+    모집: 0,
+    진행중: 0,
+    완료: 0,
+    취소: 0,
   });
 
   const renderSectionHeader = ({ section: { title } }) => {
