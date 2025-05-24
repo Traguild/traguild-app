@@ -79,16 +79,18 @@ const ChatList = ({ navigation }) => {
     return statusOrder.map((status) => ({
       title: status,
       data: data.filter((d) => {
-        if (status === "모집") return d.request_state === "모집";
+        let isValid = false;
+        if (status === "모집") isValid = d.request_state === "모집";
         else if (status === "진행중") {
-          if (isProgress(d)) return d.request_state === "진행중";
-          return false;
+          if (isProgress(d)) isValid = d.request_state === "진행중";
         } else if (status === "완료") {
-          if (isDone(d)) return d.request_state === "완료";
-          return false;
+          if (isDone(d)) isValid = d.request_state === "완료";
         } else if (status === "취소") {
-          if (!(isProgress(d) || isDone(d))) return true;
+          if (!(isProgress(d) || isDone(d))) isValid = true;
         }
+        if (!headerVisible[status])
+          setHeaderVisible((prev) => ({ ...prev, [status]: isValid }));
+        return isValid;
       }),
     }));
   };
@@ -100,22 +102,32 @@ const ChatList = ({ navigation }) => {
     취소: true,
   });
 
-  const renderSectionHeader = ({ section: { title } }) => (
-    <TouchableOpacity
-      onPress={() =>
-        setCollapsed((prev) => ({ ...prev, [title]: !prev[title] }))
-      }
-      style={styles.sectionHeader}
-      activeOpacity={0.7}
-    >
-      <View>
-        <RequestState text={title} />
-      </View>
-      <Text style={{ color: "gray", fontSize: 10 }}>
-        {collapsed[title] ? "(열기) ▶" : "(닫기) ▽"}
-      </Text>
-    </TouchableOpacity>
-  );
+  const [headerVisible, setHeaderVisible] = useState({
+    모집: false,
+    진행중: false,
+    완료: false,
+    취소: false,
+  });
+
+  const renderSectionHeader = ({ section: { title } }) => {
+    if (!headerVisible[title]) return null;
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          setCollapsed((prev) => ({ ...prev, [title]: !prev[title] }))
+        }
+        style={styles.sectionHeader}
+        activeOpacity={0.7}
+      >
+        <View>
+          <RequestState text={title} />
+        </View>
+        <Text style={{ color: "gray", fontSize: 10 }}>
+          {collapsed[title] ? "(열기) ▶" : "(닫기) ▽"}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   const getUserInfo = async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
@@ -192,3 +204,4 @@ const styles = StyleSheet.create({
 });
 
 export default ChatList;
+
