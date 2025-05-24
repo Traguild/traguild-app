@@ -42,14 +42,16 @@ const ChatDetail = () => {
   // 💬 채팅방 정보와 requestInfo 불러오기
   const fetchRoomAndRequestInfo = async () => {
     try {
-      const roomRes = await API.POST({
-        url: "/chatRoom",
-        data: { chat_room_idx: chatRoomIdx },
-      });
+      // const roomRes = await API.POST({
+      //   url: "/chatRoom",
+      //   data: { chat_room_idx: chatRoomIdx },
+      // });
 
-      const requestIdx = Array.isArray(roomRes)
-        ? roomRes?.[0]?.request_idx
-        : roomRes?.request_idx;
+      // const requestIdx = Array.isArray(roomRes)
+      //   ? roomRes?.[0]?.request_idx
+      //   : roomRes?.request_idx;
+
+      const requestIdx = chatData?.request_idx;
 
       if (requestIdx) {
         const requestRes = await API.POST({
@@ -302,3 +304,4 @@ const styles = StyleSheet.create({
 });
 
 export default ChatDetail;
+
