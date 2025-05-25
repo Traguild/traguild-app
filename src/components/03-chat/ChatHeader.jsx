@@ -49,10 +49,19 @@ const ChatHeader = ({
 
   const targetUserIdx = useMemo(() => {
     if (!RequestInfo) return null;
-    if (isRequester) return RequestInfo?.applicant_idx;
+    if (isRequester) return RequestInfo?.opponent_user_idx;
     if (isApplicant) return RequestInfo?.user_idx;
     return null;
   }, [RequestInfo, isRequester, isApplicant]);
+
+  const showCompleteButton =
+    showApproveButton &&
+    requestState === "진행중" &&
+    !!RequestInfo.applicant_idx &&
+    (
+      (isRequester && parseInt(RequestInfo.applicant_idx) === parseInt(targetUserIdx)) ||
+      (isApplicant && parseInt(currentUserIdx) === parseInt(RequestInfo.applicant_idx))
+    );
 
   const handleConfirmApplicant = () => setShowDatePicker(true);
 
@@ -72,15 +81,19 @@ const ChatHeader = ({
           request_idx: RequestInfo.request_idx,
           reserved_start_time: formattedDate,
           request_state: "진행중",
-          applicant_idx: RequestInfo.applicant_idx,
+          applicant_idx: targetUserIdx,
         },
       });
+
       setReservedDate(formattedDate);
 
-      if (onApprove) onApprove({
-        reserved_start_time: formattedDate,
-        request_state: "진행중",
-      });
+      if (onApprove) {
+        onApprove({
+          reserved_start_time: formattedDate,
+          request_state: "진행중",
+          applicant_idx: targetUserIdx,
+        });
+      }
     } catch (error) {
       console.error("날짜 저장 실패", error);
     }
@@ -143,17 +156,14 @@ const ChatHeader = ({
               </TouchableOpacity>
             )}
 
-            {(isRequester || isApplicant) &&
-              showApproveButton &&
-              requestState === "진행중" &&
-              !!RequestInfo.applicant_idx && (
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={handleComplete}
-                >
-                  <Text style={styles.actionButtonText}>의뢰 완료</Text>
-                </TouchableOpacity>
-              )}
+            {showCompleteButton && (
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={handleComplete}
+              >
+                <Text style={styles.actionButtonText}>의뢰 완료</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           <View style={styles.costRow}>

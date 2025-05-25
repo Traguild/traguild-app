@@ -171,7 +171,10 @@ const ChatDetail = () => {
       <View style={styles.container}>
         {requestInfo && (
           <ChatHeader
-            requestInfo={requestInfo}
+            requestInfo={{
+              ...requestInfo,
+              opponent_user_idx: chatData.user_idx,
+            }}
             onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
             onApprove={(data) => {
               setRequestInfo((prev) => ({ ...prev, ...data }));
