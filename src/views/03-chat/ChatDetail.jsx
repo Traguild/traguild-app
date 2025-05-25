@@ -60,7 +60,11 @@ const ChatDetail = () => {
         });
 
         if (Array.isArray(requestRes) && requestRes.length > 0) {
-          setRequestInfo(requestRes[0]);
+          const info = requestRes[0];
+          setRequestInfo({
+            ...info,
+            applicant_idx: chatData.applicant_idx ?? info.applicant_idx,
+          });
         } else {
           console.error("요청 정보 없음");
         }

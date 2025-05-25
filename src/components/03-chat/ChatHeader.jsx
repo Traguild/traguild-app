@@ -72,6 +72,7 @@ const ChatHeader = ({
           request_idx: RequestInfo.request_idx,
           reserved_start_time: formattedDate,
           request_state: "진행중",
+          applicant_idx: RequestInfo.applicant_idx,
         },
       });
       setReservedDate(formattedDate);
