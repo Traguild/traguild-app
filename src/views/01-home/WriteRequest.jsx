@@ -82,15 +82,8 @@ const WriteRequest = ({ navigation }) => {
   const handlePostRequest = async (formData) => {
     const user_idx = await AsyncStorage.getItem("user_idx");
 
-    const res = await API.POST({
-      url: "/userInfo/",
-      data: { user_idx },
-    });
-
-    const { user_region } = res;
-
     formData.append("user_idx", user_idx);
-    formData.append("request_region", user_region);
+    formData.append("request_region", location.city || "알 수 없음");
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
 
