@@ -91,30 +91,18 @@ const UserProfile = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <MyManner
+        rate={profile.user_rate ?? 50}
+        descript={true}
+        size={18}
+        style={{ marginTop: 5 }}
+      />
       <Text style={styles.nickname}>
-        {profile.user_nickname}
-        <MyManner
-          rate={profile.user_rate ?? 50}
-          descript={true}
-          size={20}
-          style={{ marginLeft: 10, marginTop: 10 }}
-        />
-      </Text>
-
-      {/* <View
-        style={{
-          flexDirection: "row",
-          marginBottom: 25,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontWeight: "500", color: "gray" }}>응답률:</Text>
-        <Text style={{ marginLeft: 5, color: "gray" }}>
-          {profile.responseRate === -1
-            ? "데이터가 부족합니다."
-            : `${profile.responseRate}%`}
+        <Text style={{ color: "darkred", fontSize: 16 }}>
+          {"Lv 10. 전설의 모험가  "}
         </Text>
-      </View> */}
+        {profile.user_nickname}
+      </Text>
 
       <View style={styles.sectionBox}>
         <View style={styles.titleBox}>
@@ -191,9 +179,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   nickname: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 5,
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 20,
     color: theme["default-text"],
   },
   titleBox: {
