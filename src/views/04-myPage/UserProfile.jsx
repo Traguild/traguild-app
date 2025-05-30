@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -33,6 +34,9 @@ const UserProfile = ({ navigation }) => {
   const route = useRoute();
   const { user_idx } = route.params;
   const USER_IDX = useRef(null);
+  const [user_exp, setUserExp] = useState(0);
+  const [user_level, setUserLevel] = useState(1);
+  const [user_title, setUserTitle] = useState("신입 모험가");
 
   const [profile, setProfile] = useState({
     user_nickname: "",
@@ -98,11 +102,37 @@ const UserProfile = ({ navigation }) => {
         style={{ marginTop: 5 }}
       />
       <Text style={styles.nickname}>
-        <Text style={{ color: "darkred", fontSize: 16 }}>
-          {"Lv 10. 전설의 모험가  "}
+        <Text style={{ color: theme[`user_lv${user_level}`], fontSize: 16 }}>
+          {`Lv ${user_level}. ${user_title}  `}
         </Text>
         {profile.user_nickname}
       </Text>
+      <View style={{ flexDirection: "row" }}>
+        <Progress.Bar
+          width={330}
+          height={10}
+          color={theme["request-done"]}
+          unfilledColor={"#e0e0e0"}
+          borderColor={"darkgreen"}
+          borderRadius={5}
+          marginBottom={20}
+          progress={user_exp / 100}
+          animationType="timing"
+          animated={true}
+          useNativeDriver={true}
+          duration={500}
+        />
+        <Text
+          style={{
+            color: theme["request-done"],
+            fontWeight: "600",
+            fontSize: 12,
+            marginLeft: 10,
+          }}
+        >
+          {(user_exp / 100) * 100}%
+        </Text>
+      </View>
 
       <View style={styles.sectionBox}>
         <View style={styles.titleBox}>
@@ -181,7 +211,7 @@ const styles = StyleSheet.create({
   nickname: {
     fontSize: 20,
     fontWeight: "600",
-    marginBottom: 20,
+    marginBottom: 5,
     color: theme["default-text"],
   },
   titleBox: {
