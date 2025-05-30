@@ -154,9 +154,9 @@ const UserProfile = ({ navigation }) => {
             등록한 의뢰 ({profile.postedAmounts})
           </Text>
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.6}
             onPress={() => {
-              null;
+              navGo.to("QuestList");
             }}
           >
             <Text
@@ -242,4 +242,3 @@ const styles = StyleSheet.create({
 });
 
 export default UserProfile;
-
