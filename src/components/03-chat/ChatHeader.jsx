@@ -85,6 +85,13 @@ const ChatHeader = ({
         },
       });
 
+      await API.POST({
+        url: "/requestApplicant/rejectAll",
+        data: {
+          request_idx: RequestInfo.request_idx,
+        },
+      });
+
       setReservedDate(formattedDate);
 
       if (onApprove) {
