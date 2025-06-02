@@ -42,6 +42,8 @@ export const theme = {
   "message-me": "",
   "meesage-other": "",
 
+  "status-label": "#f0f0f0",
+
   user_lv1: "#44A64C",
   user_lv2: "#6BA952",
   user_lv3: "#B5E560",

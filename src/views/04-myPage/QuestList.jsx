@@ -22,6 +22,7 @@ const LIMIT = 10;
 
 const QuestList = ({ navigation }) => {
   let page = 1;
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitleVisible: false,
@@ -73,6 +74,7 @@ const QuestList = ({ navigation }) => {
       fetchApplications();
       fetchRequests();
     };
+
     fetchDatas();
   }, []);
 
@@ -117,18 +119,35 @@ const QuestList = ({ navigation }) => {
           <FlatList
             style={{ width: "100%" }}
             data={filteredMainData}
-            renderItem={({ item }) => (
-              <RequestItem
-                item={item}
-                isOwner={mainFilter === "등록한 의뢰"}
-                isMenuVisible={activeMenuId === item.request_idx}
-                onToggleMenu={() =>
-                  setActiveMenuId(
-                    activeMenuId === item.request_idx ? null : item.request_idx
-                  )
+            renderItem={({ item }) => {
+              let statusLabel = "";
+
+              if (mainFilter === "지원한 의뢰") {
+                if (item.is_canceled === 1) {
+                  statusLabel = "취소";
+                } else if (item.applicant_state === "반려") {
+                  statusLabel = "반려";
+                } else if (item.applicant_state === "승인") {
+                  statusLabel = "승인";
+                } else {
+                  statusLabel = "대기";
                 }
-              />
-            )}
+              }
+
+              return (
+                <RequestItem
+                  item={item}
+                  isOwner={mainFilter === "등록한 의뢰"}
+                  isMenuVisible={activeMenuId === item.request_idx}
+                  onToggleMenu={() =>
+                    setActiveMenuId(
+                      activeMenuId === item.request_idx ? null : item.request_idx
+                    )
+                  }
+                  statusLabel={statusLabel}
+                />
+              );
+            }}
             keyExtractor={(item) =>
               mainFilter === "등록한 의뢰"
                 ? item.request_idx.toString()
