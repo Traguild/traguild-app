@@ -30,7 +30,7 @@ import Button from "components/common/Button";
 
 const RequestDetail = ({ navigation, route }) => {
   const toast = useToast();
-  const { item } = route.params;
+  const { item, myUserIdx } = route.params;
 
   const userImgUri = "https://traguild.kro.kr/api/userInfo/userImg/";
   const requestImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
@@ -77,10 +77,17 @@ const RequestDetail = ({ navigation, route }) => {
 
   const handleApply = () => {
     setModalVisible(true);
-    if (USER_IDX.current === item.user_idx) {
+
+    const isOwnRequest =
+      (Number(USER_IDX.current) === Number(item.user_idx)) ||
+      (Number(myUserIdx) === Number(item.user_idx));
+
+    if (isOwnRequest) {
       toast.show("본인의 의뢰에는 지원할 수 없습니다.");
       setModalVisible(false);
+      return;
     }
+
   };
 
   return (
@@ -97,8 +104,8 @@ const RequestDetail = ({ navigation, route }) => {
               source={
                 item.request_img
                   ? {
-                      uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
-                    }
+                    uri: `${requestImgUri}${item.request_idx}?timestamp=${new Date().getTime()}`,
+                  }
                   : defaultImg.logo
               }
               style={{
