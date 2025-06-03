@@ -174,7 +174,7 @@ const UserProfile = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={() => {
-              navGo.to("QuestList");
+              navGo.to("QuestList", { user_idx });
             }}
           >
             <Text

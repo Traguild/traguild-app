@@ -29,7 +29,7 @@ const RequestMarker = ({ latitude, longitude, item, navigation }) => {
       }}
       onPress={() => {
         if (myUserIdx !== null) {
-          navigation.navigate("RequestDetail", { item, myUserIdx });
+          navGo.to("RequestDetail", { item, myUserIdx });
         }
       }}
     >
