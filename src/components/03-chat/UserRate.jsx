@@ -26,11 +26,11 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
       };
 
       if (delta === 1) {
-        //updatedData.user_like += 1;
-        updatedData.user_exp += 3;
+        updatedData.user_like += 1;
+        updatedData.user_exp = 3;
       } else if (delta === -1) {
-        //updatedData.user_dislike += 1;
-        updatedData.user_exp -= 1;
+        updatedData.user_dislike += 1;
+        updatedData.user_exp = 1;
       }
 
       const res = await API.POST({
