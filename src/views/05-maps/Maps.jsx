@@ -1,4 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { View, Text, StyleSheet, ActivityIndicator, Image } from "react-native";
 import MapView from "react-native-maps";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
@@ -16,6 +21,7 @@ import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
 import BottomSheet from "components/common/BottomSheet";
 import InfoSheet from "components/05-maps/InfoSheet";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Maps = ({ navigation }) => {
   const location = useLocation();
@@ -30,7 +36,11 @@ const Maps = ({ navigation }) => {
       url: "/requestInfo/nearby",
       data: { latitude, longitude },
     });
-    setRequestData(res);
+    setRequestData(
+      res.filter((item) => {
+        return item.is_deleted === 0;
+      })
+    );
     setIsUpdate(true);
   };
 
@@ -57,10 +67,19 @@ const Maps = ({ navigation }) => {
     const res = await API.POST({ url: "/requestInfo/all" });
     setRequest(
       res.filter((item) => {
-        return item.request_state === "모집";
+        return item.request_state === "모집" && item.is_deleted === false;
       })
     );
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      getRequestLocation();
+      if (location?.latitude && location?.longitude) {
+        getRequestNearBy(location);
+      }
+    }, [location])
+  );
 
   return (
     <BottomSheetModalProvider>

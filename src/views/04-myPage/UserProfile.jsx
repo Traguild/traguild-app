@@ -7,8 +7,9 @@ import {
   SafeAreaView,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useRoute } from "@react-navigation/native";
+import * as Progress from "react-native-progress";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -21,10 +22,21 @@ import MyManner from "components/04-myPage/MyManner";
 import RequestItem from "components/01-home/RequestItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const UserProfile = () => {
+const UserProfile = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerBackTitleVisible: false,
+      headerBackTitle: null,
+      headerTintColor: theme["default-btn"],
+    });
+  });
+
   const route = useRoute();
   const { user_idx } = route.params;
   const USER_IDX = useRef(null);
+  const [user_exp, setUserExp] = useState(0);
+  const [user_level, setUserLevel] = useState(1);
+  const [user_title, setUserTitle] = useState("신입 모험가");
 
   const [profile, setProfile] = useState({
     user_nickname: "",
@@ -61,6 +73,10 @@ const UserProfile = () => {
           },
         });
 
+        setUserExp(res.user_exp || 0);
+        setUserLevel(res.user_level || 1);
+        setUserTitle(res.user_title || "신입 모험가");
+
         const fetchedProfile = {
           user_nickname: res.user_nickname,
           user_rate: res.user_rate,
@@ -83,28 +99,42 @@ const UserProfile = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <MyManner
+        rate={profile.user_rate ?? 50}
+        descript={true}
+        size={18}
+        style={{ marginTop: 5 }}
+      />
       <Text style={styles.nickname}>
+        <Text style={{ color: theme[`user_lv${user_level}`], fontSize: 16 }}>
+          {`Lv ${user_level}. ${user_title}  `}
+        </Text>
         {profile.user_nickname}
-        <MyManner
-          rate={profile.user_rate ?? 50}
-          descript={true}
-          size={20}
-          style={{ marginLeft: 10, marginTop: 10 }}
-        />
       </Text>
-
-      <View
-        style={{
-          flexDirection: "row",
-          marginBottom: 25,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontWeight: "500", color: "gray" }}>응답률:</Text>
-        <Text style={{ marginLeft: 5, color: "gray" }}>
-          {profile.responseRate === -1
-            ? "데이터가 부족합니다."
-            : `${profile.responseRate}%`}
+      <View style={{ flexDirection: "row" }}>
+        <Progress.Bar
+          width={330}
+          height={10}
+          color={theme["request-done"]}
+          unfilledColor={"#e0e0e0"}
+          borderColor={"darkgreen"}
+          borderRadius={5}
+          marginBottom={20}
+          progress={user_exp / (3 * user_level)}
+          animationType="timing"
+          animated={true}
+          useNativeDriver={true}
+          duration={500}
+        />
+        <Text
+          style={{
+            color: theme["request-done"],
+            fontWeight: "600",
+            fontSize: 12,
+            marginLeft: 10,
+          }}
+        >
+          {((user_exp / (3 * user_level)) * 100).toFixed(1)}%
         </Text>
       </View>
 
@@ -146,9 +176,9 @@ const UserProfile = () => {
             등록한 의뢰 ({profile.postedAmounts})
           </Text>
           <TouchableOpacity
-            activeOpacity={1}
+            activeOpacity={0.6}
             onPress={() => {
-              null;
+              navGo.to("QuestList", { user_idx });
             }}
           >
             <Text
@@ -183,8 +213,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   nickname: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 20,
+    fontWeight: "600",
     marginBottom: 5,
     color: theme["default-text"],
   },

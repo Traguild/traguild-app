@@ -18,7 +18,13 @@ import { useFocusEffect } from "@react-navigation/native";
 
 let LIMIT = 10;
 
-const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
+const RequestItem = ({
+  item,
+  isOwner = false,
+  isMenuVisible = false,
+  onToggleMenu,
+  statusLabel = "",
+}) => {
   const thumbImgUri = "https://traguild.kro.kr/api/requestInfo/getImage/";
   const movDetail = () => navGo.to("RequestDetail", { item });
   let page = 1;
@@ -129,7 +135,14 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           style={styles.itemImg}
         />
         <View style={styles.itemText}>
-          <RequestState text={item.request_state} />
+          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
+            <RequestState text={item.request_state} />
+            {statusLabel !== "" && (
+              <View style={styles.statusLabel}>
+                <Text style={styles.statusText}>{statusLabel}</Text>
+              </View>
+            )}
+          </View>
           <View style={{ flexDirection: "row" }}>
             <Text style={styles.itemTitle}>
               {getTitle(item.request_title, 18)}
@@ -152,6 +165,7 @@ const RequestItem = ({ item, isOwner, isMenuVisible, onToggleMenu }) => {
           <View style={styles.itemCostBox}>
             <Text style={styles.itemCost}>{getCost(item.request_cost)} 원</Text>
           </View>
+
         </View>
       </TouchableOpacity>
       {isOwner && (
@@ -233,6 +247,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     top: 10,
+  },
+  statusLabel: {
+    marginLeft: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+    backgroundColor: theme["status-label"],
+  },
+  statusText: {
+    fontSize: 12,
+    color: "#333",
   },
   menu: {
     position: "absolute",

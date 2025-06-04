@@ -77,9 +77,13 @@ const RequestDetail = ({ navigation, route }) => {
 
   const handleApply = () => {
     setModalVisible(true);
-    if (USER_IDX.current === item.user_idx) {
+
+    const isOwnRequest = Number(USER_IDX.current) === Number(item.user_idx);
+
+    if (isOwnRequest) {
       toast.show("본인의 의뢰에는 지원할 수 없습니다.");
       setModalVisible(false);
+      return;
     }
   };
 

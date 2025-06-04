@@ -59,27 +59,40 @@ const ChatList = ({ navigation }) => {
 
   const groupByStatus = (data) => {
     const statusOrder = ["모집", "진행중", "완료", "취소"];
+    const isProgress = (d) => {
+      return (
+        d.request_state === "진행중" &&
+        (d.applicant_idx == USER_IDX.current ||
+          (d.requested_user_idx == USER_IDX.current &&
+            d.user_idx == d.applicant_idx))
+      );
+    };
+    const isDone = (d) => {
+      return (
+        d.request_state === "완료" &&
+        (d.applicant_idx == USER_IDX.current ||
+          (d.requested_user_idx == USER_IDX.current &&
+            d.user_idx == d.applicant_idx))
+      );
+    };
+
     return statusOrder.map((status) => ({
       title: status,
       data: data.filter((d) => {
-        if (status === "모집") return d.request_state === "모집";
+        let isValid = false;
+        if (status === "모집") isValid = d.request_state === "모집";
         else if (status === "진행중") {
-          if (
-            d.request_state === "진행중" &&
-            d.applicant_idx == USER_IDX.current
-          )
-            return d.request_state === "진행중";
+          if (isProgress(d)) isValid = d.request_state === "진행중";
         } else if (status === "완료") {
-          if (d.request_state === "완료" && d.applicant_idx == USER_IDX.current)
-            return d.request_state === "완료";
+          if (isDone(d)) isValid = d.request_state === "완료";
         } else if (status === "취소") {
-          if (
-            (d.request_state == "진행중" &&
-              d.applicant_idx != USER_IDX.current) ||
-            (d.request_state == "완료" && d.applicant_idx != USER_IDX.current)
-          )
-            return true;
+          if (!(isProgress(d) || isDone(d))) isValid = true;
         }
+
+        if (isValid) {
+          setHeaderVisible((prev) => ({ ...prev, [status]: prev[status] + 1 }));
+        }
+        return isValid;
       }),
     }));
   };
@@ -91,22 +104,32 @@ const ChatList = ({ navigation }) => {
     취소: true,
   });
 
-  const renderSectionHeader = ({ section: { title } }) => (
-    <TouchableOpacity
-      onPress={() =>
-        setCollapsed((prev) => ({ ...prev, [title]: !prev[title] }))
-      }
-      style={styles.sectionHeader}
-      activeOpacity={0.7}
-    >
-      <View>
-        <RequestState text={title} />
-      </View>
-      <Text style={{ color: "gray", fontSize: 10 }}>
-        {collapsed[title] ? "(열기) ▶" : "(닫기) ▽"}
-      </Text>
-    </TouchableOpacity>
-  );
+  const [headerVisible, setHeaderVisible] = useState({
+    모집: 0,
+    진행중: 0,
+    완료: 0,
+    취소: 0,
+  });
+
+  const renderSectionHeader = ({ section: { title } }) => {
+    if (!headerVisible[title]) return null;
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          setCollapsed((prev) => ({ ...prev, [title]: !prev[title] }))
+        }
+        style={styles.sectionHeader}
+        activeOpacity={0.7}
+      >
+        <View>
+          <RequestState text={title} />
+        </View>
+        <Text style={{ color: "gray", fontSize: 10 }}>
+          {collapsed[title] ? "(열기) ▶" : "(닫기) ▽"}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   const getUserInfo = async () => {
     USER_IDX.current = await AsyncStorage.getItem("user_idx");
@@ -183,3 +206,4 @@ const styles = StyleSheet.create({
 });
 
 export default ChatList;
+

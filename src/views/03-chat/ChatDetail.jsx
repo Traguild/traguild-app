@@ -42,12 +42,16 @@ const ChatDetail = () => {
   // 💬 채팅방 정보와 requestInfo 불러오기
   const fetchRoomAndRequestInfo = async () => {
     try {
-      const roomRes = await API.POST({
-        url: "/chatRoom",
-        data: { chat_room_idx: chatRoomIdx },
-      });
+      // const roomRes = await API.POST({
+      //   url: "/chatRoom",
+      //   data: { chat_room_idx: chatRoomIdx },
+      // });
 
-      const requestIdx = roomRes?.[0]?.request_idx;
+      // const requestIdx = Array.isArray(roomRes)
+      //   ? roomRes?.[0]?.request_idx
+      //   : roomRes?.request_idx;
+
+      const requestIdx = chatData?.request_idx;
 
       if (requestIdx) {
         const requestRes = await API.POST({
@@ -56,7 +60,11 @@ const ChatDetail = () => {
         });
 
         if (Array.isArray(requestRes) && requestRes.length > 0) {
-          setRequestInfo(requestRes[0]);
+          const info = requestRes[0];
+          setRequestInfo({
+            ...info,
+            applicant_idx: chatData.applicant_idx ?? info.applicant_idx,
+          });
         } else {
           console.error("요청 정보 없음");
         }
@@ -163,10 +171,13 @@ const ChatDetail = () => {
       <View style={styles.container}>
         {requestInfo && (
           <ChatHeader
-            requestInfo={requestInfo}
+            requestInfo={{
+              ...requestInfo,
+              opponent_user_idx: chatData.user_idx,
+            }}
             onPress={() => navGo.to("RequestDetail", { item: requestInfo })}
-            onApprove={() => {
-              setRequestInfo((prev) => ({ ...prev, request_state: "진행중" }));
+            onApprove={(data) => {
+              setRequestInfo((prev) => ({ ...prev, ...data }));
             }}
             onComplete={() => {
               setRequestInfo((prev) => ({ ...prev, request_state: "완료" }));
@@ -200,7 +211,7 @@ const ChatDetail = () => {
           }}
         />
         <View style={styles.inputContainer}>
-          {section.title == "취소" || section.title == "완료" ? (
+          {section?.title == "취소" || section?.title == "완료" ? (
             <View
               style={{
                 flex: 1,
@@ -300,3 +311,4 @@ const styles = StyleSheet.create({
 });
 
 export default ChatDetail;
+

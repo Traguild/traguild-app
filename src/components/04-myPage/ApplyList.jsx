@@ -50,7 +50,7 @@ const ApplyList = ({ onSelectApplicant }) => {
   }) => {
     const host_user_idx = await AsyncStorage.getItem("user_idx");
     // TODO - 임시 주석
-    // const res = true;
+    //const res = true;
     const res = await API.POST({
       url: "/requestApplicant/update",
       data: { request_idx, user_idx, applicant_state },
@@ -67,7 +67,7 @@ const ApplyList = ({ onSelectApplicant }) => {
         //   url: "/requestInfo/update",
         //   data: {
         //     request_idx,
-        //     request_state: "완료",
+        //     request_state: "모집",
         //     applicant_idx: user_idx,
         //   },
         // });
@@ -99,6 +99,7 @@ const ApplyList = ({ onSelectApplicant }) => {
         chat_data.user_nickname = user_nickname;
         chat_data.user_idx = user_idx;
         chat_data.request_idx = request_idx;
+        chat_data.applicant_idx = user_idx;
 
         navGo.to("ChatDetail", {
           chatData: chat_data,
@@ -146,18 +147,9 @@ const ApplyList = ({ onSelectApplicant }) => {
     >
       <View style={styles.itemContent}>
         <Text style={styles.title}>의뢰: {item.request_title}</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navGo.to("UserProfile", {
-              user_idx: item.user_idx,
-              user_nickname: item.user_nickname,
-            })
-          }
-        >
-          <Text style={styles.subtitle}>
-            {item?.user_nickname ?? "알 수 없음"}
-          </Text>
-        </TouchableOpacity>
+        <Text style={styles.subtitle}>
+          {item?.user_nickname ?? "알 수 없음"}
+        </Text>
 
         <Text style={styles.applyIntro}>
           {getContents(item.applicant_intro, 25)}
