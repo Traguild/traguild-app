@@ -10,7 +10,7 @@ import { theme } from "resources/theme/common";
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
 
-const RequestMarker = ({ latitude, longitude, item, navigation }) => {
+const RequestMarker = ({ latitude, longitude, item, getRequestNearBy }) => {
   const [myUserIdx, setMyUserIdx] = useState(null);
 
   useEffect(() => {
@@ -28,9 +28,7 @@ const RequestMarker = ({ latitude, longitude, item, navigation }) => {
         longitude: parseFloat(longitude),
       }}
       onPress={() => {
-        if (myUserIdx !== null) {
-          navGo.to("RequestDetail", { item, myUserIdx });
-        }
+        getRequestNearBy({ latitude, longitude });
       }}
     >
       <View style={styles.markerWrapper}>
