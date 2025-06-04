@@ -37,6 +37,7 @@ const ChatHeader = ({
 
   useEffect(() => {
     setRequestInfo(requestInfo);
+    setRequestDate(requestInfo?.reserved_start_time);
   }, [requestInfo]);
 
   if (!RequestInfo) return null;
