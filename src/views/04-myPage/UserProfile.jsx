@@ -73,6 +73,10 @@ const UserProfile = ({ navigation }) => {
           },
         });
 
+        setUserExp(res.user_exp || 0);
+        setUserLevel(res.user_level || 1);
+        setUserTitle(res.user_title || "신입 모험가");
+
         const fetchedProfile = {
           user_nickname: res.user_nickname,
           user_rate: res.user_rate,
@@ -116,7 +120,7 @@ const UserProfile = ({ navigation }) => {
           borderColor={"darkgreen"}
           borderRadius={5}
           marginBottom={20}
-          progress={user_exp / 100}
+          progress={user_exp / (3 * user_level)}
           animationType="timing"
           animated={true}
           useNativeDriver={true}
@@ -130,7 +134,7 @@ const UserProfile = ({ navigation }) => {
             marginLeft: 10,
           }}
         >
-          {(user_exp / 100) * 100}%
+          {((user_exp / (3 * user_level)) * 100).toFixed(1)}%
         </Text>
       </View>
 
