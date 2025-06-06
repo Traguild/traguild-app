@@ -11,16 +11,6 @@ import { theme } from "resources/theme/common";
 import { API } from "config/fetch.config";
 
 const RequestMarker = ({ latitude, longitude, item, getRequestNearBy }) => {
-  const [myUserIdx, setMyUserIdx] = useState(null);
-
-  useEffect(() => {
-    const getUserIdx = async () => {
-      const uid = await AsyncStorage.getItem("user_idx");
-      setMyUserIdx(uid);
-    };
-    getUserIdx();
-  }, []);
-
   return (
     <Marker
       coordinate={{

@@ -38,7 +38,7 @@ const Maps = ({ navigation }) => {
     });
     setRequestData(
       res.filter((item) => {
-        return item.is_deleted === 0;
+        return item.is_deleted === 0 || item.is_deleted === false;
       })
     );
     setIsUpdate(true);
@@ -67,7 +67,10 @@ const Maps = ({ navigation }) => {
     const res = await API.POST({ url: "/requestInfo/all" });
     setRequest(
       res.filter((item) => {
-        return item.request_state === "모집" && item.is_deleted === false;
+        return (
+          item.request_state === "모집" &&
+          (item.is_deleted == 0 || item.is_deleted == false)
+        );
       })
     );
   };
@@ -102,6 +105,7 @@ const Maps = ({ navigation }) => {
                     key={index}
                     latitude={item.latitude}
                     longitude={item.longitude}
+                    item={item}
                     getRequestNearBy={getRequestNearBy}
                   />
                 );
