@@ -22,12 +22,16 @@ import ChatHeader from "components/03-chat/ChatHeader";
 const ChatDetail = () => {
   const toast = useToast();
   const flatListRef = useRef(null);
-  const socket = useRef(
-    io("https://traguild.kro.kr", {
-      path: "/socket.io",
-      transports: ["websocket"],
-    })
-  ).current;
+
+  // Deprecated: Use the new socket.io client
+  // const socket = useRef(
+  //   io("https://traguild.kro.kr", {
+  //     path: "/socket.io",
+  //     transports: ["websocket"],
+  //   })
+  // ).current;
+
+  const [socket, setSocket] = useState(null);
 
   const route = useRoute();
   const { chatData, section } = route.params;
@@ -108,20 +112,37 @@ const ChatDetail = () => {
     useCallback(() => {
       fetchRoomAndRequestInfo();
       getMsgData();
-    }, [getMsgData])
+
+      if (!socket) {
+        const newSocket = io("https://traguild.kro.kr", {
+          path: "/socket.io",
+          transports: ["websocket"],
+          forceNew: true,
+        });
+        setSocket(newSocket);
+      }
+      return () => {
+        if (socket) {
+          socket.disconnect();
+          setSocket(null);
+        }
+      };
+    }, [getMsgData, socket])
   );
 
   useEffect(() => {
-    socket.emit("enter_room", { room: chatRoomIdx });
+    if (socket && chatRoomIdx) {
+      socket.emit("enter_room", { room: chatRoomIdx });
 
-    socket.on("chatting", (data) => {
-      setMessages((prevMessages) => [data, ...prevMessages]);
-    });
+      socket.on("chatting", (data) => {
+        setMessages((prevMessages) => [data, ...prevMessages]);
+      });
 
-    return () => {
-      socket.off("chatting");
-    };
-  }, [chatRoomIdx]);
+      return () => {
+        socket.off("chatting");
+      };
+    }
+  }, [socket, chatRoomIdx]);
 
   const sendMessage = async () => {
     if (inputText.trim().length === 0) return;
@@ -311,4 +332,3 @@ const styles = StyleSheet.create({
 });
 
 export default ChatDetail;
-
