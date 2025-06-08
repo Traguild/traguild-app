@@ -21,6 +21,7 @@ import UserProfile from "views/04-myPage/UserProfile";
 import SelectCredit from "views/pg/SelectCredit";
 import Payments from "views/pg/Payments";
 import Report from "views/common/Report";
+import UserRequestList from "views/04-myPage/UserRequestList";
 
 // IMPORT RESOURCES
 import { theme } from "resources/theme/common";
@@ -147,6 +148,14 @@ const AppNavigator = () => {
           component={Payments}
           options={({ route }) => ({
             headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="UserRequestList"
+          component={UserRequestList}
+          options={({ route }) => ({
+            headerShown: true,
+            title: `${route.params.user_nickname}님의 프로필`,
           })}
         />
       </Stack.Navigator>

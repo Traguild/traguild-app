@@ -146,7 +146,11 @@ const UserProfile = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={1}
             onPress={() => {
-              null;
+              navGo.to("UserRequestList", {
+                user_idx: user_idx,
+                user_nickname: profile.user_nickname,
+                type: "applied",
+              });
             }}
           >
             <Text
@@ -178,7 +182,11 @@ const UserProfile = ({ navigation }) => {
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={() => {
-              navGo.to("QuestList", { user_idx });
+              navGo.to("UserRequestList", {
+                user_idx: user_idx,
+                user_nickname: profile.user_nickname,
+                type: "posted",
+              });
             }}
           >
             <Text

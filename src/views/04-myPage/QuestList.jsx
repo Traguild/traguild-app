@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React, { useLayoutEffect, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRoute } from "@react-navigation/native";
 
 // IMPORT CONFIGS
 import { API } from "config/fetch.config";
@@ -22,10 +21,7 @@ import RequestItem from "components/01-home/RequestItem";
 const LIMIT = 10;
 
 const QuestList = ({ navigation }) => {
-  const route = useRoute();
   let page = 1;
-  const passedUserIdx = route?.params?.user_idx;
-  const [userIdx, setUserIdx] = useState(null);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,16 +41,13 @@ const QuestList = ({ navigation }) => {
   useEffect(() => {
     const fetchDatas = async () => {
       setIsLoading(true);
-
-      const localUserIdx = await AsyncStorage.getItem("user_idx");
-      const finalUserIdx = passedUserIdx || localUserIdx;
-      setUserIdx(finalUserIdx);
+      const user_idx = await AsyncStorage.getItem("user_idx");
 
       const fetchRequests = async () => {
         try {
           const res = await API.POST({
             url: "/requestInfo/onlyMine",
-            data: { user_idx: finalUserIdx, page, limit: LIMIT },
+            data: { user_idx, page, limit: LIMIT },
           });
           setRequests(res);
         } catch (error) {
@@ -68,7 +61,7 @@ const QuestList = ({ navigation }) => {
         try {
           const res = await API.POST({
             url: "/requestApplicant/applyRequest",
-            data: { user_idx: finalUserIdx, page, limit: LIMIT },
+            data: { user_idx, page, limit: LIMIT },
           });
           setApplications(res);
         } catch (error) {
@@ -78,11 +71,12 @@ const QuestList = ({ navigation }) => {
         }
       };
 
-      await Promise.all([fetchApplications(), fetchRequests()]);
+      fetchApplications();
+      fetchRequests();
     };
 
     fetchDatas();
-  }, [passedUserIdx]);
+  }, []);
 
   const handleDismissMenu = () => {
     if (activeMenuId !== null) {
@@ -147,9 +141,7 @@ const QuestList = ({ navigation }) => {
                   isMenuVisible={activeMenuId === item.request_idx}
                   onToggleMenu={() =>
                     setActiveMenuId(
-                      activeMenuId === item.request_idx
-                        ? null
-                        : item.request_idx
+                      activeMenuId === item.request_idx ? null : item.request_idx
                     )
                   }
                   statusLabel={statusLabel}

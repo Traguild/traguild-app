@@ -2,6 +2,7 @@ export const theme = {
   "default-bg": "#d2c1a0",
   "default-border": "#AB886D",
   "default-btn": "#6C4E31",
+  "default-text": "#4B3B2A",
 
   "filter-btn": "#AB886D",
 
