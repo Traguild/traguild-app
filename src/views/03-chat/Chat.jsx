@@ -86,7 +86,8 @@ const ChatList = ({ navigation }) => {
         } else if (status === "완료") {
           if (isDone(d)) isValid = d.request_state === "완료";
         } else if (status === "취소") {
-          if (!(isProgress(d) || isDone(d))) isValid = true;
+          if (!(isProgress(d) || isDone(d)) && d.request_state !== "모집")
+            isValid = true;
         }
 
         if (isValid) {
@@ -206,4 +207,3 @@ const styles = StyleSheet.create({
 });
 
 export default ChatList;
-
