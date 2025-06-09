@@ -20,8 +20,8 @@ const UserRate = ({ visible, onClose, targetUserIdx }) => {
 
       const updatedData = {
         user_idx: targetUserIdx,
-        //user_like: userInfo.user_like ?? 0,
-        //user_dislike: userInfo.user_dislike ?? 0,
+        user_like: userInfo.user_like ?? 0,
+        user_dislike: userInfo.user_dislike ?? 0,
         user_exp: userInfo.user_exp ?? 0,
       };
 
