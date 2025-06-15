@@ -18,7 +18,7 @@ import { theme } from "../../resources/theme/common";
 import { getContents } from "../../resources/js/common";
 import { useFocusEffect } from "@react-navigation/native";
 
-const ApplyList = ({ onSelectApplicant }) => {
+const ApplyList = ({ onSelectApplicant, onHandleApply, onProceedApply }) => {
   const [applyList, setApplyList] = useState([]);
 
   useFocusEffect(
@@ -41,103 +41,92 @@ const ApplyList = ({ onSelectApplicant }) => {
     }, [])
   );
 
-  const proceedApply = async ({
-    request_title,
-    request_idx,
-    user_idx,
-    user_nickname,
-    applicant_state,
-  }) => {
-    const host_user_idx = await AsyncStorage.getItem("user_idx");
-    // TODO - 임시 주석
-    //const res = true;
-    const res = await API.POST({
-      url: "/requestApplicant/update",
-      data: { request_idx, user_idx, applicant_state },
-    });
-
-    if (res) {
-      if (applicant_state === "승인") {
-        // TODO - 임시 주석
-        // await API.POST({
-        //   url: "/requestApplicant/rejectAll",
-        //   data: { request_idx, applicant_state: "반려" },
-        // });
-        // await API.POST({
-        //   url: "/requestInfo/update",
-        //   data: {
-        //     request_idx,
-        //     request_state: "모집",
-        //     applicant_idx: user_idx,
-        //   },
-        // });
-
-        //채팅방 생성
-        const chat_data = await API.PUT({
-          url: "/chatRoom",
-          data: {
-            request_idx,
-            chat_room_name: request_title,
+  const handleApply = (item) => {
+    if (onHandleApply) {
+      onHandleApply(item);
+    } else {
+      Alert.alert(
+        `${item.request_title}`,
+        `지원자 ${item.user_nickname}님을 ${item.applicant_state}하시겠습니까?`,
+        [
+          {
+            text: "취소",
+            style: "cancel",
           },
-        });
-
-        await API.PUT({
-          url: "/chatList",
-          data: {
-            chat_room_idx: chat_data.chat_room_idx,
-            user_idx,
+          {
+            text: "확인",
+            onPress: () => proceedApply(item),
           },
-        });
-        await API.PUT({
-          url: "/chatList",
-          data: {
-            chat_room_idx: chat_data.chat_room_idx,
-            user_idx: host_user_idx,
-          },
-        });
-
-        chat_data.user_nickname = user_nickname;
-        chat_data.user_idx = user_idx;
-        chat_data.request_idx = request_idx;
-        chat_data.applicant_idx = user_idx;
-
-        navGo.to("ChatDetail", {
-          chatData: chat_data,
-        });
-      }
-
-      const getApplyList = async () => {
-        const res = await API.POST({
-          url: "/requestApplicant/getApply",
-          data: {
-            user_idx: host_user_idx,
-            page: 1,
-            limit: 10,
-            status: "대기",
-          },
-        });
-
-        setApplyList(res);
-      };
-      getApplyList();
+        ]
+      );
     }
   };
 
-  const handleApply = (item) => {
-    Alert.alert(
-      `${item.request_title}`,
-      `지원자 ${item.user_nickname}님을 ${item.applicant_state}하시겠습니까?`,
-      [
-        {
-          text: "취소",
-          style: "cancel",
+  const proceedApply = async (item) => {
+    if (onProceedApply) {
+      await onProceedApply(item);
+    } else {
+      const host_user_idx = await AsyncStorage.getItem("user_idx");
+      const res = await API.POST({
+        url: "/requestApplicant/update",
+        data: { 
+          request_idx: item.request_idx, 
+          user_idx: item.user_idx, 
+          applicant_state: item.applicant_state 
         },
-        {
-          text: "확인",
-          onPress: () => proceedApply(item),
-        },
-      ]
-    );
+      });
+
+      if (res) {
+        if (item.applicant_state === "승인") {
+          const chat_data = await API.PUT({
+            url: "/chatRoom",
+            data: {
+              request_idx: item.request_idx,
+              chat_room_name: item.request_title,
+            },
+          });
+
+          await API.PUT({
+            url: "/chatList",
+            data: {
+              chat_room_idx: chat_data.chat_room_idx,
+              user_idx: item.user_idx,
+            },
+          });
+          await API.PUT({
+            url: "/chatList",
+            data: {
+              chat_room_idx: chat_data.chat_room_idx,
+              user_idx: host_user_idx,
+            },
+          });
+
+          chat_data.user_nickname = item.user_nickname;
+          chat_data.user_idx = item.user_idx;
+          chat_data.request_idx = item.request_idx;
+          chat_data.applicant_idx = item.user_idx;
+
+          navGo.to("ChatDetail", {
+            chatData: chat_data,
+          });
+        }
+
+        const getApplyList = async () => {
+          const res = await API.POST({
+            url: "/requestApplicant/getApply",
+            data: {
+              user_idx: host_user_idx,
+              page: 1,
+              limit: 10,
+              status: "대기",
+            },
+          });
+
+          setApplyList(res);
+        };
+        getApplyList();
+      }
+    }
   };
 
   const renderItem = ({ item }) => (

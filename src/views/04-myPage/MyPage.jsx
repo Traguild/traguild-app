@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import React, {
   useCallback,
   useLayoutEffect,
@@ -111,6 +111,74 @@ const MyPage = () => {
     bottomSheetRef.current?.present();
   };
 
+  const handleApply = (item) => {
+    Alert.alert(
+      `${item.request_title}`,
+      `지원자 ${item.user_nickname}님을 ${item.applicant_state}하시겠습니까?`,
+      [
+        {
+          text: "취소",
+          style: "cancel",
+        },
+        {
+          text: "확인",
+          onPress: () => proceedApply(item),
+        },
+      ]
+    );
+  };
+
+  const proceedApply = async (item) => {
+    const host_user_idx = USER_IDX.current;
+    const res = await API.POST({
+      url: "/requestApplicant/update",
+      data: { 
+        request_idx: item.request_idx, 
+        user_idx: item.user_idx, 
+        applicant_state: item.applicant_state 
+      },
+    });
+
+    if (res) {
+      if (item.applicant_state === "승인") {
+        const chat_data = await API.PUT({
+          url: "/chatRoom",
+          data: {
+            request_idx: item.request_idx,
+            chat_room_name: item.request_title,
+          },
+        });
+
+        await API.PUT({
+          url: "/chatList",
+          data: {
+            chat_room_idx: chat_data.chat_room_idx,
+            user_idx: item.user_idx,
+          },
+        });
+        await API.PUT({
+          url: "/chatList",
+          data: {
+            chat_room_idx: chat_data.chat_room_idx,
+            user_idx: host_user_idx,
+          },
+        });
+
+        chat_data.user_nickname = item.user_nickname;
+        chat_data.user_idx = item.user_idx;
+        chat_data.request_idx = item.request_idx;
+        chat_data.applicant_idx = item.user_idx;
+
+        bottomSheetRef.current?.dismiss();
+        navGo.to("ChatDetail", {
+          chatData: chat_data,
+        });
+      }
+
+      getUserInfo();
+    }
+  };
+
   return (
     <BottomSheetModalProvider>
       {isLoading ? (
@@ -185,7 +253,11 @@ const MyPage = () => {
           <View style={styles.applyListContainer}>
             <Text style={styles.applyListTitle}>지원자 목록</Text>
             <View style={styles.applyList}>
-              <ApplyList onSelectApplicant={handleOpenModal} />
+              <ApplyList 
+                onSelectApplicant={handleOpenModal}
+                onHandleApply={handleApply}
+                onProceedApply={proceedApply}
+              />
             </View>
           </View>
         </View>
@@ -241,10 +313,16 @@ const MyPage = () => {
             </View>
 
             <View style={styles.modalButtons}>
-              <TouchableOpacity style={[styles.button, styles.approveButton]}>
+              <TouchableOpacity 
+                style={[styles.button, styles.approveButton]}
+                onPress={() => handleApply({ ...selectedApplicant, applicant_state: "승인" })}
+              >
                 <Text style={styles.buttonText}>승인</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.button, styles.rejectButton]}>
+              <TouchableOpacity 
+                style={[styles.button, styles.rejectButton]}
+                onPress={() => handleApply({ ...selectedApplicant, applicant_state: "반려" })}
+              >
                 <Text style={styles.rejectText}>반려</Text>
               </TouchableOpacity>
             </View>
